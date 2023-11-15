@@ -47,12 +47,12 @@ namespace SortingAlgorithm
             (graphViewer as IViewer).MouseDown += MouseDown;
             (graphViewer as IViewer).MouseUp += MouseUp;
 
-            Graph graph = new Graph("graph0");
-            graph.Directed = true;
-            graph.Attr.Margin = 56;
-            graph.Attr.MinimalWidth = 1000;
-            graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.WhiteSmoke;
-            graphViewer.Graph = graph;
+            //Graph graph = new Graph("graph0");
+            //graph.Directed = true;
+            //graph.Attr.Margin = 56;
+            //graph.Attr.MinimalWidth = 1000;
+            //graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.WhiteSmoke;
+            //graphViewer.Graph = graph;
         }
 
         void StartMenuItem_Click(object sender, EventArgs e)
@@ -190,48 +190,48 @@ namespace SortingAlgorithm
         {
             try
             {
-                Graph graph = new Graph("graph");
+                //Graph graph = new Graph("graph");
 
-                //Всякого говна по мелочи
-                //graph.AddEdge("A", "C");
-                //graph.AddEdge("A", "C");
-                //graph.AddEdge("A", "C");
-                //graph.AddEdge("A", "C");
-                //graph.AddEdge("A", "C");
-                //graph.AddEdge("B", "C");
-                //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-                //graph.FindNode("B").Attr.FillColor =Microsoft.Msagl.Drawing.Color.MistyRose;
-                //Node c = graph.FindNode("C");
-                //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-                //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
-                //graph.AddEdge("A", "D");
-                //graph.AddEdge("A", "E");
-                //graph.AddEdge("A", "F");
-                //graph.AddEdge("A", "G");
-                //graph.AddEdge("G", "B");
-                //graph.AddEdge("B", "G");
+                ////Всякого говна по мелочи
+                ////graph.AddEdge("A", "C");
+                ////graph.AddEdge("A", "C");
+                ////graph.AddEdge("A", "C");
+                ////graph.AddEdge("A", "C");
+                ////graph.AddEdge("A", "C");
+                ////graph.AddEdge("B", "C");
+                ////graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                ////graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+                ////graph.FindNode("B").Attr.FillColor =Microsoft.Msagl.Drawing.Color.MistyRose;
+                ////Node c = graph.FindNode("C");
+                ////c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
+                ////c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+                ////graph.AddEdge("A", "D");
+                ////graph.AddEdge("A", "E");
+                ////graph.AddEdge("A", "F");
+                ////graph.AddEdge("A", "G");
+                ////graph.AddEdge("G", "B");
+                ////graph.AddEdge("B", "G");
 
-                //Этим можно воспользоваться для создания весовых графов
-                //graph.AddEdge("A", "B").TargetNode.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
+                ////Этим можно воспользоваться для создания весовых графов
+                ////graph.AddEdge("A", "B").TargetNode.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
 
-                //ДЕРЕВО
+                ////ДЕРЕВО
                
-                graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.PaleGreen;
+                //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.PaleGreen;
 
-                graph.AddEdge("C", "A");
+                //graph.AddEdge("C", "A");
 
-                graph.AddEdge("A", "B");
-                graph.AddEdge("B", "D");
-                graph.AddEdge("B", "F");
+                //graph.AddEdge("A", "B");
+                //graph.AddEdge("B", "D");
+                //graph.AddEdge("B", "F");
 
-                graph.AddEdge("C", "E");
-                graph.AddEdge("C", "Q");
+                //graph.AddEdge("C", "E");
+                //graph.AddEdge("C", "Q");
 
-                graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.WhiteSmoke;
+                //graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.WhiteSmoke;
                
 
-                graphViewer.Graph = graph;
+                //graphViewer.Graph = graph;
             }
             catch (Exception e)
             {
