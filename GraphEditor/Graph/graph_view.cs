@@ -86,8 +86,8 @@ namespace Graph
             Canvas.SetTop(top.GRNode, top.RELPos.Y);
             if (labels_list != null)
             {
-                Canvas.SetLeft(labels_list[top], top.RELPos.X + graphNode.Radius / 2);
-                Canvas.SetTop(labels_list[top], top.RELPos.Y - graphNode.Radius * 1.5);
+                Canvas.SetLeft(labels_list[top], top.RELPos.X + ViewNode.Radius / 2);
+                Canvas.SetTop(labels_list[top], top.RELPos.Y - ViewNode.Radius * 1.5);
             }
         }
         public void DeleteNode(node_view top)
@@ -247,8 +247,8 @@ namespace Graph
                     label.FontSize = 15;
                     label.Foreground = System.Windows.Media.Brushes.Blue;
                     canvas.Children.Add(label);
-                    Canvas.SetLeft(label, TopList[i].RELPos.X + graphNode.Radius / 2);
-                    Canvas.SetTop(label, TopList[i].RELPos.Y - graphNode.Radius * 1.5);
+                    Canvas.SetLeft(label, TopList[i].RELPos.X + ViewNode.Radius / 2);
+                    Canvas.SetTop(label, TopList[i].RELPos.Y - ViewNode.Radius * 1.5);
                     Canvas.SetZIndex(label, 2);
                 }
             }

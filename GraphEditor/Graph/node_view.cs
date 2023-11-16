@@ -14,7 +14,7 @@ namespace Graph
     {
         private int topNum;
         [NonSerialized]
-        private graphNode _grNode;
+        private ViewNode _grNode;
         private graph_view _graph_view;
         private bool move;
         private bool isValid;
@@ -42,7 +42,7 @@ namespace Graph
             get { return _graph_view; }
         }
 
-        public graphNode View
+        public ViewNode View
         {
             get { return _grNode; }
         }
@@ -51,7 +51,7 @@ namespace Graph
         {
             this._graph_view = _graph_view;
             _graph_view.Tops.Add(this);
-            _grNode = new graphNode(this);
+            _grNode = new ViewNode(this);
             _grNode.textBox1.Text = "null";
             _graph_view.GRCanvas.Children.Add(_grNode);
             pointPositionChange += _graph_view.OnPointPositionChanged;
@@ -93,7 +93,7 @@ namespace Graph
             rel_pos = new Point(p.X - GRNode.Width / 2 + 2, p.Y - GRNode.Height / 4 + 3);
         }
 
-        public graphNode GRNode
+        public ViewNode GRNode
         {
             get { return _grNode; }
         }

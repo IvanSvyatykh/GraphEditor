@@ -18,9 +18,9 @@ namespace GraphEditor
     /// <summary>
     /// Interaction logic for graphNode.xaml
     /// </summary>
-    public partial class graphNode : UserControl
+    public partial class ViewNode : UserControl
     {
-        public graphNode(node_view parentView)
+        public ViewNode(node_view parentView)
         {
             InitializeComponent();
             //this.parentViewModel = parentViewModel;
@@ -42,8 +42,6 @@ namespace GraphEditor
             get { return NodeRadius; }
         }
 
-
-
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (parentView.Graph.IsShowDeijkstra)
@@ -54,22 +52,6 @@ namespace GraphEditor
             parentView.Validate();
             parentView.Graph.ValidateTopNumbers();
         }
-
-        //private void TxtBox_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    //textBox1.IsReadOnly = true;
-        //    //textBox1.CaretBrush = opaqueBrush;
-        //    //textBox1.Background = opaqueBrush;
-        //    //Canvas.SetZIndex(this, 2);
-        //}
-
-        //private void TxtBox_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    //textBox1.IsReadOnly = false;
-        //    //textBox1.CaretBrush = Brushes.Black;
-        //    //textBox1.Background = Brushes.White;
-        //    //Canvas.SetZIndex(this, 4);
-        //}
 
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {

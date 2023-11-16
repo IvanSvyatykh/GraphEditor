@@ -5,9 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
-        <Canvas x:Name="Canvas" />
+        
+        <Canvas Background="WhiteSmoke" x:Name="CanvasForGraph">
+        <Canvas.ContextMenu >
+        <ContextMenu>
+            <MenuItem Header="Добавить узел" ></MenuItem>
+            <MenuItem Header="Удалить выбранный узел"></MenuItem>
+            </ContextMenu>
+            </Canvas.ContextMenu>
+        </Canvas>
+                
 
     </Grid>
 </Window>

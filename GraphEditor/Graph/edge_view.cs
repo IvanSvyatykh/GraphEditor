@@ -11,22 +11,14 @@ using GraphEditor;
 
 namespace Graph
 {
-    [Serializable]
     public class edge_view
     {
-        [NonSerialized]
         private Shape Line;
-        [NonSerialized]
         private Line LeftLine;
-        [NonSerialized]
         private Line RightLine;
-        [NonSerialized]
         private TextBox textBox1;
-        [NonSerialized]
         private Brush opaqueBrush;
-        [NonSerialized]
         private Brush borderBrush;
-        [NonSerialized]
         private List<Shape> Lines;
         private int edge_weight;
         private bool isLine;
@@ -231,7 +223,7 @@ namespace Graph
                 if (top == from_node)
                 {
                     Canvas.SetLeft(Line, from_node.RELPos.X + from_node.GRNode.Width / 2);
-                    Canvas.SetTop(Line, from_node.RELPos.Y + graphNode.Radius / 2);
+                    Canvas.SetTop(Line, from_node.RELPos.Y + ViewNode.Radius / 2);
                 }
                 ((Line)Line).X2 = to_node.RELPos.X - from_node.RELPos.X;
                 ((Line)Line).Y2 = to_node.RELPos.Y - from_node.RELPos.Y;
@@ -256,9 +248,9 @@ namespace Graph
                    RightLine.Y2 = ((Line)Line).Y2 + 30 * Math.Cos(u_l - 2 * u);
 
                    Canvas.SetLeft(LeftLine, from_node.RELPos.X + to_node.GRNode.Width / 2);
-                   Canvas.SetTop(LeftLine, from_node.RELPos.Y + graphNode.Radius / 2);
+                   Canvas.SetTop(LeftLine, from_node.RELPos.Y + ViewNode.Radius / 2);
                    Canvas.SetLeft(RightLine, from_node.RELPos.X + to_node.GRNode.Width / 2);
-                   Canvas.SetTop(RightLine, from_node.RELPos.Y + graphNode.Radius / 2);
+                   Canvas.SetTop(RightLine, from_node.RELPos.Y + ViewNode.Radius / 2);
                 }
             }
             else
