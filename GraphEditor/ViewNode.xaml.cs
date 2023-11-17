@@ -20,56 +20,59 @@ namespace GraphEditor
     /// </summary>
     public partial class ViewNode : UserControl
     {
-        public ViewNode(NodeView parentView)
+        public ViewNode(NodeView parentViewNode)
         {
             InitializeComponent();
+            Keyboard.ClearFocus();
 
-            this.parentView = parentView;
-            Canvas.SetZIndex(this, 2);
+            this.parentViewNode = parentViewNode;
+            
             this.point.Width = this.point.Height = NodeRadius;
-            opaqueBrush = new SolidColorBrush(Colors.Black);
-            opaqueBrush.Opacity = 0;
+            invisibleBrush = new SolidColorBrush(Colors.White);
+            invisibleBrush.Opacity = 0;
         }
 
+        SolidColorBrush invisibleBrush;
         public const int NodeRadius = 25;
 
-        private NodeView parentView;
-        private Brush opaqueBrush;
+        private NodeView parentViewNode;
 
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            parentView.txt = textBox1.Text;
+            parentViewNode.txt = textBox1.Text;
 
-            parentView.Validate();
-            parentView.Graph.ValidateNamesIsUnique();
+            parentViewNode.Validate();
+            parentViewNode.Graph.ValidateNamesIsUnique();
         }
+
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            parentView.Move = false;
+            parentViewNode.Move = false;
         }
         private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (parentView.Graph.IsEdgeAdd)
+            if (parentViewNode.Graph.IsEdgeAdd)
             {
-                if (parentView.Graph.FirstTop == null)
-                    parentView.Graph.FirstTop = parentView;
+                if (parentViewNode.Graph.FirstTop == null)
+                    parentViewNode.Graph.FirstTop = parentViewNode;
                 else
                 {
-                    parentView.Graph.AddEdge(parentView.Graph.FirstTop, parentView);
-                    parentView.Graph.EndAddEdge();
+                    parentViewNode.Graph.AddEdge(parentViewNode.Graph.FirstTop, parentViewNode);
+                    parentViewNode.Graph.EndAddEdge();
                 }
             }
-            else if (parentView.Graph.IsNodeDelete)
+            else if (parentViewNode.Graph.IsNodeDelete)
             {
-                parentView.Graph.DeleteNode(parentView);
-                parentView.Graph.EndDeleteNode();
+                parentViewNode.Graph.DeleteNode(parentViewNode);
+                parentViewNode.Graph.EndDeleteNode();
             }
             else
-                parentView.Move = true;
+            {
+                parentViewNode.Move = true;
+            }
         }
         private void node_MouseEnter(object sender, MouseEventArgs e)
         {
-
             point.Cursor = Cursors.Hand;
            
             point.Fill = Brushes.LightBlue;
@@ -79,30 +82,25 @@ namespace GraphEditor
         {   
             point.Fill = Brushes.Blue;
             
-            parentView.OnMouseLeave();
+            parentViewNode.OnMouseLeave();
         }
         private void node_MouseMove(object sender, MouseEventArgs e)
         {
-            parentView.OnMouseMove();
+            parentViewNode.OnMouseMove();
         }
 
         private void TxtBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                parentView.txt = textBox1.Text;
-                textBox1.IsReadOnly = true;
-                textBox1.CaretBrush = opaqueBrush;
-                textBox1.Background = opaqueBrush;
-                Canvas.SetZIndex(this, 2);
+                parentViewNode.txt = textBox1.Text;
+                textBox1.CaretBrush = invisibleBrush;
+                Keyboard.ClearFocus();
             }
         }
         private void TxtBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            textBox1.IsReadOnly = false;
             textBox1.CaretBrush = Brushes.Black;
-            textBox1.Background = Brushes.White;
-            Canvas.SetZIndex(this, 4);
         }
     }
 }
