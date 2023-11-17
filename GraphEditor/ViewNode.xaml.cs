@@ -20,7 +20,7 @@ namespace GraphEditor
     /// </summary>
     public partial class ViewNode : UserControl
     {
-        public ViewNode(nodeView parentView)
+        public ViewNode(NodeView parentView)
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace GraphEditor
         }
 
         private static int NodeRadius = 25;
-        private nodeView parentView;
+        private NodeView parentView;
 
         private Brush opaqueBrush;
         bool isMove = false;
@@ -44,7 +44,9 @@ namespace GraphEditor
 
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            parentView.txt = textBox1.Text;  
+            parentView.txt = textBox1.Text;
+            parentView.Validate();
+            parentView.Graph.ValidateTopNumbers();
         }
 
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

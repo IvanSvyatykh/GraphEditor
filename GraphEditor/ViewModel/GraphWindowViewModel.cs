@@ -17,14 +17,14 @@ namespace GraphEditor.ViewModel
         public ICommand InsertNodeCommand { get; }
         public ICommand RemoveNodeCommand { get; }
 
-        private graphView graphView;
+        private GraphView graphView;
 
         private MainWindow window;
         public GraphWindowViewModel(MainWindow window)
         {
             this.window = window;
 
-            graphView = new graphView(window.CanvasForGraph);
+            graphView = new GraphView(window.CanvasForGraph);
 
             InsertNodeCommand = new RelayCommand(InsertNode);
             RemoveNodeCommand = new RelayCommand(DeleteSelectedNode);
@@ -32,7 +32,7 @@ namespace GraphEditor.ViewModel
         private void InsertNode()
         {
            
-            graphView.AddTop();
+            graphView.AddNode();
         }
         private void DeleteSelectedNode()
         {

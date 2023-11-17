@@ -11,12 +11,12 @@ using GraphEditor;
 
 namespace Graph
 {
-    public class graphView : property_base
+    public class GraphView : property_base
     {
         private Canvas canvas;
 
         private List<edge_view> edgeList = new List<edge_view>();
-        private List<nodeView> nodeList = new List<nodeView>();
+        private List<NodeView> nodeList = new List<NodeView>();
 
         private bool isOriented = true;
 
@@ -24,27 +24,31 @@ namespace Graph
         private bool edgeDelete;
         private bool nodeDelete;
         
-        public nodeView FirstTop;
+        public NodeView FirstTop;
 
         //Не знаю нужен ли он мне
-        private Dictionary<int, List<int>> neighbors_nodes;
+        private Dictionary<string, List<string>> neighbors_nodes;
 
         //Нужно при валидации
-        private Dictionary<KeyValuePair<int, int>, int> edge_weight;
+        private Dictionary<KeyValuePair<string, string>, int> edge_weight;
 
-        public delegate void PointPositionChanged(nodeView top);
+        public delegate void PointPositionChanged(NodeView top);
 
 
-        public graphView(Canvas canvas)
+        public GraphView(Canvas canvas)
         {
             this.canvas = canvas;
         }
 
-        public List<nodeView> Tops
+        public List<NodeView> Tops
         {
             get { return nodeList; }
         }
-
+        public Canvas GraphCanvas
+        {
+            get { return canvas; }
+            set { canvas = value; }
+        }
         public bool IsEdgeAdd
         {
             get { return edgeAdd; }
@@ -55,36 +59,30 @@ namespace Graph
         }
 
         //Не знаю нужно ли оно мне
-        public bool CheckTopNum(nodeView top)
+        public bool CheckTopNum(NodeView top)
         {
-            foreach (nodeView model in nodeList)
-                if (top.TopNum == model.TopNum && model != top)
+            foreach (NodeView model in nodeList)
+                if (top.NodeName == model.NodeName && model != top)
                     return false;
             return true;
         }
 
-        public void AddTop()
+        public void AddNode()
         {
-            nodeView newNode = new nodeView(this);
+            NodeView newNode = new NodeView(this);
  
             OnPointPositionChanged(newNode);
         }
-        public Canvas GRCanvas
-        {
-            get { return canvas; }
-            set { canvas = value; }
-        }
-        public void OnPointPositionChanged(nodeView node)
+        public void OnPointPositionChanged(NodeView node)
         {
             node.UpdPos();
-            Canvas.SetLeft(node.GRNode, node.RELPos.X);
-            Canvas.SetTop(node.GRNode, node.RELPos.Y);
+            Canvas.SetLeft(node.GRNode, node.Position.X);
+            Canvas.SetTop(node.GRNode, node.Position.Y);
         }
-        public void DeleteNode(nodeView top)
+        public void DeleteNode(NodeView top)
         {
             if (nodeList.Contains(top))
             {
-
                 foreach (edge_view model in edgeList)
                     if (model.From == top || model.To == top)
                     {
@@ -107,11 +105,11 @@ namespace Graph
                 canvas.Children.Remove(line.TxtBox);
             }
         }
-        //public void ValidateTopNumbers()
-        //{
-        //    foreach (nodeView top in nodeList)
-        //       top.Validate();
-        //}
+        public void ValidateTopNumbers()
+        {
+            foreach (NodeView top in nodeList)
+                top.Validate();
+        }
         public bool IsOriented
         {
             get { return isOriented; }
@@ -122,7 +120,7 @@ namespace Graph
             get { return nodeDelete; }
         }
 
-        public void AddEdge(nodeView from_node, nodeView to_node)
+        public void AddEdge(NodeView from_node, NodeView to_node)
         {
             edge_view line = new edge_view(this, from_node, to_node);
             edgeList.Add(line);
@@ -167,7 +165,7 @@ namespace Graph
             canvas.Cursor = Cursors.Arrow;
         }
 
-
+        //Можно использовать для Бека
 
         ////deijkstra
         //public bool IsShowDeijkstra
@@ -305,25 +303,25 @@ namespace Graph
             foreach (edge_view line in edgeList)
                 if (!line.isValid)
                     return false;
-            foreach (nodeView top in nodeList)
+            foreach (NodeView top in nodeList)
                 if (!top.IsValid)
                     return false;
             return true;
         }
         private void FillDictionaries()
         {
-            neighbors_nodes = new Dictionary<int, List<int>>();
-            edge_weight = new Dictionary<KeyValuePair<int, int>, int>();
-            foreach (nodeView top in nodeList)
-                neighbors_nodes[top.TopNum] = new List<int>();
+            neighbors_nodes = new Dictionary<string, List<string>>();
+            edge_weight = new Dictionary<KeyValuePair<string, string>, int>();
+            foreach (NodeView top in nodeList)
+                neighbors_nodes[top.NodeName] = new List<string>();
             foreach (edge_view line in edgeList)
             {
-                neighbors_nodes[line.From.TopNum].Add(line.To.TopNum);
-                edge_weight[new KeyValuePair<int, int>(line.From.TopNum, line.To.TopNum)] = line.Weight;
+                neighbors_nodes[line.From.NodeName].Add(line.To.NodeName);
+                edge_weight[new KeyValuePair<string, string>(line.From.NodeName, line.To.NodeName)] = line.Weight;
                 if (!IsOriented)
                 {
-                    neighbors_nodes[line.To.TopNum].Add(line.From.TopNum);
-                    edge_weight[new KeyValuePair<int, int>(line.To.TopNum, line.From.TopNum)] = line.Weight;
+                    neighbors_nodes[line.To.NodeName].Add(line.From.NodeName);
+                    edge_weight[new KeyValuePair<string, string>(line.To.NodeName, line.From.NodeName)] = line.Weight;
                 }
             }
         }

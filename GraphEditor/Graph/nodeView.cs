@@ -9,53 +9,58 @@ using System.Windows.Input;
 
 namespace Graph
 {
-    [Serializable]
-    public class nodeView
+    public class NodeView
     {
-        private int topNum;
+        private string name;
 
-
-        private ViewNode _grNode;
-        private graphView _graph_view;
+        private ViewNode graphNode;
+        private GraphView graphView;
         private bool move;
         private bool isValid;
         public string txt;
         private bool _move;
-        private Point rel_pos;
+        private Point position;
 
 
-        public event graphView.PointPositionChanged pointPositionChange;
+        public event GraphView.PointPositionChanged pointPositionChange;
 
-        public Point RELPos
+        public Point Position
         {
             get
             {
-                return rel_pos;
+                return position;
             }
             set
             {
-                rel_pos = value;
+                position = value;
             }
         }
 
-        public graphView Graph
+        public GraphView Graph
         {
-            get { return _graph_view; }
+            get { return graphView; }
         }
 
         public ViewNode View
         {
-            get { return _grNode; }
+            get { return graphNode; }
         }
 
-        public nodeView(graphView _graph_view)
+        public NodeView(GraphView graphView)
         {
-            this._graph_view = _graph_view;
-            _graph_view.Tops.Add(this);
-            _grNode = new ViewNode(this);
-            _grNode.textBox1.Text = "null";
-            _graph_view.GRCanvas.Children.Add(_grNode);
-            pointPositionChange += _graph_view.OnPointPositionChanged;
+            this.graphView = graphView;
+            
+            //хмм
+            graphView.Tops.Add(this);
+
+            graphNode = new ViewNode(this);
+            graphNode.textBox1.Text = "";
+            
+            //хмм
+            graphView.GraphCanvas.Children.Add(graphNode);
+
+            pointPositionChange += graphView.OnPointPositionChanged;
+
             IsValid = false;
         }
 
@@ -85,20 +90,20 @@ namespace Graph
 
         public void UpdCurs()
         {
-            _grNode.point.Cursor = Cursors.Hand;
+            graphNode.point.Cursor = Cursors.Hand;
         }
 
         public void UpdPos()
         {
-            Point p = Mouse.GetPosition(_graph_view.GRCanvas);
-            rel_pos = new Point(p.X - GRNode.Width / 2, p.Y - GRNode.Height / 4);
+            Point p = Mouse.GetPosition(graphView.GraphCanvas);
+            position = new Point(p.X - GRNode.Width / 2, p.Y - GRNode.Height / 4);
         }
 
         public ViewNode GRNode
         {
-            get { return _grNode; }
+            get { return graphNode; }
         }
-
+        
         public bool IsValid
         {
             get { return isValid; }
@@ -106,22 +111,42 @@ namespace Graph
             {
                 isValid = value;
                 if (isValid)
-                    _grNode.textBox1.Foreground = System.Windows.Media.Brushes.Black;
+                    graphNode.textBox1.Foreground = System.Windows.Media.Brushes.Black;
                 else
-                    _grNode.textBox1.Foreground = System.Windows.Media.Brushes.Red;
+                    graphNode.textBox1.Foreground = System.Windows.Media.Brushes.Red;
             }
         }
 
-        public int TopNum
+        public string NodeName
         {
             get
             {
-                return topNum;
+                return name;
             }
             set
             {
-                topNum = value;
+                name = value;
             }
+        }
+        public void Validate()
+        {
+            try
+            {
+                name = txt;
+                if (!Graph.CheckTopNum(this))
+                {
+                    IsValid = false;
+                }
+                else
+                {
+                    IsValid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                IsValid = false;
+            }
+
         }
     }
 }

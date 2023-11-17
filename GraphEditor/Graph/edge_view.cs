@@ -22,16 +22,16 @@ namespace Graph
         private List<Shape> Lines;
         private int edge_weight;
         private bool isLine;
-        private graphView _graph;
-        private nodeView from_node;
-        private nodeView to_node;
+        private GraphView _graph;
+        private NodeView from_node;
+        private NodeView to_node;
 
 
 
         Thickness th = new Thickness(1.1);
         Brush br;
 
-        public edge_view(graphView _graph, nodeView from_node, nodeView to_node)
+        public edge_view(GraphView _graph, NodeView from_node, NodeView to_node)
         {
             this._graph = _graph;
             if (from_node != to_node)
@@ -57,8 +57,8 @@ namespace Graph
                     RightLine = new Line();
                     RightLine.Stroke = LeftLine.Stroke = Brushes.Black;
                     RightLine.StrokeThickness = LeftLine.StrokeThickness = 6;
-                    _graph.GRCanvas.Children.Add(LeftLine);
-                    _graph.GRCanvas.Children.Add(RightLine);
+                    _graph.GraphCanvas.Children.Add(LeftLine);
+                    _graph.GraphCanvas.Children.Add(RightLine);
                 }
             }
             else
@@ -90,14 +90,14 @@ namespace Graph
             textBox1.Text = "empty";
             opaqueBrush = new SolidColorBrush(Colors.Black);
             opaqueBrush.Opacity = 0;
-            _graph.GRCanvas.Children.Add(textBox1);
-            _graph.GRCanvas.Children.Add(Line);
+            _graph.GraphCanvas.Children.Add(textBox1);
+            _graph.GraphCanvas.Children.Add(Line);
             Canvas.SetZIndex(Line, 0);
             Canvas.SetZIndex(textBox1, 2);
             this.from_node = from_node;
             this.to_node = to_node;
-            to_node.pointPositionChange += new graphView.PointPositionChanged(OnPointPositionChanged);
-            from_node.pointPositionChange += new graphView.PointPositionChanged(OnPointPositionChanged);
+            to_node.pointPositionChange += new GraphView.PointPositionChanged(OnPointPositionChanged);
+            from_node.pointPositionChange += new GraphView.PointPositionChanged(OnPointPositionChanged);
             OnPointPositionChanged(to_node);
             if (isLine)
                 OnPointPositionChanged(from_node);
@@ -114,12 +114,12 @@ namespace Graph
             get { return textBox1; }
         }
 
-        public nodeView From
+        public NodeView From
         {
             get { return from_node; }
         }
 
-        public nodeView To
+        public NodeView To
         {
             get { return to_node; }
         }
@@ -216,19 +216,19 @@ namespace Graph
             textBox1.IsReadOnly = true;
         }
 
-        public void OnPointPositionChanged(nodeView top)
+        public void OnPointPositionChanged(NodeView top)
         {
             if (isLine)
             {
                 if (top == from_node)
                 {
-                    Canvas.SetLeft(Line, from_node.RELPos.X + from_node.GRNode.Width / 2);
-                    Canvas.SetTop(Line, from_node.RELPos.Y + ViewNode.Radius / 2);
+                    Canvas.SetLeft(Line, from_node.Position.X + from_node.GRNode.Width / 2);
+                    Canvas.SetTop(Line, from_node.Position.Y + ViewNode.Radius / 2);
                 }
-                ((Line)Line).X2 = to_node.RELPos.X - from_node.RELPos.X;
-                ((Line)Line).Y2 = to_node.RELPos.Y - from_node.RELPos.Y;
-                Canvas.SetLeft(textBox1, from_node.RELPos.X + from_node.GRNode.Width / 2 + ((Line)Line).X2 / 2);
-                Canvas.SetTop(textBox1, from_node.RELPos.Y + ((Line)Line).Y2 / 2 - textBox1.FontSize / 3);
+                ((Line)Line).X2 = to_node.Position.X - from_node.Position.X;
+                ((Line)Line).Y2 = to_node.Position.Y - from_node.Position.Y;
+                Canvas.SetLeft(textBox1, from_node.Position.X + from_node.GRNode.Width / 2 + ((Line)Line).X2 / 2);
+                Canvas.SetTop(textBox1, from_node.Position.Y + ((Line)Line).Y2 / 2 - textBox1.FontSize / 3);
 
                 if (_graph.IsOriented && isLine)
                 {
@@ -247,18 +247,18 @@ namespace Graph
                    RightLine.X2 = ((Line)Line).X2 + 30 * Math.Sin(u_l - 2 * u);
                    RightLine.Y2 = ((Line)Line).Y2 + 30 * Math.Cos(u_l - 2 * u);
 
-                   Canvas.SetLeft(LeftLine, from_node.RELPos.X + to_node.GRNode.Width / 2);
-                   Canvas.SetTop(LeftLine, from_node.RELPos.Y + ViewNode.Radius / 2);
-                   Canvas.SetLeft(RightLine, from_node.RELPos.X + to_node.GRNode.Width / 2);
-                   Canvas.SetTop(RightLine, from_node.RELPos.Y + ViewNode.Radius / 2);
+                   Canvas.SetLeft(LeftLine, from_node.Position.X + to_node.GRNode.Width / 2);
+                   Canvas.SetTop(LeftLine, from_node.Position.Y + ViewNode.Radius / 2);
+                   Canvas.SetLeft(RightLine, from_node.Position.X + to_node.GRNode.Width / 2);
+                   Canvas.SetTop(RightLine, from_node.Position.Y + ViewNode.Radius / 2);
                 }
             }
             else
             {
-                Canvas.SetLeft(Line, from_node.RELPos.X);
-                Canvas.SetTop(Line, from_node.RELPos.Y - 35);
-                Canvas.SetLeft(textBox1, from_node.RELPos.X + 10);
-                Canvas.SetTop(textBox1, from_node.RELPos.Y - 35);
+                Canvas.SetLeft(Line, from_node.Position.X);
+                Canvas.SetTop(Line, from_node.Position.Y - 35);
+                Canvas.SetLeft(textBox1, from_node.Position.X + 10);
+                Canvas.SetTop(textBox1, from_node.Position.Y - 35);
             }
         }
     }
