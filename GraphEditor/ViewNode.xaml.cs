@@ -45,8 +45,9 @@ namespace GraphEditor
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             parentView.txt = textBox1.Text;
+
             parentView.Validate();
-            parentView.Graph.ValidateTopNumbers();
+            parentView.Graph.ValidateNamesIsUnique();
         }
 
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

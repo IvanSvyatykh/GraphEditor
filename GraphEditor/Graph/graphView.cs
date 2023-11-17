@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Data;
 using System.Text;
 using GraphEditor;
+using Model.Graph;
 
 namespace Graph
 {
@@ -58,19 +59,32 @@ namespace Graph
             get { return edgeDelete; }
         }
 
-        //Не знаю нужно ли оно мне
-        public bool CheckTopNum(NodeView top)
+        public bool CheckNameIsUnique(NodeView node)
         {
-            foreach (NodeView model in nodeList)
-                if (top.NodeName == model.NodeName && model != top)
+            foreach (NodeView anotherNode in nodeList)
+            {
+                if (node.NodeName == anotherNode.NodeName && anotherNode != node)
+                {
                     return false;
+                }
+            }
             return true;
         }
-
+        public void ValidateNamesIsUnique()
+        {
+            foreach (NodeView node in nodeList)
+            {
+                node.Validate();
+            }
+        }
         public void AddNode()
         {
             NodeView newNode = new NodeView(this);
- 
+
+            nodeList.Add(newNode);
+            canvas.Children.Add(newNode.View);
+            newNode.pointPositionChange += OnPointPositionChanged;
+
             OnPointPositionChanged(newNode);
         }
         public void OnPointPositionChanged(NodeView node)
@@ -104,11 +118,6 @@ namespace Graph
                     canvas.Children.Remove(shape);
                 canvas.Children.Remove(line.TxtBox);
             }
-        }
-        public void ValidateTopNumbers()
-        {
-            foreach (NodeView top in nodeList)
-                top.Validate();
         }
         public bool IsOriented
         {

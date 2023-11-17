@@ -49,17 +49,9 @@ namespace Graph
         public NodeView(GraphView graphView)
         {
             this.graphView = graphView;
-            
-            //хмм
-            graphView.Tops.Add(this);
 
             graphNode = new ViewNode(this);
             graphNode.textBox1.Text = "";
-            
-            //хмм
-            graphView.GraphCanvas.Children.Add(graphNode);
-
-            pointPositionChange += graphView.OnPointPositionChanged;
 
             IsValid = false;
         }
@@ -111,9 +103,13 @@ namespace Graph
             {
                 isValid = value;
                 if (isValid)
+                {
                     graphNode.textBox1.Foreground = System.Windows.Media.Brushes.Black;
+                }
                 else
+                {
                     graphNode.textBox1.Foreground = System.Windows.Media.Brushes.Red;
+                }
             }
         }
 
@@ -130,23 +126,16 @@ namespace Graph
         }
         public void Validate()
         {
-            try
+            name = txt;
+
+            if (Graph.CheckNameIsUnique(this))
             {
-                name = txt;
-                if (!Graph.CheckTopNum(this))
-                {
-                    IsValid = false;
-                }
-                else
-                {
-                    IsValid = true;
-                }
+                IsValid = true;
             }
-            catch (Exception ex)
+            else
             {
                 IsValid = false;
             }
-
         }
     }
 }
