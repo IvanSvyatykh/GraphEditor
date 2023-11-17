@@ -16,7 +16,7 @@ namespace Graph
     {
         private Canvas canvas;
 
-        private List<edge_view> edgeList = new List<edge_view>();
+        private List<EdgeView> edgeList = new List<EdgeView>();
         private List<NodeView> nodeList = new List<NodeView>();
 
         private bool isOriented = true;
@@ -113,7 +113,7 @@ namespace Graph
         {
             if (nodeList.Contains(node))
             {
-                foreach (edge_view model in edgeList)
+                foreach (EdgeView model in edgeList)
                     if (model.From == node || model.To == node)
                     {
                         foreach (Shape line in model.Edge)
@@ -128,15 +128,14 @@ namespace Graph
 
         public void AddEdge(NodeView from_node, NodeView to_node)
         {
-            edge_view line = new edge_view(this, from_node, to_node);
+            EdgeView line = new EdgeView(this, from_node, to_node);
             edgeList.Add(line);
 
             FirstTop = null;
 
             EndAddingEdge();
-            to_node.UpdCurs();
         }
-        public void DeleteEdge(edge_view line)
+        public void DeleteEdge(EdgeView line)
         {
             if (edgeList.Contains(line))
             {
@@ -321,7 +320,7 @@ namespace Graph
         //}
         private bool ValidateState()
         {
-            foreach (edge_view line in edgeList)
+            foreach (EdgeView line in edgeList)
                 if (!line.isValid)
                     return false;
             foreach (NodeView top in nodeList)
@@ -335,7 +334,7 @@ namespace Graph
             edge_weight = new Dictionary<KeyValuePair<string, string>, int>();
             foreach (NodeView top in nodeList)
                 neighbors_nodes[top.NodeName] = new List<string>();
-            foreach (edge_view line in edgeList)
+            foreach (EdgeView line in edgeList)
             {
                 neighbors_nodes[line.From.NodeName].Add(line.To.NodeName);
                 edge_weight[new KeyValuePair<string, string>(line.From.NodeName, line.To.NodeName)] = line.Weight;

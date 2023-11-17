@@ -67,11 +67,11 @@ namespace Graph
                 isValid = value;
                 if (isValid)
                 {
-                    graphNode.textBox1.Foreground = System.Windows.Media.Brushes.Black;
+                    graphNode.TextBoxForNodeLabel.Foreground = System.Windows.Media.Brushes.Black;
                 }
                 else
                 {
-                    graphNode.textBox1.Foreground = System.Windows.Media.Brushes.Red;
+                    graphNode.TextBoxForNodeLabel.Foreground = System.Windows.Media.Brushes.Red;
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace Graph
             this.graphView = graphView;
 
             graphNode = new ViewNode(this);
-            graphNode.textBox1.Text = "";
+            graphNode.TextBoxForNodeLabel.Text = "";
 
             IsValid = false;
         }
@@ -109,11 +109,6 @@ namespace Graph
         {
             if (isNodeMove)
                 pointPositionChange(this);
-        }
-
-        public void UpdCurs()
-        {
-            graphNode.point.Cursor = Cursors.Hand;
         }
 
         public void UpdPos()

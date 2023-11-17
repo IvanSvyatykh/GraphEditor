@@ -25,6 +25,7 @@ namespace GraphEditor
             InitializeComponent();
             Keyboard.ClearFocus();
 
+            Canvas.SetZIndex(this, 2);
             this.parentViewNode = parentViewNode;
             
             this.point.Width = this.point.Height = NodeRadius;
@@ -39,7 +40,7 @@ namespace GraphEditor
 
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            parentViewNode.txt = textBox1.Text;
+            parentViewNode.txt = TextBoxForNodeLabel.Text;
 
             parentViewNode.Validate();
             parentViewNode.Graph.ValidateNamesIsUnique();
@@ -77,7 +78,7 @@ namespace GraphEditor
                 point.Cursor = Cursors.Hand;
 
                 point.Fill = Brushes.LightBlue;
-                textBox1.IsReadOnly = false;
+                TextBoxForNodeLabel.IsReadOnly = false;
             }
         }
         private void node_MouseLeave(object sender, MouseEventArgs e)
@@ -95,14 +96,14 @@ namespace GraphEditor
         {
             if (e.Key == Key.Return)
             {
-                parentViewNode.txt = textBox1.Text;
-                textBox1.CaretBrush = invisibleBrush;
+                parentViewNode.txt = TextBoxForNodeLabel.Text;
+                TextBoxForNodeLabel.CaretBrush = invisibleBrush;
                 Keyboard.ClearFocus();
             }
         }
         private void TxtBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            textBox1.CaretBrush = Brushes.Black;
+            TextBoxForNodeLabel.CaretBrush = Brushes.Black;
         }
     }
 }

@@ -47,12 +47,14 @@ namespace GraphEditor.ViewModel
             {
                 currentMode = 1;
                 SetCurrentModeButtonBackgrounds(onModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
-                
+
+                graphView.EndAddingEdge();
                 graphView.StartAddingNode();
                 graphView.EndDeletingNode();
             }
             else
             {
+                graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
 
@@ -67,11 +69,13 @@ namespace GraphEditor.ViewModel
                 currentMode = 2;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, onModeButtonBackground, offModeButtonBackground);
 
+                graphView.StartAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
             }
             else
-            {
+            {   
+                graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
 
@@ -84,12 +88,14 @@ namespace GraphEditor.ViewModel
             {   
                 currentMode = 3;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, onModeButtonBackground);
-                
+
+                graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.StartDeletingNode();
             }
             else
             {
+                graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
 
@@ -109,10 +115,6 @@ namespace GraphEditor.ViewModel
             if (currentMode == 1)
             {
                 graphView.AddNode();
-            }
-            else if (currentMode == 2)
-            {
-
             }
         }
 
