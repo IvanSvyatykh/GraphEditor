@@ -133,7 +133,7 @@ namespace Graph
 
             FirstTop = null;
 
-            EndAddingEdge();
+            //EndAddingEdge();
         }
         public void DeleteEdge(EdgeView line)
         {

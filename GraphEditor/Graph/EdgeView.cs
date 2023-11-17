@@ -225,6 +225,7 @@ namespace Graph
         {
             OnMouseEnter();
         }
+
         private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_graph.IsEdgeDeleting)

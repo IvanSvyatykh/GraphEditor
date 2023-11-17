@@ -59,7 +59,7 @@ namespace GraphEditor
                 else
                 {
                     parentViewNode.Graph.AddEdge(parentViewNode.Graph.FirstTop, parentViewNode);
-                    parentViewNode.Graph.EndAddingEdge();
+                    //parentViewNode.Graph.EndAddingEdge();
                 }
             }
             else if (parentViewNode.Graph.IsNodeDeleting)
