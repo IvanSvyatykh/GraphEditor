@@ -31,16 +31,10 @@ namespace GraphEditor
             opaqueBrush.Opacity = 0;
         }
 
-        private static int NodeRadius = 25;
+        public const int NodeRadius = 25;
+
         private NodeView parentView;
-
         private Brush opaqueBrush;
-        bool isMove = false;
-
-        public static int Radius
-        {
-            get { return NodeRadius; }
-        }
 
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -49,15 +43,12 @@ namespace GraphEditor
             parentView.Validate();
             parentView.Graph.ValidateNamesIsUnique();
         }
-
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            isMove = false;
             parentView.Move = false;
         }
         private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //isMove = true;
             if (parentView.Graph.IsEdgeAdd)
             {
                 if (parentView.Graph.FirstTop == null)
@@ -73,33 +64,22 @@ namespace GraphEditor
                 parentView.Graph.DeleteNode(parentView);
                 parentView.Graph.EndDeleteNode();
             }
-            //else if (parentView.Graph.IsDeijkstra)
-            //{
-            //    parentView.Graph.Deijkstra(parentView);
-            //    parentView.Graph.EndDeijkstra();
-            //}
             else
                 parentView.Move = true;
         }
         private void node_MouseEnter(object sender, MouseEventArgs e)
         {
-            //if (!parentView.Graph.IsTopDelete && !parentView.Graph.IsLineAdd && !parentView.Graph.IsDejkstra)
-            //{
-                point.Cursor = Cursors.Hand;
-            //}
-            //else
-            //{
-            //    point.Cursor = Cursors.ScrollAll;
-            //}
+
+            point.Cursor = Cursors.Hand;
+           
             point.Fill = Brushes.LightBlue;
             textBox1.IsReadOnly = false;
-            //TxtBox_MouseEnter(null, null);
         }
         private void node_MouseLeave(object sender, MouseEventArgs e)
-        {
+        {   
             point.Fill = Brushes.Blue;
+            
             parentView.OnMouseLeave();
-            //TxtBox_MouseLeave(null, null);
         }
         private void node_MouseMove(object sender, MouseEventArgs e)
         {
@@ -124,6 +104,5 @@ namespace GraphEditor
             textBox1.Background = Brushes.White;
             Canvas.SetZIndex(this, 4);
         }
-
     }
 }
