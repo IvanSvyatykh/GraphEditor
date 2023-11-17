@@ -19,7 +19,7 @@ namespace Graph
         private List<EdgeView> edgeList = new List<EdgeView>();
         private List<NodeView> nodeList = new List<NodeView>();
 
-        private bool isOriented = true;
+        private bool isOriented = false;
 
         private bool isNodeAdding;
         private bool isNodeDeleting;
