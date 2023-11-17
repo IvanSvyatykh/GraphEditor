@@ -77,12 +77,13 @@ namespace Graph
                 node.Validate();
             }
         }
+
         public void AddNode()
         {
             NodeView newNode = new NodeView(this);
 
             nodeList.Add(newNode);
-            canvas.Children.Add(newNode.View);
+            canvas.Children.Add(newNode.ViewPartNode);
             newNode.pointPositionChange += OnPointPositionChanged;
 
             OnPointPositionChanged(newNode);
@@ -90,8 +91,8 @@ namespace Graph
         public void OnPointPositionChanged(NodeView node)
         {
             node.UpdPos();
-            Canvas.SetLeft(node.GRNode, node.Position.X);
-            Canvas.SetTop(node.GRNode, node.Position.Y);
+            Canvas.SetLeft(node.ViewPartNode, node.Position.X);
+            Canvas.SetTop(node.ViewPartNode, node.Position.Y);
         }
         public void DeleteNode(NodeView top)
         {
@@ -106,7 +107,7 @@ namespace Graph
                         edgeList.Remove(model);
                     }
                 nodeList.Remove(top);
-                canvas.Children.Remove(top.View);
+                canvas.Children.Remove(top.ViewPartNode);
             }
         }
         public void DeleteEdge(edge_view line)

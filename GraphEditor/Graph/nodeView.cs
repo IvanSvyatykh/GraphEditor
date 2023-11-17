@@ -15,9 +15,12 @@ namespace Graph
 
         private ViewNode graphNode;
         private GraphView graphView;
-        private bool move;
+
         private bool isValid;
+        private bool move;
+
         public string txt;
+
         private bool _move;
         private Point position;
 
@@ -35,27 +38,6 @@ namespace Graph
                 position = value;
             }
         }
-
-        public GraphView Graph
-        {
-            get { return graphView; }
-        }
-
-        public ViewNode View
-        {
-            get { return graphNode; }
-        }
-
-        public NodeView(GraphView graphView)
-        {
-            this.graphView = graphView;
-
-            graphNode = new ViewNode(this);
-            graphNode.textBox1.Text = "";
-
-            IsValid = false;
-        }
-
         public bool Move
         {
             get
@@ -67,35 +49,16 @@ namespace Graph
                 _move = value;
             }
         }
-
-        public void OnMouseLeave()
+        public GraphView Graph
         {
-            if (_move)
-                pointPositionChange(this);
+            get { return graphView; }
         }
 
-        public void OnMouseMove()
-        {
-            if (_move)
-                pointPositionChange(this);
-        }
-
-        public void UpdCurs()
-        {
-            graphNode.point.Cursor = Cursors.Hand;
-        }
-
-        public void UpdPos()
-        {
-            Point p = Mouse.GetPosition(graphView.GraphCanvas);
-            position = new Point(p.X - GRNode.Width / 2, p.Y - GRNode.Height / 4);
-        }
-
-        public ViewNode GRNode
+        public ViewNode ViewPartNode
         {
             get { return graphNode; }
         }
-        
+
         public bool IsValid
         {
             get { return isValid; }
@@ -124,6 +87,41 @@ namespace Graph
                 name = value;
             }
         }
+
+
+        public NodeView(GraphView graphView)
+        {
+            this.graphView = graphView;
+
+            graphNode = new ViewNode(this);
+            graphNode.textBox1.Text = "";
+
+            IsValid = false;
+        }
+
+        public void OnMouseLeave()
+        {
+            if (_move)
+                pointPositionChange(this);
+        }
+
+        public void OnMouseMove()
+        {
+            if (_move)
+                pointPositionChange(this);
+        }
+
+        public void UpdCurs()
+        {
+            graphNode.point.Cursor = Cursors.Hand;
+        }
+
+        public void UpdPos()
+        {
+            Point p = Mouse.GetPosition(graphView.GraphCanvas);
+            position = new Point(p.X - ViewPartNode.Width / 2, p.Y - ViewPartNode.Height / 4);
+        }
+
         public void Validate()
         {
             name = txt;
