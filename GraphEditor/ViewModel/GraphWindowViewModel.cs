@@ -9,13 +9,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphEditor.ViewModel
 {
     public class GraphWindowViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
-    {
-        public ICommand InsertNodeCommand { get; }
-        public ICommand RemoveNodeCommand { get; }
+    {   
+        public ICommand SetAddNodesModeCommand { get; }
+        public ICommand SetAddEdgesModeCommand { get; }
+        public ICommand SetDeletingModeCommand { get; }
+        public ICommand LeftButtonClickCommand { get; }
+
+        private SolidColorBrush offModeButtonBackground = new SolidColorBrush(Color.FromRgb(221, 221, 221));
+        private SolidColorBrush onModeButtonBackground = new SolidColorBrush(Color.FromRgb(255, 199, 199));
+
+        private byte currentMode = 0;
 
         private GraphView graphView;
 
@@ -26,18 +34,78 @@ namespace GraphEditor.ViewModel
 
             graphView = new GraphView(window.CanvasForGraph);
 
-            InsertNodeCommand = new RelayCommand(InsertNode);
-            RemoveNodeCommand = new RelayCommand(DeleteSelectedNode);
+            SetAddNodesModeCommand = new RelayCommand(SetAddNodesMode);
+            SetAddEdgesModeCommand = new RelayCommand(SetAddEdgesMode);
+            SetDeletingModeCommand = new RelayCommand(SetDeletingMode);
+
+            LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
         }
-        private void InsertNode()
+
+        private void SetAddNodesMode()
         {
-           
-            graphView.AddNode();
+            if (currentMode != 1)
+            {
+                currentMode = 1;
+                SetCurrentModeButtonBackgrounds(onModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+                
+                graphView.EndDeleteNode();
+            }
+            else
+            {
+                currentMode = 0;
+                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+            }
         }
-        private void DeleteSelectedNode()
+        private void SetAddEdgesMode()
         {
-            
-            graphView.StartDeleteNode();
+            if (currentMode != 2)
+            {
+                currentMode = 2;
+                SetCurrentModeButtonBackgrounds(offModeButtonBackground, onModeButtonBackground, offModeButtonBackground);
+                
+                graphView.EndDeleteNode();
+            }
+            else
+            {
+                currentMode = 0;
+                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+            }
+        }
+        private void SetDeletingMode()
+        {   if (currentMode != 3)
+            {   
+                currentMode = 3;
+                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, onModeButtonBackground);
+                
+                graphView.StartDeleteNode();
+            }
+            else
+            {
+                currentMode = 0;
+                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+            }
+        }
+
+        private void SetCurrentModeButtonBackgrounds(SolidColorBrush color1, SolidColorBrush color2, SolidColorBrush color3)
+        {
+            window.SetAddNodesModeButton.Background = color1;
+            window.SetAddEdgesModeButton.Background = color2;
+            window.SetDeletingModeButton.Background = color3;
+        }
+        private void LeftButtonClick()
+        {
+            if (currentMode == 1)
+            {
+                graphView.AddNode();
+            }
+            else if (currentMode == 2)
+            {
+
+            }
+            else if (currentMode == 3)
+            {
+                
+            }
         }
 
         public bool HasErrors => throw new NotImplementedException();

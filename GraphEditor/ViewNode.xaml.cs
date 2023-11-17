@@ -50,7 +50,7 @@ namespace GraphEditor
             parentViewNode.Move = false;
         }
         private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
+        {   
             if (parentViewNode.Graph.IsEdgeAdd)
             {
                 if (parentViewNode.Graph.FirstTop == null)
@@ -64,15 +64,15 @@ namespace GraphEditor
             else if (parentViewNode.Graph.IsNodeDelete)
             {
                 parentViewNode.Graph.DeleteNode(parentViewNode);
-                parentViewNode.Graph.EndDeleteNode();
             }
-            else
+            else if (!parentViewNode.Graph.IsNodeAdd)
             {
                 parentViewNode.Move = true;
             }
         }
         private void node_MouseEnter(object sender, MouseEventArgs e)
-        {
+        {   
+
             point.Cursor = Cursors.Hand;
            
             point.Fill = Brushes.LightBlue;
@@ -80,6 +80,7 @@ namespace GraphEditor
         }
         private void node_MouseLeave(object sender, MouseEventArgs e)
         {   
+
             point.Fill = Brushes.Blue;
             
             parentViewNode.OnMouseLeave();

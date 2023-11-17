@@ -21,9 +21,11 @@ namespace Graph
 
         private bool isOriented = true;
 
+        private bool nodeAdd;
+        private bool nodeDelete;
         private bool edgeAdd; 
         private bool edgeDelete;
-        private bool nodeDelete;
+        
         
         public NodeView FirstTop;
 
@@ -50,6 +52,14 @@ namespace Graph
             get { return canvas; }
             set { canvas = value; }
         }
+        public bool IsNodeAdd
+        {
+            get { return nodeAdd; }
+        }
+        public bool IsNodeDelete
+        {
+            get { return nodeDelete; }
+        }
         public bool IsEdgeAdd
         {
             get { return edgeAdd; }
@@ -58,7 +68,12 @@ namespace Graph
         {
             get { return edgeDelete; }
         }
-
+        public bool IsOriented
+        {
+            get { return isOriented; }
+            set { isOriented = value; OnPropertyChanged("IsOriented"); }
+        }
+        
         public bool CheckNameIsUnique(NodeView node)
         {
             foreach (NodeView anotherNode in nodeList)
@@ -79,7 +94,7 @@ namespace Graph
         }
 
         public void AddNode()
-        {
+        {   
             NodeView newNode = new NodeView(this);
 
             nodeList.Add(newNode);
@@ -120,15 +135,6 @@ namespace Graph
                 canvas.Children.Remove(line.TxtBox);
             }
         }
-        public bool IsOriented
-        {
-            get { return isOriented; }
-            set { isOriented = value; OnPropertyChanged("IsOriented"); }
-        }
-        public bool IsNodeDelete
-        {
-            get { return nodeDelete; }
-        }
 
         public void AddEdge(NodeView from_node, NodeView to_node)
         {
@@ -164,15 +170,21 @@ namespace Graph
             edgeDelete = false;
             canvas.Cursor = Cursors.Arrow;
         }
+        public void StartAddNode()
+        {
+            nodeAdd = true;
+        }
+        public void EndAddNode()
+        {
+            nodeAdd = false;
+        }
         public void StartDeleteNode()
         {
             nodeDelete = true;
-            canvas.Cursor = Cursors.ScrollAll;
         }
         public void EndDeleteNode()
         {
             nodeDelete = false;
-            canvas.Cursor = Cursors.Arrow;
         }
 
         //Можно использовать для Бека
