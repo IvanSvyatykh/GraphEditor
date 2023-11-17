@@ -89,7 +89,7 @@ namespace Graph
             OnPointPositionChanged(newNode);
         }
         public void OnPointPositionChanged(NodeView node)
-        {
+        {   
             node.UpdPos();
             Canvas.SetLeft(node.ViewPartNode, node.Position.X);
             Canvas.SetTop(node.ViewPartNode, node.Position.Y);

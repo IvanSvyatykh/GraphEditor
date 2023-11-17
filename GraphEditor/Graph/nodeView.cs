@@ -119,7 +119,12 @@ namespace Graph
         public void UpdPos()
         {
             Point p = Mouse.GetPosition(graphView.GraphCanvas);
-            position = new Point(p.X - ViewPartNode.Width / 2, p.Y - ViewPartNode.Height / 4);
+            if (p.X >= ViewPartNode.Width / 2 && p.Y >= ViewPartNode.Height / 4 && 
+                p.X + ViewPartNode.Width / 2 <= graphView.GraphCanvas.ActualWidth &&
+                p.Y + ViewPartNode.Height / 2 +10 <= graphView.GraphCanvas.ActualHeight)
+            {
+                position = new Point(p.X - ViewPartNode.Width / 2, p.Y - ViewPartNode.Height / 4);
+            }
         }
 
         public void Validate()
