@@ -48,10 +48,14 @@ namespace GraphEditor.ViewModel
                 currentMode = 1;
                 SetCurrentModeButtonBackgrounds(onModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
                 
-                graphView.EndDeleteNode();
+                graphView.StartAddingNode();
+                graphView.EndDeletingNode();
             }
             else
             {
+                graphView.EndAddingNode();
+                graphView.EndDeletingNode();
+
                 currentMode = 0;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
             }
@@ -62,11 +66,15 @@ namespace GraphEditor.ViewModel
             {
                 currentMode = 2;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, onModeButtonBackground, offModeButtonBackground);
-                
-                graphView.EndDeleteNode();
+
+                graphView.EndAddingNode();
+                graphView.EndDeletingNode();
             }
             else
             {
+                graphView.EndAddingNode();
+                graphView.EndDeletingNode();
+
                 currentMode = 0;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
             }
@@ -77,10 +85,14 @@ namespace GraphEditor.ViewModel
                 currentMode = 3;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, onModeButtonBackground);
                 
-                graphView.StartDeleteNode();
+                graphView.EndAddingNode();
+                graphView.StartDeletingNode();
             }
             else
             {
+                graphView.EndAddingNode();
+                graphView.EndDeletingNode();
+
                 currentMode = 0;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
             }
@@ -101,10 +113,6 @@ namespace GraphEditor.ViewModel
             else if (currentMode == 2)
             {
 
-            }
-            else if (currentMode == 3)
-            {
-                
             }
         }
 

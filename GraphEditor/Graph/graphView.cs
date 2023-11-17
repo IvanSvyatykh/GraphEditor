@@ -21,10 +21,10 @@ namespace Graph
 
         private bool isOriented = true;
 
-        private bool nodeAdd;
-        private bool nodeDelete;
-        private bool edgeAdd; 
-        private bool edgeDelete;
+        private bool isNodeAdding;
+        private bool isNodeDeleting;
+        private bool isEdgeAdding; 
+        private bool isEdgeDeleting;
         
         
         public NodeView FirstTop;
@@ -52,21 +52,21 @@ namespace Graph
             get { return canvas; }
             set { canvas = value; }
         }
-        public bool IsNodeAdd
+        public bool IsNodeAdding
         {
-            get { return nodeAdd; }
+            get { return isNodeAdding; }
         }
-        public bool IsNodeDelete
+        public bool IsNodeDeleting
         {
-            get { return nodeDelete; }
+            get { return isNodeDeleting; }
         }
-        public bool IsEdgeAdd
+        public bool IsEdgeAdding
         {
-            get { return edgeAdd; }
+            get { return isEdgeAdding; }
         }
-        public bool IsEdgeDelete
+        public bool IsEdgeDeleting
         {
-            get { return edgeDelete; }
+            get { return isEdgeDeleting; }
         }
         public bool IsOriented
         {
@@ -109,21 +109,32 @@ namespace Graph
             Canvas.SetLeft(node.ViewPartNode, node.Position.X);
             Canvas.SetTop(node.ViewPartNode, node.Position.Y);
         }
-        public void DeleteNode(NodeView top)
+        public void DeleteNode(NodeView node)
         {
-            if (nodeList.Contains(top))
+            if (nodeList.Contains(node))
             {
                 foreach (edge_view model in edgeList)
-                    if (model.From == top || model.To == top)
+                    if (model.From == node || model.To == node)
                     {
                         foreach (Shape line in model.Edge)
                             canvas.Children.Remove(line);
                         canvas.Children.Remove(model.TxtBox);
                         edgeList.Remove(model);
                     }
-                nodeList.Remove(top);
-                canvas.Children.Remove(top.ViewPartNode);
+                nodeList.Remove(node);
+                canvas.Children.Remove(node.ViewPartNode);
             }
+        }
+
+        public void AddEdge(NodeView from_node, NodeView to_node)
+        {
+            edge_view line = new edge_view(this, from_node, to_node);
+            edgeList.Add(line);
+
+            FirstTop = null;
+
+            EndAddingEdge();
+            to_node.UpdCurs();
         }
         public void DeleteEdge(edge_view line)
         {
@@ -136,55 +147,43 @@ namespace Graph
             }
         }
 
-        public void AddEdge(NodeView from_node, NodeView to_node)
-        {
-            edge_view line = new edge_view(this, from_node, to_node);
-            edgeList.Add(line);
-
-            FirstTop = null;
-
-            EndAddEdge();
-            to_node.UpdCurs();
-        }
-
-
         // node-edge  add-delete
-        public void StartAddEdge()
+        public void StartAddingNode()
         {
-            edgeAdd = true;
+            isNodeAdding = true;
+        }
+        public void EndAddingNode()
+        {
+            isNodeAdding = false;
+        }
+        public void StartDeletingNode()
+        {
+            isNodeDeleting = true;
+        }
+        public void EndDeletingNode()
+        {
+            isNodeDeleting = false;
+        }
+        public void StartAddingEdge()
+        {
+            isEdgeAdding = true;
             canvas.Cursor = Cursors.ScrollAll;
         }
-        public void EndAddEdge()
+        public void EndAddingEdge()
         {
-            edgeAdd = false;
+            isEdgeAdding = false;
             FirstTop = null;
             canvas.Cursor = Cursors.Arrow;
         }
-        public void StartDeleteEdge()
+        public void StartDeletingEdge()
         {
-            edgeDelete = true;
+            isEdgeDeleting = true;
             canvas.Cursor = Cursors.ScrollAll;
         }
-        public void EndDeleteEdge()
+        public void EndDeletingEdge()
         {
-            edgeDelete = false;
+            isEdgeDeleting = false;
             canvas.Cursor = Cursors.Arrow;
-        }
-        public void StartAddNode()
-        {
-            nodeAdd = true;
-        }
-        public void EndAddNode()
-        {
-            nodeAdd = false;
-        }
-        public void StartDeleteNode()
-        {
-            nodeDelete = true;
-        }
-        public void EndDeleteNode()
-        {
-            nodeDelete = false;
         }
 
         //Можно использовать для Бека

@@ -47,40 +47,41 @@ namespace GraphEditor
 
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            parentViewNode.Move = false;
+            parentViewNode.IsNodeMove = false;
         }
         private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {   
-            if (parentViewNode.Graph.IsEdgeAdd)
+            if (parentViewNode.Graph.IsEdgeAdding)
             {
                 if (parentViewNode.Graph.FirstTop == null)
                     parentViewNode.Graph.FirstTop = parentViewNode;
                 else
                 {
                     parentViewNode.Graph.AddEdge(parentViewNode.Graph.FirstTop, parentViewNode);
-                    parentViewNode.Graph.EndAddEdge();
+                    parentViewNode.Graph.EndAddingEdge();
                 }
             }
-            else if (parentViewNode.Graph.IsNodeDelete)
+            else if (parentViewNode.Graph.IsNodeDeleting)
             {
                 parentViewNode.Graph.DeleteNode(parentViewNode);
             }
-            else if (!parentViewNode.Graph.IsNodeAdd)
+            else if (!parentViewNode.Graph.IsNodeAdding)
             {
-                parentViewNode.Move = true;
+                parentViewNode.IsNodeMove = true;
             }
         }
         private void node_MouseEnter(object sender, MouseEventArgs e)
-        {   
+        {
+            if (!parentViewNode.Graph.IsNodeAdding)
+            {
+                point.Cursor = Cursors.Hand;
 
-            point.Cursor = Cursors.Hand;
-           
-            point.Fill = Brushes.LightBlue;
-            textBox1.IsReadOnly = false;
+                point.Fill = Brushes.LightBlue;
+                textBox1.IsReadOnly = false;
+            }
         }
         private void node_MouseLeave(object sender, MouseEventArgs e)
         {   
-
             point.Fill = Brushes.Blue;
             
             parentViewNode.OnMouseLeave();

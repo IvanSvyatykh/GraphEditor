@@ -17,11 +17,11 @@ namespace Graph
         private GraphView graphView;
 
         private bool isValid;
-        private bool move;
+        //private bool move;
 
         public string txt;
 
-        private bool _move;
+        private bool isNodeMove;
         private Point position;
 
 
@@ -38,15 +38,15 @@ namespace Graph
                 position = value;
             }
         }
-        public bool Move
+        public bool IsNodeMove
         {
             get
             {
-                return move;
+                return isNodeMove;
             }
             set
             {
-                _move = value;
+                isNodeMove = value;
             }
         }
         public GraphView Graph
@@ -101,13 +101,13 @@ namespace Graph
 
         public void OnMouseLeave()
         {
-            if (_move)
+            if (isNodeMove)
                 pointPositionChange(this);
         }
 
         public void OnMouseMove()
         {
-            if (_move)
+            if (isNodeMove)
                 pointPositionChange(this);
         }
 

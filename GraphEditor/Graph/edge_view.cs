@@ -185,10 +185,10 @@ namespace Graph
         }
         private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_graph.IsEdgeDelete)
+            if (_graph.IsEdgeDeleting)
             {
                 _graph.DeleteEdge(this);
-                _graph.EndDeleteEdge();
+                _graph.EndDeletingEdge();
             }
         }
 
