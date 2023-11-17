@@ -1,4 +1,5 @@
 ﻿using Graph;
+using GraphEditor.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,15 @@ namespace GraphEditor
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        private graph_view _grView;
+    {   
+        private GraphWindowViewModel windowViewModel;
+
         bool orient = false;
         public MainWindow()
         {
             InitializeComponent();
-            _grView = new graph_view(CanvasForGraph, orient);
-            ViewNode a;
+            windowViewModel = new GraphWindowViewModel(this);
+            DataContext = windowViewModel;
         }
 
         //private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

@@ -10,12 +10,13 @@ using System.Windows.Input;
 namespace Graph
 {
     [Serializable]
-    public class node_view
+    public class nodeView
     {
         private int topNum;
-        [NonSerialized]
+
+
         private ViewNode _grNode;
-        private graph_view _graph_view;
+        private graphView _graph_view;
         private bool move;
         private bool isValid;
         public string txt;
@@ -23,7 +24,7 @@ namespace Graph
         private Point rel_pos;
 
 
-        public event graph_view.PointPositionChanged pointPositionChange;
+        public event graphView.PointPositionChanged pointPositionChange;
 
         public Point RELPos
         {
@@ -37,7 +38,7 @@ namespace Graph
             }
         }
 
-        public graph_view Graph
+        public graphView Graph
         {
             get { return _graph_view; }
         }
@@ -47,7 +48,7 @@ namespace Graph
             get { return _grNode; }
         }
 
-        public node_view(graph_view _graph_view)
+        public nodeView(graphView _graph_view)
         {
             this._graph_view = _graph_view;
             _graph_view.Tops.Add(this);
@@ -90,7 +91,7 @@ namespace Graph
         public void UpdPos()
         {
             Point p = Mouse.GetPosition(_graph_view.GRCanvas);
-            rel_pos = new Point(p.X - GRNode.Width / 2 + 2, p.Y - GRNode.Height / 4 + 3);
+            rel_pos = new Point(p.X - GRNode.Width / 2, p.Y - GRNode.Height / 4);
         }
 
         public ViewNode GRNode
@@ -98,14 +99,6 @@ namespace Graph
             get { return _grNode; }
         }
 
-        public void CNTRPosition()
-        {
-            Window w = Window.GetWindow(GRNode);
-            Canvas.SetLeft(_grNode, w.ActualWidth / 2 - _grNode.Width / 2 + 2);
-            Canvas.SetTop(_grNode, w.ActualHeight / 2 - _grNode.Height + 3);
-            rel_pos.X = w.ActualWidth / 2 - _grNode.Width / 2;
-            rel_pos.Y = w.ActualHeight / 2 - _grNode.Height;
-        }
         public bool IsValid
         {
             get { return isValid; }
@@ -129,23 +122,6 @@ namespace Graph
             {
                 topNum = value;
             }
-        }
-
-        public void Validate()
-        {
-            try
-            {
-                topNum = int.Parse(txt);
-                if (!Graph.CheckTopNum(this))
-                    IsValid = false;
-                else
-                    IsValid = true;
-            }
-            catch (Exception ex)
-            {
-                IsValid = false;
-            }
-
         }
     }
 }

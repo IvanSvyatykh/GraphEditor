@@ -22,16 +22,16 @@ namespace Graph
         private List<Shape> Lines;
         private int edge_weight;
         private bool isLine;
-        private graph_view _graph;
-        private node_view from_node;
-        private node_view to_node;
+        private graphView _graph;
+        private nodeView from_node;
+        private nodeView to_node;
 
 
 
         Thickness th = new Thickness(1.1);
         Brush br;
 
-        public edge_view(graph_view _graph, node_view from_node, node_view to_node)
+        public edge_view(graphView _graph, nodeView from_node, nodeView to_node)
         {
             this._graph = _graph;
             if (from_node != to_node)
@@ -96,8 +96,8 @@ namespace Graph
             Canvas.SetZIndex(textBox1, 2);
             this.from_node = from_node;
             this.to_node = to_node;
-            to_node.pointPositionChange += new graph_view.PointPositionChanged(OnPointPositionChanged);
-            from_node.pointPositionChange += new graph_view.PointPositionChanged(OnPointPositionChanged);
+            to_node.pointPositionChange += new graphView.PointPositionChanged(OnPointPositionChanged);
+            from_node.pointPositionChange += new graphView.PointPositionChanged(OnPointPositionChanged);
             OnPointPositionChanged(to_node);
             if (isLine)
                 OnPointPositionChanged(from_node);
@@ -114,12 +114,12 @@ namespace Graph
             get { return textBox1; }
         }
 
-        public node_view From
+        public nodeView From
         {
             get { return from_node; }
         }
 
-        public node_view To
+        public nodeView To
         {
             get { return to_node; }
         }
@@ -216,7 +216,7 @@ namespace Graph
             textBox1.IsReadOnly = true;
         }
 
-        public void OnPointPositionChanged(node_view top)
+        public void OnPointPositionChanged(nodeView top)
         {
             if (isLine)
             {

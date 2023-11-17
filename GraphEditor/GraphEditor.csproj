@@ -8,8 +8,4 @@
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
-
 </Project>

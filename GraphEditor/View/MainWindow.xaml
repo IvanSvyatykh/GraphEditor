@@ -11,8 +11,8 @@
         <Canvas Background="WhiteSmoke" x:Name="CanvasForGraph">
         <Canvas.ContextMenu >
         <ContextMenu>
-            <MenuItem Header="Добавить узел" ></MenuItem>
-            <MenuItem Header="Удалить выбранный узел"></MenuItem>
+            <MenuItem Header="Добавить узел" Command="{Binding InsertNodeCommand}" ></MenuItem>
+                    <MenuItem Header="Удалить выбранный узел"  Command="{Binding RemoveNodeCommand}"></MenuItem>
             </ContextMenu>
             </Canvas.ContextMenu>
         </Canvas>

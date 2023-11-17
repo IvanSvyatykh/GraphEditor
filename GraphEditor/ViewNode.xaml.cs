@@ -20,10 +20,10 @@ namespace GraphEditor
     /// </summary>
     public partial class ViewNode : UserControl
     {
-        public ViewNode(node_view parentView)
+        public ViewNode(nodeView parentView)
         {
             InitializeComponent();
-            //this.parentViewModel = parentViewModel;
+
             this.parentView = parentView;
             Canvas.SetZIndex(this, 2);
             this.point.Width = this.point.Height = NodeRadius;
@@ -32,8 +32,8 @@ namespace GraphEditor
         }
 
         private static int NodeRadius = 25;
-        private node_view parentView;
-       // private static int ellipseRadius = 20;
+        private nodeView parentView;
+
         private Brush opaqueBrush;
         bool isMove = false;
 
@@ -44,26 +44,11 @@ namespace GraphEditor
 
         private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (parentView.Graph.IsShowDeijkstra)
-            {
-                parentView.Graph.EndShowDeijkstra();
-            }
-            parentView.txt = textBox1.Text;
-            parentView.Validate();
-            parentView.Graph.ValidateTopNumbers();
+            parentView.txt = textBox1.Text;  
         }
 
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //System.Windows.Point position = e.GetPosition(this.node);
-            //double pX = position.X;
-            //double pY = position.Y;
-            //textBox1.Text = pX.ToString()+" "+pY.ToString();
-            //var location = node.PointToScreen(new Point(0, 0));
-
-           
-            //location.X = pX;
-            //location.Y = pY;
             isMove = false;
             parentView.Move = false;
         }
@@ -85,11 +70,11 @@ namespace GraphEditor
                 parentView.Graph.DeleteNode(parentView);
                 parentView.Graph.EndDeleteNode();
             }
-            else if (parentView.Graph.IsDeijkstra)
-            {
-                parentView.Graph.Deijkstra(parentView);
-                parentView.Graph.EndDeijkstra();
-            }
+            //else if (parentView.Graph.IsDeijkstra)
+            //{
+            //    parentView.Graph.Deijkstra(parentView);
+            //    parentView.Graph.EndDeijkstra();
+            //}
             else
                 parentView.Move = true;
         }
@@ -115,22 +100,6 @@ namespace GraphEditor
         }
         private void node_MouseMove(object sender, MouseEventArgs e)
         {
-            
-            System.Windows.Point position = e.GetPosition(this.node);
-            double pX = position.X+4;
-            double pY = position.Y+4;
-            //Canvas.SetLeft(node, 29.0);
-            //Canvas.SetTop(node,15.5);
-           // textBox1.Text = pX.ToString() + " " + pY.ToString();
-            //System.Windows.Point position = e.GetPosition(this);
-            //double pX = position.X;
-            //double pY = position.Y;
-
-            //var location = node.PointToScreen(new Point(0, 0));
-
-            //location.X = pX;
-            //location.Y = pY;
-        
             parentView.OnMouseMove();
         }
 
