@@ -231,7 +231,7 @@ namespace Graph
             if (_graph.IsEdgeDeleting)
             {
                 _graph.DeleteEdge(this);
-                _graph.EndDeletingEdge();
+                
             }
         }
 

@@ -174,23 +174,19 @@ namespace Graph
         public void StartAddingEdge()
         {
             isEdgeAdding = true;
-            canvas.Cursor = Cursors.ScrollAll;
         }
         public void EndAddingEdge()
         {
             isEdgeAdding = false;
             FirstTop = null;
-            canvas.Cursor = Cursors.Arrow;
         }
         public void StartDeletingEdge()
         {
             isEdgeDeleting = true;
-            canvas.Cursor = Cursors.ScrollAll;
         }
         public void EndDeletingEdge()
         {
             isEdgeDeleting = false;
-            canvas.Cursor = Cursors.Arrow;
         }
 
         //Можно использовать для Бека
