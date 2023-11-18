@@ -17,7 +17,7 @@
                     <SolidColorBrush Color="Blue"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <TextBox x:Name="TextBoxForNodeLabel" Height="23" TextWrapping="Wrap" Background="Transparent" TextChanged="TxtBoxTextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="TxtBoxKeyDown" PreviewMouseDown="TxtBoxPreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="TextBoxForNodeLabel" Height="23" TextWrapping="Wrap" Background="Transparent" BorderBrush="Transparent" TextChanged="TxtBoxTextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="TxtBoxKeyDown" PreviewMouseDown="TxtBoxPreviewMouseLeftButtonDown"/>
         </StackPanel>
 
     </Grid>

@@ -66,11 +66,6 @@ namespace Graph
         private NodeView startNode;
         private NodeView endNode;
 
-
-
-        Thickness th = new Thickness(1.1);
-        Brush br;
-
         public EdgeView(GraphView _graph, NodeView from_node, NodeView to_node)
         {
             this.graph = _graph;
@@ -141,6 +136,7 @@ namespace Graph
             textBox1.Background = new SolidColorBrush(Colors.Transparent);
             textBox1.VerticalContentAlignment = VerticalAlignment.Center;
             textBox1.HorizontalContentAlignment = HorizontalAlignment.Center;
+            textBox1.FontWeight = FontWeights.Bold;
             textBox1.FontSize = 14;
 
             TxtBox1_TextChanged(null, null);
@@ -202,7 +198,7 @@ namespace Graph
                     throw new Exception();
                 }
 
-                textBox1.Foreground = Brushes.Green;
+                textBox1.Foreground = Brushes.ForestGreen;
                 isValid = true;
             }
             catch (Exception ex)
@@ -267,15 +263,22 @@ namespace Graph
             {
                 if (top == startNode)
                 {
-                    Canvas.SetLeft(Line, startNode.Position.X + startNode.ViewPartNode.Width / 2);
-                    Canvas.SetTop(Line, startNode.Position.Y + ViewNode.NodeRadius / 2);
+                    ((Line)Line).X1 = startNode.Position.X + startNode.ViewPartNode.Width / 2;
+                    ((Line)Line).Y1 = startNode.Position.Y + ViewNode.NodeRadius / 2;
                 }
 
-                ((Line)Line).X2 = endNode.Position.X - startNode.Position.X;
-                ((Line)Line).Y2 = endNode.Position.Y - startNode.Position.Y;
-                
-                Canvas.SetLeft(textBox1, startNode.Position.X + ((Line)Line).X2 / 2);
-                Canvas.SetTop(textBox1, startNode.Position.Y + ((Line)Line).Y2 / 2 - textBox1.FontSize / 3);
+                ((Line)Line).X2 = endNode.Position.X + startNode.ViewPartNode.Width / 2;
+                ((Line)Line).Y2 = endNode.Position.Y + ViewNode.NodeRadius / 2;
+
+                if ( Math.Abs((((Line)Line).X2 - ((Line)Line).X1) / 2) >= 25) {
+                    Canvas.SetLeft(textBox1, startNode.Position.X + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                }
+                else
+                {
+                    Canvas.SetLeft(textBox1, startNode.Position.X + 10 + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                }
+
+                Canvas.SetTop(textBox1, startNode.Position.Y + (((Line)Line).Y2 - ((Line)Line).Y1) / 2 - textBox1.FontSize / 3);
 
                 if (graph.IsOriented)
                 {
