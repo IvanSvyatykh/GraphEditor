@@ -116,7 +116,7 @@ namespace Graph
                 for (int i=0; i<edgeList.Count; i++)
                 {
                     EdgeView currentEdge = edgeList[i];
-                    if (currentEdge.From == node || currentEdge.To == node)
+                    if (currentEdge.StartNode == node || currentEdge.EndNode == node)
                     {
                         foreach (Shape line in currentEdge.Edge)
                         {
@@ -134,14 +134,19 @@ namespace Graph
             }
         }
 
-        public void AddEdge(NodeView from_node, NodeView to_node)
+        public void AddEdge(NodeView fromNode, NodeView toNode)
         {
-            EdgeView line = new EdgeView(this, from_node, to_node);
-            edgeList.Add(line);
-
             FirstTop = null;
+            foreach (EdgeView edge in edgeList)
+            {
+                if (edge.StartNode == fromNode && edge.EndNode == toNode)
+                {
+                    return;
+                }
+            }
 
-            //EndAddingEdge();
+            EdgeView line = new EdgeView(this, fromNode, toNode);
+            edgeList.Add(line);       
         }
         public void DeleteEdge(EdgeView line)
         {
@@ -340,12 +345,12 @@ namespace Graph
                 neighbors_nodes[top.NodeName] = new List<string>();
             foreach (EdgeView line in edgeList)
             {
-                neighbors_nodes[line.From.NodeName].Add(line.To.NodeName);
-                edge_weight[new KeyValuePair<string, string>(line.From.NodeName, line.To.NodeName)] = line.Weight;
+                neighbors_nodes[line.StartNode.NodeName].Add(line.EndNode.NodeName);
+                edge_weight[new KeyValuePair<string, string>(line.StartNode.NodeName, line.EndNode.NodeName)] = line.Weight;
                 if (!IsOriented)
                 {
-                    neighbors_nodes[line.To.NodeName].Add(line.From.NodeName);
-                    edge_weight[new KeyValuePair<string, string>(line.To.NodeName, line.From.NodeName)] = line.Weight;
+                    neighbors_nodes[line.EndNode.NodeName].Add(line.StartNode.NodeName);
+                    edge_weight[new KeyValuePair<string, string>(line.EndNode.NodeName, line.StartNode.NodeName)] = line.Weight;
                 }
             }
         }

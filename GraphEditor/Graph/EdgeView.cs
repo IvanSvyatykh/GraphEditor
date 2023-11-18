@@ -13,6 +13,41 @@ namespace Graph
 {
     public class EdgeView
     {
+
+        public bool isValid { get; set; }
+        public int Weight
+        {
+            get { return edge_weight; }
+        }
+
+        public TextBox TxtBox
+        {
+            get { return textBox1; }
+        }
+
+        public NodeView StartNode
+        {
+            get { return startNode; }
+        }
+
+        public NodeView EndNode
+        {
+            get { return endNode; }
+        }
+
+        public bool IsLine
+        {
+            get { return isLine; }
+        }
+
+        public List<Shape> Edge
+        {
+            get
+            {
+                return Lines;
+            }
+        }
+
         private Shape Line;
 
         private Line LeftLine;
@@ -20,8 +55,7 @@ namespace Graph
 
         private TextBox textBox1;
 
-        private Brush opaqueBrush;
-        private Brush borderBrush;
+        private Brush invisibleBrush;
 
         private List<Shape> Lines;
         
@@ -29,8 +63,8 @@ namespace Graph
         private bool isLine;
         
         private GraphView graph;
-        private NodeView from_node;
-        private NodeView to_node;
+        private NodeView startNode;
+        private NodeView endNode;
 
 
 
@@ -104,6 +138,7 @@ namespace Graph
             textBox1 = new TextBox();
             textBox1.Width = 50;
             textBox1.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            textBox1.Background = new SolidColorBrush(Colors.Transparent);
             textBox1.VerticalContentAlignment = VerticalAlignment.Center;
             textBox1.HorizontalContentAlignment = HorizontalAlignment.Center;
             textBox1.FontSize = 14;
@@ -113,10 +148,10 @@ namespace Graph
             textBox1.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(TxtBox1_PreviewMouseLeftButtonDown);
             textBox1.TextChanged += new TextChangedEventHandler(TxtBox1_TextChanged);
             textBox1.KeyDown += new KeyEventHandler(TxtBox1_KeyDown);
-            textBox1.Text = "empty";
+            textBox1.Text = "0";
             
-            opaqueBrush = new SolidColorBrush(Colors.Black);
-            opaqueBrush.Opacity = 0;
+            invisibleBrush = new SolidColorBrush(Colors.White);
+            invisibleBrush.Opacity = 0;
 
             _graph.GraphCanvas.Children.Add(textBox1);
             _graph.GraphCanvas.Children.Add(Line);
@@ -124,8 +159,8 @@ namespace Graph
             Canvas.SetZIndex(Line, 0);
             Canvas.SetZIndex(textBox1, 2);
             
-            this.from_node = from_node;
-            this.to_node = to_node;
+            this.startNode = from_node;
+            this.endNode = to_node;
             
             to_node.pointPositionChange += new GraphView.PointPositionChanged(OnPointPositionChanged);
             from_node.pointPositionChange += new GraphView.PointPositionChanged(OnPointPositionChanged);
@@ -138,58 +173,18 @@ namespace Graph
             }
         }
 
-        public bool isValid { get; set; }
-        public int Weight
-        {
-            get { return edge_weight; }
-        }
-
-        public TextBox TxtBox
-        {
-            get { return textBox1; }
-        }
-
-        public NodeView From
-        {
-            get { return from_node; }
-        }
-
-        public NodeView To
-        {
-            get { return to_node; }
-        }
-
-        public bool IsLine
-        {
-            get { return isLine; }
-        }
-
-        public List<Shape> Edge
-        {
-            get
-            {
-                return Lines;
-            }
-        }
+        
 
         private void TxtBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {   
-                Brush br;
-                br = new SolidColorBrush(Colors.Transparent);
-                textBox1.BorderBrush = br;
-
                 Keyboard.ClearFocus();
-                
                 OnMouseLeave();
             }            
         }
         private void TxtBox1_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            br = new SolidColorBrush(Colors.Red);
-            textBox1.BorderBrush = br;
-            
             OnMouseEnter();
         }
         private void TxtBox1_TextChanged(object sender, TextChangedEventArgs e)
@@ -244,11 +239,6 @@ namespace Graph
                     LeftLine.Stroke = RightLine.Stroke = Brushes.Green;
                 }
 
-                foreach (Shape shape in Lines)
-                {
-                    Canvas.SetZIndex(Line, 1);
-                }
-
                 textBox1.IsReadOnly = false;
 
                 textBox1.CaretBrush = Brushes.Black;
@@ -265,13 +255,9 @@ namespace Graph
                     LeftLine.Stroke = RightLine.Stroke = Brushes.Black;
                 }
 
-                foreach (Shape shape in Lines)
-                {
-                    Canvas.SetZIndex(Line, 0);
-                }
-
-                textBox1.CaretBrush = textBox1.Background = opaqueBrush;
                 textBox1.IsReadOnly = true;
+                textBox1.CaretBrush = invisibleBrush;
+                textBox1.Background = new SolidColorBrush(Colors.Transparent);
             }
         }
 
@@ -279,17 +265,17 @@ namespace Graph
         {
             if (isLine)
             {
-                if (top == from_node)
+                if (top == startNode)
                 {
-                    Canvas.SetLeft(Line, from_node.Position.X + from_node.ViewPartNode.Width / 2);
-                    Canvas.SetTop(Line, from_node.Position.Y + ViewNode.NodeRadius / 2);
+                    Canvas.SetLeft(Line, startNode.Position.X + startNode.ViewPartNode.Width / 2);
+                    Canvas.SetTop(Line, startNode.Position.Y + ViewNode.NodeRadius / 2);
                 }
 
-                ((Line)Line).X2 = to_node.Position.X - from_node.Position.X;
-                ((Line)Line).Y2 = to_node.Position.Y - from_node.Position.Y;
-
-                Canvas.SetLeft(textBox1, from_node.Position.X + from_node.ViewPartNode.Width / 2 + ((Line)Line).X2 / 2);
-                Canvas.SetTop(textBox1, from_node.Position.Y + ((Line)Line).Y2 / 2 - textBox1.FontSize / 3);
+                ((Line)Line).X2 = endNode.Position.X - startNode.Position.X;
+                ((Line)Line).Y2 = endNode.Position.Y - startNode.Position.Y;
+                
+                Canvas.SetLeft(textBox1, startNode.Position.X + ((Line)Line).X2 / 2);
+                Canvas.SetTop(textBox1, startNode.Position.Y + ((Line)Line).Y2 / 2 - textBox1.FontSize / 3);
 
                 if (graph.IsOriented)
                 {
@@ -311,20 +297,20 @@ namespace Graph
                     RightLine.X2 = ((Line)Line).X2 + 30 * Math.Sin(u_l - 2 * u);
                     RightLine.Y2 = ((Line)Line).Y2 + 30 * Math.Cos(u_l - 2 * u);
 
-                    Canvas.SetLeft(LeftLine, from_node.Position.X + to_node.ViewPartNode.Width / 2);
-                    Canvas.SetTop(LeftLine, from_node.Position.Y + ViewNode.NodeRadius / 2);
+                    Canvas.SetLeft(LeftLine, startNode.Position.X + endNode.ViewPartNode.Width / 2);
+                    Canvas.SetTop(LeftLine, startNode.Position.Y + ViewNode.NodeRadius / 2);
                     
-                    Canvas.SetLeft(RightLine, from_node.Position.X + to_node.ViewPartNode.Width / 2);
-                    Canvas.SetTop(RightLine, from_node.Position.Y + ViewNode.NodeRadius / 2);
+                    Canvas.SetLeft(RightLine, startNode.Position.X + endNode.ViewPartNode.Width / 2);
+                    Canvas.SetTop(RightLine, startNode.Position.Y + ViewNode.NodeRadius / 2);
                 }
             }
             else
             {
-                Canvas.SetLeft(Line, from_node.Position.X);
-                Canvas.SetTop(Line, from_node.Position.Y - 35);
+                Canvas.SetLeft(Line, startNode.Position.X);
+                Canvas.SetTop(Line, startNode.Position.Y - 35);
 
-                Canvas.SetLeft(textBox1, from_node.Position.X + 10);
-                Canvas.SetTop(textBox1, from_node.Position.Y - 35);
+                Canvas.SetLeft(textBox1, startNode.Position.X + 10);
+                Canvas.SetTop(textBox1, startNode.Position.Y - 35);
             }
         }
     }
