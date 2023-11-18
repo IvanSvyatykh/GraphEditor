@@ -112,17 +112,25 @@ namespace Graph
         public void DeleteNode(NodeView node)
         {
             if (nodeList.Contains(node))
-            {
-                foreach (EdgeView model in edgeList)
-                    if (model.From == node || model.To == node)
+            {   
+                for (int i=0; i<edgeList.Count; i++)
+                {
+                    EdgeView currentEdge = edgeList[i];
+                    if (currentEdge.From == node || currentEdge.To == node)
                     {
-                        foreach (Shape line in model.Edge)
+                        foreach (Shape line in currentEdge.Edge)
+                        {
                             canvas.Children.Remove(line);
-                        canvas.Children.Remove(model.TxtBox);
-                        edgeList.Remove(model);
+                        }
+
+                        canvas.Children.Remove(currentEdge.TxtBox);
+                        edgeList.Remove(currentEdge);
+                        i--;
                     }
-                nodeList.Remove(node);
+                }
+
                 canvas.Children.Remove(node.ViewPartNode);
+                nodeList.Remove(node);
             }
         }
 

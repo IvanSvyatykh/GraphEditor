@@ -48,15 +48,20 @@ namespace GraphEditor.ViewModel
                 currentMode = 1;
                 SetCurrentModeButtonBackgrounds(onModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
 
-                graphView.EndAddingEdge();
+                
                 graphView.StartAddingNode();
+                
                 graphView.EndDeletingNode();
+                graphView.EndAddingEdge();
+                graphView.EndDeletingEdge();
+
             }
             else
             {
                 graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
+                graphView.EndDeletingEdge();
 
                 currentMode = 0;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
@@ -70,14 +75,17 @@ namespace GraphEditor.ViewModel
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, onModeButtonBackground, offModeButtonBackground);
 
                 graphView.StartAddingEdge();
+
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
+                graphView.EndDeletingEdge();
             }
             else
             {   
                 graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
+                graphView.EndDeletingEdge();
 
                 currentMode = 0;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
@@ -91,6 +99,7 @@ namespace GraphEditor.ViewModel
 
                 graphView.EndAddingEdge();
                 graphView.EndAddingNode();
+                graphView.StartDeletingEdge();
                 graphView.StartDeletingNode();
             }
             else
@@ -98,6 +107,7 @@ namespace GraphEditor.ViewModel
                 graphView.EndAddingEdge();
                 graphView.EndAddingNode();
                 graphView.EndDeletingNode();
+                graphView.EndDeletingEdge();
 
                 currentMode = 0;
                 SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
