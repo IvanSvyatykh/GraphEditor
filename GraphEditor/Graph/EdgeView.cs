@@ -28,7 +28,7 @@ namespace Graph
         private int edge_weight;
         private bool isLine;
         
-        private GraphView _graph;
+        private GraphView graph;
         private NodeView from_node;
         private NodeView to_node;
 
@@ -39,7 +39,7 @@ namespace Graph
 
         public EdgeView(GraphView _graph, NodeView from_node, NodeView to_node)
         {
-            this._graph = _graph;
+            this.graph = _graph;
 
             if (from_node != to_node)
             {
@@ -63,7 +63,7 @@ namespace Graph
             Line.MouseLeave += new MouseEventHandler(Line_MouseLeave);
             Line.MouseLeftButtonDown += new MouseButtonEventHandler(Line_MouseLeftButtonDown);
             Line.Stroke = Brushes.Black;
-            Line.StrokeThickness = 1;
+            Line.StrokeThickness = 2;
 
             if (isLine)
             {
@@ -75,7 +75,7 @@ namespace Graph
                     RightLine = new Line();
                     RightLine.Stroke = LeftLine.Stroke = Brushes.Black;
 
-                    RightLine.StrokeThickness = LeftLine.StrokeThickness = 6;
+                    RightLine.StrokeThickness = LeftLine.StrokeThickness = 7;
                     
                     _graph.GraphCanvas.Children.Add(LeftLine);
                     _graph.GraphCanvas.Children.Add(RightLine);
@@ -228,46 +228,51 @@ namespace Graph
 
         private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_graph.IsEdgeDeleting)
+            if (graph.IsEdgeDeleting)
             {
-                _graph.DeleteEdge(this);
-                
+                graph.DeleteEdge(this);
             }
         }
 
         private void OnMouseEnter()
         {
-            Line.Stroke = Brushes.Green;
-            if (isLine && _graph.IsOriented)
+            if (!graph.IsEdgeAdding && !graph.IsNodeAdding)
             {
-                LeftLine.Stroke = RightLine.Stroke = Brushes.Green;
-            }
+                Line.Stroke = Brushes.Green;
+                if (isLine && graph.IsOriented)
+                {
+                    LeftLine.Stroke = RightLine.Stroke = Brushes.Green;
+                }
 
-            foreach (Shape shape in Lines)
-            {
-                Canvas.SetZIndex(Line, 1);
-            }
+                foreach (Shape shape in Lines)
+                {
+                    Canvas.SetZIndex(Line, 1);
+                }
 
-            textBox1.IsReadOnly = false;
+                textBox1.IsReadOnly = false;
 
-            textBox1.CaretBrush = Brushes.Black;
-            textBox1.Background = Brushes.White;
+                textBox1.CaretBrush = Brushes.Black;
+                textBox1.Background = Brushes.White;
+            } 
         }
         private void OnMouseLeave()
         {
-            Line.Stroke = Brushes.Black;
-            if (isLine && _graph.IsOriented)
+            if (!graph.IsEdgeAdding && !graph.IsNodeAdding)
             {
-                LeftLine.Stroke = RightLine.Stroke = Brushes.Black;
-            }
+                Line.Stroke = Brushes.Black;
+                if (isLine && graph.IsOriented)
+                {
+                    LeftLine.Stroke = RightLine.Stroke = Brushes.Black;
+                }
 
-            foreach (Shape shape in Lines)
-            {
-                Canvas.SetZIndex(Line, 0);
-            }
+                foreach (Shape shape in Lines)
+                {
+                    Canvas.SetZIndex(Line, 0);
+                }
 
-            textBox1.CaretBrush = textBox1.Background = opaqueBrush;
-            textBox1.IsReadOnly = true;
+                textBox1.CaretBrush = textBox1.Background = opaqueBrush;
+                textBox1.IsReadOnly = true;
+            }
         }
 
         public void OnPointPositionChanged(NodeView top)
@@ -286,7 +291,7 @@ namespace Graph
                 Canvas.SetLeft(textBox1, from_node.Position.X + from_node.ViewPartNode.Width / 2 + ((Line)Line).X2 / 2);
                 Canvas.SetTop(textBox1, from_node.Position.Y + ((Line)Line).Y2 / 2 - textBox1.FontSize / 3);
 
-                if (_graph.IsOriented)
+                if (graph.IsOriented)
                 {
                     double u_l = Math.Atan2(((Line)Line).X1 - ((Line)Line).X2, ((Line)Line).Y1 - ((Line)Line).Y2);
                     double u = Math.PI / 33;

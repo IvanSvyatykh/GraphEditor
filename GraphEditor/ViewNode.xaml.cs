@@ -1,17 +1,7 @@
 ﻿using Graph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GraphEditor
 {
@@ -38,7 +28,7 @@ namespace GraphEditor
 
         private NodeView parentViewNode;
 
-        private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             parentViewNode.txt = TextBoxForNodeLabel.Text;
 
@@ -46,11 +36,11 @@ namespace GraphEditor
             parentViewNode.Graph.ValidateNamesIsUnique();
         }
 
-        private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void NodeMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             parentViewNode.IsNodeMove = false;
         }
-        private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void NodeMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {   
             if (parentViewNode.Graph.IsEdgeAdding)
             {
@@ -59,7 +49,6 @@ namespace GraphEditor
                 else
                 {
                     parentViewNode.Graph.AddEdge(parentViewNode.Graph.FirstTop, parentViewNode);
-                    //parentViewNode.Graph.EndAddingEdge();
                 }
             }
             else if (parentViewNode.Graph.IsNodeDeleting)
@@ -71,28 +60,25 @@ namespace GraphEditor
                 parentViewNode.IsNodeMove = true;
             }
         }
-        private void node_MouseEnter(object sender, MouseEventArgs e)
+        private void NodeMouseEnter(object sender, MouseEventArgs e)
         {
             if (!parentViewNode.Graph.IsNodeAdding)
             {
-                point.Cursor = Cursors.Hand;
-
                 point.Fill = Brushes.LightBlue;
-                TextBoxForNodeLabel.IsReadOnly = false;
             }
         }
-        private void node_MouseLeave(object sender, MouseEventArgs e)
+        private void NodeMouseLeave(object sender, MouseEventArgs e)
         {   
             point.Fill = Brushes.Blue;
             
             parentViewNode.OnMouseLeave();
         }
-        private void node_MouseMove(object sender, MouseEventArgs e)
+        private void NodeMouseMove(object sender, MouseEventArgs e)
         {
             parentViewNode.OnMouseMove();
         }
 
-        private void TxtBox_KeyDown(object sender, KeyEventArgs e)
+        private void TxtBoxKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
@@ -101,8 +87,8 @@ namespace GraphEditor
                 Keyboard.ClearFocus();
             }
         }
-        private void TxtBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
+        private void TxtBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {   
             TextBoxForNodeLabel.CaretBrush = Brushes.Black;
         }
     }

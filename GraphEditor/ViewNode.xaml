@@ -5,19 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GraphEditor"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Width="50" Height="50" MouseLeftButtonDown="node_MouseLeftButtonDown" MouseEnter="node_MouseEnter" MouseLeave="node_MouseLeave" MouseMove="node_MouseMove">
+             d:DesignHeight="300" d:DesignWidth="300" Width="50" Height="50" MouseLeftButtonDown="NodeMouseLeftButtonDown" MouseEnter="NodeMouseEnter" MouseLeave="NodeMouseLeave" MouseMove="NodeMouseMove">
     <Grid Width="50" Height="50">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="39*"/>
             <ColumnDefinition Width="11*"/>
         </Grid.ColumnDefinitions>
         <StackPanel HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2">
-            <Ellipse HorizontalAlignment="Center" VerticalAlignment="Top" x:Name="point" MouseLeftButtonUp="node_MouseLeftButtonUp">
+            <Ellipse HorizontalAlignment="Center" VerticalAlignment="Top" x:Name="point" MouseLeftButtonUp="NodeMouseLeftButtonUp">
                 <Ellipse.Fill>
                     <SolidColorBrush Color="Blue"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <TextBox x:Name="TextBoxForNodeLabel" Height="23" TextWrapping="Wrap" Background="Transparent" TextChanged="TxtBox_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="TxtBox_KeyDown" PreviewMouseDown="TxtBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="TextBoxForNodeLabel" Height="23" TextWrapping="Wrap" Background="Transparent" TextChanged="TxtBoxTextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="TxtBoxKeyDown" PreviewMouseDown="TxtBoxPreviewMouseLeftButtonDown"/>
         </StackPanel>
 
     </Grid>
