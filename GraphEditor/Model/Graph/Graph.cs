@@ -1,30 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Graph
 {
     public class Graph
     {
-        private GraphNode _graphSource;
+        private List<GraphNode> _nodes;
+        private List<GraphEdge> _edges;
+        private List<string> _names;
 
-        private GraphNode _graphStock;
-        public Graph(GraphNode graphSource, GraphNode graphStock)
+        public Graph()
         {
-            _graphSource = graphSource;
-            _graphStock = graphStock;
+            _nodes = new List<GraphNode>();
+            _names = new List<string>();
+            _edges = new List<GraphEdge>();
         }
 
-        public void ChangeSource(GraphNode graphSource)
+        public void AddEdge(string firstNodeName, string secondNodeName, int? firstNodeWeight = null, int? secondNodeWeight = null, int? edgeWeight = null)
         {
-            _graphSource = graphSource;
+            if (_edges.All(x => !x.IsEqual(firstNodeName, secondNodeName)))
+            {
+                GraphNode firstGraphNode = new GraphNode(firstNodeName, firstNodeWeight);
+                GraphNode secondGraphNode = new GraphNode(secondNodeName, secondNodeWeight);
+                _nodes.Add(firstGraphNode);
+                _nodes.Add(secondGraphNode);
+                firstGraphNode.AddEdge(secondGraphNode);
+                secondGraphNode.AddEdge(firstGraphNode);
+
+                _edges.Add(new GraphEdge(firstGraphNode, secondGraphNode, edgeWeight));
+            }
         }
 
-        public void ChangeStock()
-        {
-            _graphStock = _graphSource;
-        }
     }
 }
