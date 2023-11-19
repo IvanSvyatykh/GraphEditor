@@ -8,10 +8,10 @@ namespace Model.Graph
 {
     public class DFSLogger
     {
-        private List<Tuple<GraphEdge, GraphNode, string>> _visited;
+        public List<Tuple<GraphEdge, GraphNode, string>> Visited { get; private set; }
         public DFSLogger()
         {
-            _visited = new List<Tuple<GraphEdge, GraphNode, string>>();
+            Visited = new List<Tuple<GraphEdge, GraphNode, string>>();
         }
 
         public void AddMarkedElement(GraphNode node, GraphEdge edge)
@@ -25,13 +25,13 @@ namespace Model.Graph
             {
                 log = $"Переходи из вершины {edge.FirstNode.Name} в {edge.SecondNode.Name}, отмечаем вершину {edge.SecondNode.Name}, как посященную.";
             }
-            _visited.Add(Tuple.Create(edge, node, log));
+            Visited.Add(Tuple.Create(edge, node, log));
         }
 
         public void AddCommentToLastLog(string str)
         {
-            _visited[_visited.Count - 1] = Tuple.Create(_visited[_visited.Count - 1].Item1, 
-                _visited[_visited.Count - 1].Item2, _visited[_visited.Count - 1].Item3 + str);
+            Visited[Visited.Count - 1] = Tuple.Create(Visited[Visited.Count - 1].Item1,
+                Visited[Visited.Count - 1].Item2, Visited[Visited.Count - 1].Item3 + str);
 
         }
     }
