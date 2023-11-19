@@ -8,15 +8,15 @@ namespace Model.Graph
 {
     public class DFSLogger
     {
-        private List<Tuple<GraphNode, GraphEdge>> _visited;
+        private List<Tuple<GraphEdge, GraphNode>> _visited;
         public DFSLogger()
         {
-            _visited = new List<Tuple<GraphNode, GraphEdge>>();
+            _visited = new List<Tuple<GraphEdge, GraphNode>>();
         }
 
         public void AddMarkedElement(GraphNode node, GraphEdge edge)
         {
-            _visited.Add(Tuple.Create(node, edge));
+            _visited.Add(Tuple.Create(edge, node));
         }
     }
 }

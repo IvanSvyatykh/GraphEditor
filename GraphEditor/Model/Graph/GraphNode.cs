@@ -15,7 +15,7 @@ namespace Model.Graph
 
         public List<GraphEdge> Edges { get; private set; }
 
-        private List<GraphNode> _linkedNodes;
+        public List<GraphNode> LinkedNodes { get; private set; }
 
         public GraphEdge GetEdgeBetween(GraphNode first, GraphNode second)
         {
@@ -34,7 +34,7 @@ namespace Model.Graph
         public GraphNode(string name, int? value = null, List<GraphEdge> grapgEdges = null)
         {
             _value = value;
-            _linkedNodes = new List<GraphNode>();
+            LinkedNodes = new List<GraphNode>();
             Name = name;
             if (grapgEdges == null)
             {
@@ -51,17 +51,19 @@ namespace Model.Graph
 
         public void AddEdge(GraphNode node, int? weigtOfEdge = null)
         {
-            if (_linkedNodes.All(n => !Equals(n.Name, node.Name)))
+
+            if (LinkedNodes.All(n => !Equals(n.Name, node.Name)))
             {
                 GraphEdge edge = new GraphEdge(this, node, weigtOfEdge);
-                _linkedNodes.Add(node);
+                LinkedNodes.Add(node);
                 Edges.Add(edge);
+                IsLinked = true;
             }
             else
             {
                 throw new ArgumentException($"Вершина с название {node.Name}, уже существует");
             }
-        }      
+        }
 
         private bool IsBetween(GraphNode first, GraphNode second, GraphEdge el)
         {
