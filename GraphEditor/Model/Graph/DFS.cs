@@ -47,6 +47,7 @@ namespace Model.Graph
                     DFSRecursive(adjacentVertex);
                 }
             }
+            _logger.AddCommentToLastLog($" Больше из вершины {node.Name} идти не куду, возращаемся рекурсивно назад.");
         }
 
         private void TranslateToGraph()
