@@ -75,25 +75,30 @@ namespace Graph
             get { return isOriented; }
             set { isOriented = value; OnPropertyChanged("IsOriented"); }
         }
-        
-        //public bool CheckNameIsUnique(NodeView node)
-        //{
-        //    foreach (NodeView anotherNode in nodeList)
-        //    {
-        //        if (node.NodeName == anotherNode.NodeName && anotherNode != node)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
-        //public void ValidateNamesIsUnique()
-        //{
-        //    foreach (NodeView node in nodeList)
-        //    {
-        //        node.Validate();
-        //    }
-        //}
+
+        public bool CheckNameIsUnique(NodeView node)
+        {   
+            if (node.NodeName == "")
+            {
+                return false;
+            }
+
+            foreach (NodeView anotherNode in nodeList)
+            {
+                if (node.NodeName == anotherNode.NodeName && anotherNode != node)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public void ValidateNamesIsUnique()
+        {
+            foreach (NodeView node in nodeList)
+            {
+                node.Validate();
+            }
+        }
 
         public void AddNode()
         {   

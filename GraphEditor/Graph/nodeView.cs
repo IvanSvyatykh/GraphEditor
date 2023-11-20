@@ -68,10 +68,12 @@ namespace Graph
                 if (isValid)
                 {
                     graphNode.TextBoxForNodeLabel.Foreground = System.Windows.Media.Brushes.Black;
+                    graphNode.TextBoxForNodeLabel.BorderBrush = System.Windows.Media.Brushes.Transparent;
                 }
                 else
                 {
                     graphNode.TextBoxForNodeLabel.Foreground = System.Windows.Media.Brushes.Red;
+                    graphNode.TextBoxForNodeLabel.BorderBrush = System.Windows.Media.Brushes.Red;
                 }
             }
         }
@@ -136,18 +138,18 @@ namespace Graph
             }
         }
 
-        //public void Validate()
-        //{
-        //    name = txt;
+        public void Validate()
+        {
+            name = txt;
 
-        //    if (Graph.CheckNameIsUnique(this))
-        //    {
-        //        IsValid = true;
-        //    }
-        //    else
-        //    {
-        //        IsValid = false;
-        //    }
-        //}
+            if (Graph.CheckNameIsUnique(this))
+            {
+                IsValid = true;
+            }
+            else
+            {
+                IsValid = false;
+            }
+        }
     }
 }

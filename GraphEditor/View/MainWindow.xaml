@@ -58,12 +58,26 @@
             </Canvas.InputBindings>
         </Canvas>
 
-
-
         <TextBlock x:Name="TextBlockStepExplanation" Text="Объяснение шага:" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
         
+        <ScrollViewer Grid.Column="1" Grid.Row="11" Grid.RowSpan="2" Grid.ColumnSpan="7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <TextBlock x:Name="TextBlockWithExplanation" FontSize="15" Text="{Binding Explanation}" />
+        </ScrollViewer>
+
         <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="2" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
-             
+
+        <ScrollViewer Grid.Column="9" Grid.Row="3" Grid.RowSpan="7" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Background="White">
+            <ItemsControl ItemsSource="{Binding StepsButtons}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid  HorizontalAlignment="Left" VerticalAlignment="Top" Columns="1"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+        
+        <Button x:Name="ButtonStepForward" Grid.Column="11" Grid.ColumnSpan="1" Grid.Row="12"  Content="Вперед" FontSize="20" IsEnabled="{Binding IsStepForwardEnabled}" Command="{Binding StepForwardCommand}" />
+        <Button x:Name="ButtonStepBackward" Grid.Column="9" Grid.ColumnSpan="1" Grid.Row="12"  Content="Назад" FontSize="20" IsEnabled="{Binding IsStepBackwardEnabled}" Command="{Binding StepBackwardCommand}" />
 
     </Grid>
 </Window>

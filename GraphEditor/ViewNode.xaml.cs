@@ -32,8 +32,8 @@ namespace GraphEditor
         {
             parentViewNode.txt = TextBoxForNodeLabel.Text;
 
-            //parentViewNode.Validate();
-            //parentViewNode.Graph.ValidateNamesIsUnique();
+            parentViewNode.Validate();
+            parentViewNode.Graph.ValidateNamesIsUnique();
         }
 
         private void NodeMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -78,18 +78,18 @@ namespace GraphEditor
             parentViewNode.OnMouseMove();
         }
 
-        //private void TxtBoxKeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (e.Key == Key.Return)
-        //    {
-        //        parentViewNode.txt = TextBoxForNodeLabel.Text;
-        //        TextBoxForNodeLabel.CaretBrush = invisibleBrush;
-        //        Keyboard.ClearFocus();
-        //    }
-        //}
-        //private void TxtBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{   
-        //    TextBoxForNodeLabel.CaretBrush = Brushes.Black;
-        //}
+        private void TxtBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                parentViewNode.txt = TextBoxForNodeLabel.Text;
+                TextBoxForNodeLabel.CaretBrush = invisibleBrush;
+                Keyboard.ClearFocus();
+            }
+        }
+        private void TxtBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {   
+            TextBoxForNodeLabel.CaretBrush = Brushes.Black;
+        }
     }
 }
