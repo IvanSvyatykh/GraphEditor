@@ -270,12 +270,17 @@ namespace Graph
                 ((Line)Line).X2 = endNode.Position.X + startNode.ViewPartNode.Width / 2;
                 ((Line)Line).Y2 = endNode.Position.Y + ViewNode.NodeRadius / 2;
 
-                if ( Math.Abs((((Line)Line).X2 - ((Line)Line).X1) / 2) >= 25) {
+                double hypotenuse = Math.Sqrt(Math.Abs(((Line)Line).X2 - ((Line)Line).X1) * Math.Abs(((Line)Line).X2 - ((Line)Line).X1) +
+                    Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) * Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1));
+
+                double angle = Math.Asin(Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) / hypotenuse);
+
+                if (angle <= 7*Math.PI/24) {
                     Canvas.SetLeft(textBox1, startNode.Position.X + (((Line)Line).X2 - ((Line)Line).X1) / 2);
                 }
                 else
                 {
-                    Canvas.SetLeft(textBox1, startNode.Position.X + 10 + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                    Canvas.SetLeft(textBox1, startNode.Position.X + 12 + (((Line)Line).X2 - ((Line)Line).X1) / 2);
                 }
 
                 Canvas.SetTop(textBox1, startNode.Position.Y + (((Line)Line).Y2 - ((Line)Line).Y1) / 2 - textBox1.FontSize / 3);
