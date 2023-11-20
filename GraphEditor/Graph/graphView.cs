@@ -25,8 +25,10 @@ namespace Graph
         private bool isNodeDeleting;
         private bool isEdgeAdding; 
         private bool isEdgeDeleting;
-        
-        
+
+        private int uniqueNameLetterNumber = 65;
+        private int uniqueNameLettersCount = 1;
+
         public NodeView FirstTop;
 
         //Не знаю нужен ли он мне
@@ -74,28 +76,41 @@ namespace Graph
             set { isOriented = value; OnPropertyChanged("IsOriented"); }
         }
         
-        public bool CheckNameIsUnique(NodeView node)
-        {
-            foreach (NodeView anotherNode in nodeList)
-            {
-                if (node.NodeName == anotherNode.NodeName && anotherNode != node)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        public void ValidateNamesIsUnique()
-        {
-            foreach (NodeView node in nodeList)
-            {
-                node.Validate();
-            }
-        }
+        //public bool CheckNameIsUnique(NodeView node)
+        //{
+        //    foreach (NodeView anotherNode in nodeList)
+        //    {
+        //        if (node.NodeName == anotherNode.NodeName && anotherNode != node)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true;
+        //}
+        //public void ValidateNamesIsUnique()
+        //{
+        //    foreach (NodeView node in nodeList)
+        //    {
+        //        node.Validate();
+        //    }
+        //}
 
         public void AddNode()
         {   
-            NodeView newNode = new NodeView(this);
+            if (uniqueNameLetterNumber == 91)
+            {
+                uniqueNameLetterNumber=65;
+                uniqueNameLettersCount++;
+            }
+            string uniqueName = "";
+            for (int i=0; i < uniqueNameLettersCount;i++)
+            {
+                uniqueName+= ((char)uniqueNameLetterNumber).ToString();
+            }
+            
+            uniqueNameLetterNumber++;
+            
+            NodeView newNode = new NodeView(this, uniqueName.ToString());
 
             nodeList.Add(newNode);
             canvas.Children.Add(newNode.ViewPartNode);

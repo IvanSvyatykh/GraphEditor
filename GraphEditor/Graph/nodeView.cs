@@ -89,14 +89,14 @@ namespace Graph
         }
 
 
-        public NodeView(GraphView graphView)
+        public NodeView(GraphView graphView,string uniqueName)
         {
             this.graphView = graphView;
 
             graphNode = new ViewNode(this);
-            graphNode.TextBoxForNodeLabel.Text = "";
+            graphNode.TextBoxForNodeLabel.Text = uniqueName;
 
-            IsValid = false;
+            IsValid = true;
         }
 
         public void OnMouseLeave()
@@ -122,18 +122,18 @@ namespace Graph
             }
         }
 
-        public void Validate()
-        {
-            name = txt;
+        //public void Validate()
+        //{
+        //    name = txt;
 
-            if (Graph.CheckNameIsUnique(this))
-            {
-                IsValid = true;
-            }
-            else
-            {
-                IsValid = false;
-            }
-        }
+        //    if (Graph.CheckNameIsUnique(this))
+        //    {
+        //        IsValid = true;
+        //    }
+        //    else
+        //    {
+        //        IsValid = false;
+        //    }
+        //}
     }
 }

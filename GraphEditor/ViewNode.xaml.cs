@@ -32,8 +32,8 @@ namespace GraphEditor
         {
             parentViewNode.txt = TextBoxForNodeLabel.Text;
 
-            parentViewNode.Validate();
-            parentViewNode.Graph.ValidateNamesIsUnique();
+            //parentViewNode.Validate();
+            //parentViewNode.Graph.ValidateNamesIsUnique();
         }
 
         private void NodeMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
