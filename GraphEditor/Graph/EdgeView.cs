@@ -147,12 +147,16 @@ namespace Graph
             textBox1.HorizontalContentAlignment = HorizontalAlignment.Center;
             textBox1.FontWeight = FontWeights.Bold;
             textBox1.FontSize = 14;
+            textBox1.IsReadOnly = true;
 
             TxtBox1_TextChanged(null, null);
 
             textBox1.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(TxtBox1_PreviewMouseLeftButtonDown);
             textBox1.TextChanged += new TextChangedEventHandler(TxtBox1_TextChanged);
             textBox1.KeyDown += new KeyEventHandler(TxtBox1_KeyDown);
+            textBox1.MouseEnter += new MouseEventHandler(TextBox1MouseEnter);
+            textBox1.MouseLeave += new MouseEventHandler(TextBox1MouseLeave);
+
             textBox1.Text = "0";
             
             invisibleBrush = new SolidColorBrush(Colors.White);
@@ -220,6 +224,14 @@ namespace Graph
                 isValid = false;
             }
         }
+        private void TextBox1MouseLeave(object sender, MouseEventArgs e)
+        {
+            OnMouseLeave();
+        }
+        private void TextBox1MouseEnter(object sender, MouseEventArgs e)
+        {
+            OnMouseEnter();
+        }
 
         private void Line_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -240,23 +252,30 @@ namespace Graph
 
         private void OnMouseEnter()
         {
-            if (!graph.IsEdgeAdding && !graph.IsNodeAdding)
+            if (!graph.IsTaskWork)
             {
-                Line.Stroke = Brushes.Green;
-                if (isLine && graph.IsOriented)
+                if (!graph.IsEdgeAdding && !graph.IsNodeAdding)
                 {
-                    LeftLine.Stroke = RightLine.Stroke = Brushes.Green;
+                    Line.Stroke = Brushes.Green;
+                    if (isLine && graph.IsOriented)
+                    {
+                        LeftLine.Stroke = RightLine.Stroke = Brushes.Green;
+                    }
+
+                    textBox1.IsReadOnly = false;
+
+                    textBox1.CaretBrush = Brushes.Black;
+                    textBox1.Background = Brushes.White;
                 }
-
-                textBox1.IsReadOnly = false;
-
-                textBox1.CaretBrush = Brushes.Black;
-                textBox1.Background = Brushes.White;
-            } 
+            }
+            else
+            {
+                textBox1.IsReadOnly = true;
+            }
         }
         private void OnMouseLeave()
         {
-            if (!graph.IsEdgeAdding && !graph.IsNodeAdding)
+            if (!graph.IsEdgeAdding && !graph.IsNodeAdding && !graph.IsTaskWork)
             {
                 Line.Stroke = Brushes.Black;
                 if (isLine && graph.IsOriented)

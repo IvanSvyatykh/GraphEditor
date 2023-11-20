@@ -62,7 +62,7 @@ namespace GraphEditor
             {
                 parentViewNode.Graph.DeleteNode(parentViewNode);
             }
-            else if (!(parentViewNode.Graph.IsNodeAdding))
+            else if (!parentViewNode.Graph.IsNodeAdding)
             {
                 parentViewNode.IsNodeMove = true;
             }
