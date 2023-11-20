@@ -62,14 +62,14 @@ namespace GraphEditor
             {
                 parentViewNode.Graph.DeleteNode(parentViewNode);
             }
-            else if (!parentViewNode.Graph.IsNodeAdding)
+            else if (!(parentViewNode.Graph.IsNodeAdding))
             {
                 parentViewNode.IsNodeMove = true;
             }
         }
         private void NodeMouseEnter(object sender, MouseEventArgs e)
         {
-            if (!parentViewNode.Graph.IsNodeAdding)
+            if (!(parentViewNode.Graph.IsNodeAdding))
             {
                 point.Fill = Brushes.LightBlue;
             }
@@ -96,7 +96,15 @@ namespace GraphEditor
         }
         private void TxtBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {   
-            TextBoxForNodeLabel.CaretBrush = Brushes.Black;
+            if (!parentViewNode.Graph.IsTaskWork)
+            {
+                TextBoxForNodeLabel.IsReadOnly = false;
+                TextBoxForNodeLabel.CaretBrush = Brushes.Black;
+            }
+            else
+            {
+                TextBoxForNodeLabel.IsReadOnly = true;
+            }
         }
     }
 }

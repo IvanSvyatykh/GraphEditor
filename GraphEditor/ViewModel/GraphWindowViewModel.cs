@@ -46,6 +46,15 @@ namespace GraphEditor.ViewModel
                 OnPropertyChanged(nameof(Explanation));
             }
         }
+        public bool IsTaskWorking
+        {
+            get => !isTaskWorking;
+            set
+            {
+                isTaskWorking = value;
+                OnPropertyChanged(nameof(IsTaskWorking));
+            }
+        }
         public bool IsStepForwardEnabled
         {
             get => isStepForwardEnabled;
@@ -79,6 +88,7 @@ namespace GraphEditor.ViewModel
         private ObservableCollection<Button> stepsButtons;
         private bool isStepForwardEnabled = false;
         private bool isStepBackwardEnabled = false;
+        private bool isTaskWorking = false;
 
         private GraphView graphView;
         private MainWindow window;
@@ -116,13 +126,7 @@ namespace GraphEditor.ViewModel
             }
             else
             {
-                graphView.EndAddingEdge();
-                graphView.EndAddingNode();
-                graphView.EndDeletingNode();
-                graphView.EndDeletingEdge();
-
-                currentMode = 0;
-                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+                SetZeroMode();
             }
         }
         private void SetAddEdgesMode()
@@ -139,14 +143,8 @@ namespace GraphEditor.ViewModel
                 graphView.EndDeletingEdge();
             }
             else
-            {   
-                graphView.EndAddingEdge();
-                graphView.EndAddingNode();
-                graphView.EndDeletingNode();
-                graphView.EndDeletingEdge();
-
-                currentMode = 0;
-                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+            {
+                SetZeroMode();
             }
         }
         private void SetDeletingMode()
@@ -162,16 +160,19 @@ namespace GraphEditor.ViewModel
             }
             else
             {
-                graphView.EndAddingEdge();
-                graphView.EndAddingNode();
-                graphView.EndDeletingNode();
-                graphView.EndDeletingEdge();
-
-                currentMode = 0;
-                SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+                SetZeroMode();
             }
         }
+        private void SetZeroMode()
+        {
+            graphView.EndAddingEdge();
+            graphView.EndAddingNode();
+            graphView.EndDeletingNode();
+            graphView.EndDeletingEdge();
 
+            currentMode = 0;
+            SetCurrentModeButtonBackgrounds(offModeButtonBackground, offModeButtonBackground, offModeButtonBackground);
+        }
         private void SetCurrentModeButtonBackgrounds(SolidColorBrush color1, SolidColorBrush color2, SolidColorBrush color3)
         {
             window.SetAddNodesModeButton.Background = color1;
@@ -192,6 +193,9 @@ namespace GraphEditor.ViewModel
             {   
                 if (graphView.IsThisNodeExistInGraph(startNodeName))
                 {
+                    SetZeroMode();
+                    IsTaskWorking = true;
+                    graphView.StartTaskWork();
                     BFS bFS = new BFS(graphView.GetEdgeMatrix());
                     loggerForBFS = bFS.StartAlgorithm(startNodeName);
 
@@ -270,10 +274,16 @@ namespace GraphEditor.ViewModel
             if (stepIndex == stepsButtons.Count - 1)
             {
                 stepsButtons = new ObservableCollection<Button>();
+                OnPropertyChanged(nameof(StepsButtons));
 
+
+                graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
-                IsStepBackwardEnabled= false;
+                graphView.ChangeEdgesColorToBlack();
+
+                IsStepBackwardEnabled = false;
                 IsStepForwardEnabled= false;
+                IsTaskWorking = false;
             }
             else
             {   
@@ -299,10 +309,27 @@ namespace GraphEditor.ViewModel
         {
             Explanation = loggerForBFS.Visited[stepIndex].Item3;
             graphView.ChangeNodesColorToBlue();
-            for(int i=0; i<=stepIndex; i++)
-            {
-                graphView.ChangeNodeColor(loggerForBFS.Visited[i].Item1.Name,Brushes.Green);
+            graphView.ChangeEdgesColorToBlack();
 
+            for (int i=0; i<=stepIndex; i++)
+            {
+                if (loggerForBFS.Visited[i].Item1 is not null)
+                {
+                    graphView.ChangeNodeColor(loggerForBFS.Visited[i].Item1.Name, Brushes.Green);
+                }
+
+                if (loggerForBFS.Visited[i].Item2 is not null)
+                {
+                    if (loggerForBFS.Visited[i].Item1.Name != loggerForBFS.Visited[i].Item2.SecondNode.Name)
+                    {
+                        graphView.ChangeEdgeColor(loggerForBFS.Visited[i].Item1.Name, loggerForBFS.Visited[i].Item2.SecondNode.Name, Brushes.Green);
+                    }
+                    else
+                    {
+                        graphView.ChangeEdgeColor(loggerForBFS.Visited[i].Item1.Name, loggerForBFS.Visited[i].Item2.FirstNode.Name, Brushes.Green);
+                    }
+                }
+                
             }
         }
         public bool HasErrors => throw new NotImplementedException();

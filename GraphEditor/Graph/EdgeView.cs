@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GraphEditor;
+using Model.Graph;
 
 namespace Graph
 {
@@ -39,6 +40,13 @@ namespace Graph
         {
             get { return isLine; }
         }
+        public Brush Color
+        {
+            set
+            {
+                SetColor(value);
+            }
+        }
 
         public List<Shape> Edge
         {
@@ -61,7 +69,8 @@ namespace Graph
         
         private int edge_weight;
         private bool isLine;
-        
+        private Brush baseColor = Brushes.Black;
+
         private GraphView graph;
         private NodeView startNode;
         private NodeView endNode;
@@ -91,7 +100,7 @@ namespace Graph
             Line.MouseEnter += new MouseEventHandler(Line_MouseEnter);
             Line.MouseLeave += new MouseEventHandler(Line_MouseLeave);
             Line.MouseLeftButtonDown += new MouseButtonEventHandler(Line_MouseLeftButtonDown);
-            Line.Stroke = Brushes.Black;
+            Line.Stroke = baseColor;
             Line.StrokeThickness = 2;
 
             if (isLine)
@@ -102,7 +111,7 @@ namespace Graph
                 {
                     LeftLine = new Line();
                     RightLine = new Line();
-                    RightLine.Stroke = LeftLine.Stroke = Brushes.Black;
+                    RightLine.Stroke = LeftLine.Stroke = baseColor;
 
                     RightLine.StrokeThickness = LeftLine.StrokeThickness = 7;
                     
@@ -169,7 +178,11 @@ namespace Graph
             }
         }
 
-        
+        private void SetColor(Brush color)
+        {
+            Line.Stroke = color;
+            baseColor = color;
+        }
 
         private void TxtBox1_KeyDown(object sender, KeyEventArgs e)
         {

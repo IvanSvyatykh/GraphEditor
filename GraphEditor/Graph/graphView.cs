@@ -26,6 +26,7 @@ namespace Graph
         private bool isNodeDeleting;
         private bool isEdgeAdding; 
         private bool isEdgeDeleting;
+        private bool isTaskWork;
 
         private int uniqueNameLetterNumber = 65;
         private int uniqueNameLettersCount = 1;
@@ -64,6 +65,10 @@ namespace Graph
         public bool IsEdgeDeleting
         {
             get { return isEdgeDeleting; }
+        }
+        public bool IsTaskWork
+        {
+            get { return isTaskWork; }
         }
         public bool IsOriented
         {
@@ -208,7 +213,14 @@ namespace Graph
         {
             isEdgeDeleting = false;
         }
-        
+        public void StartTaskWork()
+        {
+            isTaskWork = true;
+        }
+        public void EndTaskWork()
+        {
+            isTaskWork = false;
+        }
         public void ChangeNodeColor(string nodeName,Brush color)
         {
             foreach (NodeView node in nodeList)
@@ -222,11 +234,11 @@ namespace Graph
         }
         public void ChangeEdgeColor(string startNodeName, string endNodeName, Brush color)
         {
-            foreach (NodeView node in nodeList)
+            foreach (EdgeView edge in edgeList)
             {
-                if (node.NodeName == nodeName)
+                if ((edge.StartNode.NodeName == startNodeName && edge.EndNode.NodeName == endNodeName) || (edge.StartNode.NodeName == endNodeName && edge.EndNode.NodeName == startNodeName))
                 {
-                    node.Color = color;
+                    edge.Color = color;
                     return;
                 }
             }
@@ -238,7 +250,14 @@ namespace Graph
                 node.Color = Brushes.Blue;
             }
         }
-
+        public void ChangeEdgesColorToBlack()
+        {
+            foreach (EdgeView edge in edgeList)
+            {
+                edge.Color = Brushes.Black;
+               
+            }
+        }
         //Можно использовать для Бека
 
         ////deijkstra
@@ -374,9 +393,9 @@ namespace Graph
         //}
         public bool ValidateState()
         {
-            foreach (EdgeView line in edgeList)
+            foreach (EdgeView edge in edgeList)
             {
-                if (!line.isValid)
+                if (!edge.isValid)
                 {
                     return false;
                 }

@@ -49,9 +49,9 @@
 
         <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="Выбор режима:" VerticalAlignment="Bottom" FontSize="18"/>
 
-        <Button x:Name="SetAddNodesModeButton" Grid.Row="3" Grid.Column="1" Content="Режим добавления узлов" FontSize="15" Command="{Binding SetAddNodesModeCommand}"/>
-        <Button x:Name="SetAddEdgesModeButton" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" Content="Режим добавления связей" FontSize="15" Command="{Binding SetAddEdgesModeCommand}"/>
-        <Button x:Name="SetDeletingModeButton" Grid.Row="3" Grid.Column="7" Content="Режим удаления" FontSize="15" Command="{Binding SetDeletingModeCommand}"/>
+        <Button x:Name="SetAddNodesModeButton" Grid.Row="3" Grid.Column="1" Content="Режим добавления узлов" FontSize="15" IsEnabled="{Binding IsTaskWorking }" Command="{Binding SetAddNodesModeCommand}"/>
+        <Button x:Name="SetAddEdgesModeButton" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" Content="Режим добавления связей" FontSize="15" IsEnabled="{Binding IsTaskWorking }" Command="{Binding SetAddEdgesModeCommand}"/>
+        <Button x:Name="SetDeletingModeButton" Grid.Row="3" Grid.Column="7" Content="Режим удаления" FontSize="15" IsEnabled="{Binding IsTaskWorking }" Command="{Binding SetDeletingModeCommand}"/>
         
         <TextBlock x:Name="TextBlockInitialFile" Text="Граф:"  Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
 
@@ -67,11 +67,11 @@
             <TextBlock x:Name="TextBlockWithExplanation" FontSize="15" Text="{Binding Explanation}" />
         </ScrollViewer>
 
-        <Button Content="Обход графа в ширину" Grid.Row="14" Grid.Column="1" FontSize="19"/>
-        <Button Content="Обход графа в глубину" Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19"/>
-        <Button Content="Решить" Grid.Row="14" Grid.Column="7" FontSize="20" Command="{Binding StartProgrammCommand}"/>
+        <Button Content="Обход графа в ширину" Grid.Row="14" Grid.Column="1" FontSize="19" IsEnabled="{Binding IsTaskWorking }"/>
+        <Button Content="Обход графа в глубину" Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19" IsEnabled="{Binding IsTaskWorking }"/>
+        <Button Content="Решить" Grid.Row="14" Grid.Column="7" FontSize="20" Command="{Binding StartProgrammCommand}" IsEnabled="{Binding IsTaskWorking }"/>
 
-        <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="2" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
+        <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="2" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18" />
 
         <ScrollViewer Grid.Column="9" Grid.Row="3" Grid.RowSpan="7" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Background="White">
             <ItemsControl ItemsSource="{Binding StepsButtons}">
@@ -91,6 +91,6 @@
             <LineBreak/>
             узел:
         </TextBlock>
-        <TextBox Grid.Column="11" Grid.Row="14" Text="{Binding StartNodeName}"/>
+        <TextBox Grid.Column="11" Grid.Row="14" Text="{Binding StartNodeName}" IsEnabled="{Binding IsTaskWorking }"/>
     </Grid>
 </Window>
