@@ -5,9 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Canvas x:Name="Canvas" />
+        Title="MainWindow" Height="700" Width="800">
+    <Grid Background="#FFEFFCFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4.5*"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="4.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Menu VerticalAlignment="Center" Grid.Column="0"  Grid.ColumnSpan="15" Foreground="Black"  Background="White">
+            
+        </Menu>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="Выбор режима:" VerticalAlignment="Bottom" FontSize="18"/>
+
+        <Button x:Name="SetAddNodesModeButton" Grid.Row="3" Grid.Column="1" Content="Режим добавления узлов" FontSize="15" Command="{Binding SetAddNodesModeCommand}"/>
+        <Button x:Name="SetAddEdgesModeButton" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" Content="Режим добавления связей" FontSize="15" Command="{Binding SetAddEdgesModeCommand}"/>
+        <Button x:Name="SetDeletingModeButton" Grid.Row="3" Grid.Column="7" Content="Режим удаления" FontSize="15" Command="{Binding SetDeletingModeCommand}"/>
+        
+        <TextBlock x:Name="TextBlockInitialFile" Text="Граф:"  Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
+
+        <Canvas Grid.Row="5" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="7" Background="White" x:Name="CanvasForGraph">
+            <Canvas.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding LeftButtonClickCommand}" />
+            </Canvas.InputBindings>
+        </Canvas>
+
+
+
+        <TextBlock x:Name="TextBlockStepExplanation" Text="Объяснение шага:" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
+        
+        <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="2" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
+             
 
     </Grid>
 </Window>
