@@ -1,4 +1,5 @@
 ﻿using Graph;
+using System.Security.AccessControl;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -25,7 +26,7 @@ namespace GraphEditor
 
         SolidColorBrush invisibleBrush;
         public const int NodeRadius = 25;
-
+        private Brush pointColor = Brushes.Blue; 
         private NodeView parentViewNode;
 
         private void TxtBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -34,6 +35,12 @@ namespace GraphEditor
 
             parentViewNode.Validate();
             parentViewNode.Graph.ValidateNamesIsUnique();
+        }
+
+        public void SetColor(Brush color)
+        {
+            point.Fill = color;
+            pointColor = color;
         }
 
         private void NodeMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -69,7 +76,7 @@ namespace GraphEditor
         }
         private void NodeMouseLeave(object sender, MouseEventArgs e)
         {   
-            point.Fill = Brushes.Blue;
+            point.Fill = pointColor;
             
             parentViewNode.OnMouseLeave();
         }

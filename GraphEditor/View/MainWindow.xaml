@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="800">
+        Title="MainWindow" Height="800" Width="900">
     <Grid Background="#FFEFFCFF">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -23,6 +23,8 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -37,6 +39,7 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="4*"/>
+
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
@@ -64,6 +67,10 @@
             <TextBlock x:Name="TextBlockWithExplanation" FontSize="15" Text="{Binding Explanation}" />
         </ScrollViewer>
 
+        <Button Content="Обход графа в ширину" Grid.Row="14" Grid.Column="1" FontSize="19"/>
+        <Button Content="Обход графа в глубину" Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19"/>
+        <Button Content="Решить" Grid.Row="14" Grid.Column="7" FontSize="20" Command="{Binding StartProgrammCommand}"/>
+
         <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="2" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
 
         <ScrollViewer Grid.Column="9" Grid.Row="3" Grid.RowSpan="7" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Background="White">
@@ -79,5 +86,11 @@
         <Button x:Name="ButtonStepForward" Grid.Column="11" Grid.ColumnSpan="1" Grid.Row="12"  Content="Вперед" FontSize="20" IsEnabled="{Binding IsStepForwardEnabled}" Command="{Binding StepForwardCommand}" />
         <Button x:Name="ButtonStepBackward" Grid.Column="9" Grid.ColumnSpan="1" Grid.Row="12"  Content="Назад" FontSize="20" IsEnabled="{Binding IsStepBackwardEnabled}" Command="{Binding StepBackwardCommand}" />
 
+        <TextBlock Grid.Column="9" Grid.Row="14" FontSize="15">
+            Начальный
+            <LineBreak/>
+            узел:
+        </TextBlock>
+        <TextBox Grid.Column="11" Grid.Row="14" Text="{Binding StartNodeName}"/>
     </Grid>
 </Window>

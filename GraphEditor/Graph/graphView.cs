@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Text;
 using GraphEditor;
 using Model.Graph;
+using System.Windows.Media;
 
 namespace Graph
 {
@@ -30,12 +31,6 @@ namespace Graph
         private int uniqueNameLettersCount = 1;
 
         public NodeView FirstTop;
-
-        //Не знаю нужен ли он мне
-        private Dictionary<string, List<string>> neighbors_nodes;
-
-        //Нужно при валидации
-        private Dictionary<KeyValuePair<string, string>, int> edge_weight;
 
         public delegate void PointPositionChanged(NodeView top);
 
@@ -213,6 +208,36 @@ namespace Graph
         {
             isEdgeDeleting = false;
         }
+        
+        public void ChangeNodeColor(string nodeName,Brush color)
+        {
+            foreach (NodeView node in nodeList)
+            {
+                if (node.NodeName == nodeName)
+                {
+                    node.Color = color;
+                    return;
+                }
+            }
+        }
+        public void ChangeEdgeColor(string startNodeName, string endNodeName, Brush color)
+        {
+            foreach (NodeView node in nodeList)
+            {
+                if (node.NodeName == nodeName)
+                {
+                    node.Color = color;
+                    return;
+                }
+            }
+        }
+        public void ChangeNodesColorToBlue()
+        {
+            foreach (NodeView node in nodeList)
+            {
+                node.Color = Brushes.Blue;
+            }
+        }
 
         //Можно использовать для Бека
 
@@ -347,32 +372,50 @@ namespace Graph
         //        return false;
         //    }
         //}
-        private bool ValidateState()
+        public bool ValidateState()
         {
-            foreach (EdgeView line in edgeList)
-                if (!line.isValid)
-                    return false;
-            foreach (NodeView top in nodeList)
-                if (!top.IsValid)
-                    return false;
-            return true;
-        }
-        private void FillDictionaries()
-        {
-            neighbors_nodes = new Dictionary<string, List<string>>();
-            edge_weight = new Dictionary<KeyValuePair<string, string>, int>();
-            foreach (NodeView top in nodeList)
-                neighbors_nodes[top.NodeName] = new List<string>();
             foreach (EdgeView line in edgeList)
             {
-                neighbors_nodes[line.StartNode.NodeName].Add(line.EndNode.NodeName);
-                edge_weight[new KeyValuePair<string, string>(line.StartNode.NodeName, line.EndNode.NodeName)] = line.Weight;
-                if (!IsOriented)
+                if (!line.isValid)
                 {
-                    neighbors_nodes[line.EndNode.NodeName].Add(line.StartNode.NodeName);
-                    edge_weight[new KeyValuePair<string, string>(line.EndNode.NodeName, line.StartNode.NodeName)] = line.Weight;
+                    return false;
                 }
             }
+            foreach (NodeView node in nodeList)
+            {
+                if (!node.IsValid)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public bool IsThisNodeExistInGraph(string nodeName)
+        {
+            foreach (NodeView node in nodeList)
+            {
+                if (node.NodeName == nodeName)
+                {
+                    return true;
+                }
+                
+            }
+            return false;
+        }
+        public Dictionary<string, List<string>> GetEdgeMatrix()
+        {
+            Dictionary<string, List<string>> edgeMatrix = new Dictionary<string, List<string>>();
+
+            foreach (NodeView node in nodeList)
+            {
+                edgeMatrix.Add(node.NodeName, new List<string>());
+            }
+
+            foreach (EdgeView line in edgeList)
+            {
+                edgeMatrix[line.StartNode.NodeName].Add(line.EndNode.NodeName);
+            }
+            return edgeMatrix;
         }
     }
 }

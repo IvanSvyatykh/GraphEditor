@@ -1,6 +1,8 @@
 ﻿using GraphEditor;
+using Model.Graph;
 using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -24,7 +26,6 @@ namespace Graph
         private bool isNodeMove;
         private Point position;
 
-
         public event GraphView.PointPositionChanged pointPositionChange;
 
         public Point Position
@@ -36,6 +37,13 @@ namespace Graph
             set
             {
                 position = value;
+            }
+        }
+        public Brush Color
+        {
+            set
+            {
+                graphNode.SetColor(value);
             }
         }
         public bool IsNodeMove
