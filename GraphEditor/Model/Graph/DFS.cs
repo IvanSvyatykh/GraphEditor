@@ -29,12 +29,12 @@ namespace Model.Graph
 
             GraphNode basic = _graph.GetNodeByName(startNodeName);
             _logger.AddMarkedElement(basic, null);
-            DFSRecursive(basic);
+            DFSRecursive(basic, null);
 
             return _logger;
         }
 
-        private void DFSRecursive(GraphNode node)
+        private void DFSRecursive(GraphNode node, GraphNode prev)
         {
             _visited[node.Name] = true;
 
@@ -44,10 +44,18 @@ namespace Model.Graph
                 {
                     GraphEdge graphEdge = node.GetEdgeBetween(node, adjacentVertex);
                     _logger.AddMarkedElement(adjacentVertex, graphEdge);
-                    DFSRecursive(adjacentVertex);
+                    DFSRecursive(adjacentVertex, node);
                 }
             }
-            _logger.AddCommentToLastLog($" Больше из вершины {node.Name} идти не куда, возращаемся рекурсивно назад.");
+            if (prev != null)
+            {
+                _logger.AddComeback(prev, null, $" Больше из вершины {node.Name} идти не куда, возращаемся рекурсивно назад в вершину {prev.Name}.");
+            }
+            else
+            {
+                _logger.AddComeback(null, null, $" Больше из вершины {node.Name} идти не куда.Она корневая.");
+            }
+
         }
 
         private void TranslateToGraph()

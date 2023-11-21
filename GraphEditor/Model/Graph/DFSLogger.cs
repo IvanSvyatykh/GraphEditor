@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model.Graph
 {
-    public class DFSLogger: ILogger
+    public class DFSLogger : ILogger
     {
         public List<Tuple<GraphNode, GraphEdge, string>> Visited { get; private set; }
         public List<Tuple<GraphNode, GraphEdge, string>> GetVisisted()
@@ -30,7 +30,12 @@ namespace Model.Graph
             {
                 log = $"Переходим из вершины {edge.FirstNode.Name} в {edge.SecondNode.Name}, отмечаем вершину {edge.SecondNode.Name}, как посященную.";
             }
-            Visited.Add(Tuple.Create(node,edge, log));
+            Visited.Add(Tuple.Create(node, edge, log));
+        }
+
+        public void AddComeback(GraphNode node, GraphEdge edge, string comment)
+        {
+            Visited.Add(Tuple.Create(node, edge, comment));
         }
 
         public void AddCommentToLastLog(string str)
