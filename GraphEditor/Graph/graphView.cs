@@ -35,11 +35,73 @@ namespace Graph
 
         public delegate void PointPositionChanged(NodeView top);
 
+        private Line lineForEdgeDemonstration;
 
         public GraphView(Canvas canvas)
         {
             this.canvas = canvas;
+            
+            lineForEdgeDemonstration = new Line();
+            lineForEdgeDemonstration.Stroke = Brushes.Black;
+            lineForEdgeDemonstration.StrokeThickness = 2;
+            
+            canvas.MouseMove += DrawingFutureEdge;
+            canvas.MouseRightButtonDown += StopEdgeAdding;
         }
+
+        private void StopEdgeAdding(object sender, MouseButtonEventArgs e)
+        {
+            FirstTop = null;
+
+            if (canvas.Children.Contains(lineForEdgeDemonstration))
+            {
+                canvas.Children.Remove(lineForEdgeDemonstration);
+            }
+        }
+
+        private Point GiveMeRightMousePosition()
+        {
+            Point p = Mouse.GetPosition(canvas);
+
+            if (p.X < 0)
+            {
+                p.X = 0;
+            }
+            else if (p.X > canvas.ActualWidth)
+            {
+                p.X = canvas.ActualWidth;
+            }
+
+            if (p.Y < 0)
+            {
+                p.Y = 0;
+            }
+            else if (p.Y > canvas.ActualHeight)
+            {
+                p.Y = canvas.ActualHeight;
+            }
+
+            return p;
+        }
+        private void DrawingFutureEdge(object sender, MouseEventArgs e)
+        {
+            if (FirstTop is not null)
+            {
+                lineForEdgeDemonstration.X1 = FirstTop.Position.X + FirstTop.ViewPartNode.Width / 2;
+                lineForEdgeDemonstration.Y1 = FirstTop.Position.Y + ViewNode.NodeRadius / 2;
+
+                Point point = GiveMeRightMousePosition();
+
+                lineForEdgeDemonstration.X2 = point.X;
+                lineForEdgeDemonstration.Y2 = point.Y;
+
+                if (!canvas.Children.Contains(lineForEdgeDemonstration))
+                {
+                    canvas.Children.Add(lineForEdgeDemonstration);
+                }
+            }
+        }
+
 
         public List<NodeView> Tops
         {
@@ -154,18 +216,21 @@ namespace Graph
             }
         }
 
-        public void AddEdge(NodeView fromNode, NodeView toNode)
+        public void AddEdge(NodeView startNode, NodeView endNode)
         {
             FirstTop = null;
+            canvas.Children.Remove(lineForEdgeDemonstration);
+            
             foreach (EdgeView edge in edgeList)
             {
-                if (edge.StartNode == fromNode && edge.EndNode == toNode)
+                if ((edge.StartNode == startNode && edge.EndNode == endNode)||
+                    (edge.StartNode == endNode && edge.EndNode == startNode))
                 {
                     return;
                 }
             }
 
-            EdgeView line = new EdgeView(this, fromNode, toNode);
+            EdgeView line = new EdgeView(this, startNode, endNode);
             edgeList.Add(line);       
         }
         public void DeleteEdge(EdgeView line)
@@ -204,6 +269,10 @@ namespace Graph
         {
             isEdgeAdding = false;
             FirstTop = null;
+            if (canvas.Children.Contains(lineForEdgeDemonstration))
+            {
+                canvas.Children.Remove(lineForEdgeDemonstration);
+            }
         }
         public void StartDeletingEdge()
         {
@@ -236,7 +305,8 @@ namespace Graph
         {
             foreach (EdgeView edge in edgeList)
             {
-                if ((edge.StartNode.NodeName == startNodeName && edge.EndNode.NodeName == endNodeName) || (edge.StartNode.NodeName == endNodeName && edge.EndNode.NodeName == startNodeName))
+                if ((edge.StartNode.NodeName == startNodeName && edge.EndNode.NodeName == endNodeName) 
+                    || (edge.StartNode.NodeName == endNodeName && edge.EndNode.NodeName == startNodeName))
                 {
                     edge.Color = color;
                     return;

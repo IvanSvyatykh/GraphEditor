@@ -52,7 +52,9 @@ namespace GraphEditor
             if (parentViewNode.Graph.IsEdgeAdding)
             {
                 if (parentViewNode.Graph.FirstTop == null)
+                {
                     parentViewNode.Graph.FirstTop = parentViewNode;
+                }
                 else
                 {
                     parentViewNode.Graph.AddEdge(parentViewNode.Graph.FirstTop, parentViewNode);

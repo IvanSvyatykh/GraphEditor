@@ -75,13 +75,13 @@ namespace Graph
                 isValid = value;
                 if (isValid)
                 {
-                    graphNode.TextBoxForNodeLabel.Foreground = System.Windows.Media.Brushes.Black;
-                    graphNode.TextBoxForNodeLabel.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                    graphNode.TextBoxForNodeLabel.Foreground = Brushes.Black;
+                    graphNode.TextBoxForNodeLabel.BorderBrush = Brushes.Transparent;
                 }
                 else
                 {
-                    graphNode.TextBoxForNodeLabel.Foreground = System.Windows.Media.Brushes.Red;
-                    graphNode.TextBoxForNodeLabel.BorderBrush = System.Windows.Media.Brushes.Red;
+                    graphNode.TextBoxForNodeLabel.Foreground = Brushes.Red;
+                    graphNode.TextBoxForNodeLabel.BorderBrush = Brushes.Red;
                 }
             }
         }
