@@ -15,12 +15,11 @@ namespace GraphEditor.Model.Graph
         {
             Visited = new List<Tuple<GraphNode, GraphEdge, string>>();
         }
-
+ 
         public void AddLog(GraphNode node, GraphEdge edge, string comment)
         {
             Visited.Add(Tuple.Create(node, edge, comment));
         }
-
     }
 }
 
