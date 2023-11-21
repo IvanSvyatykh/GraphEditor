@@ -24,11 +24,11 @@ namespace Model.Graph
             string log;
             if (edge == null)
             {
-                log = $"Вершина {node.Name} является началом, просто посящаем ее и выделяем ее.";
+                log = $"Вершина {node.Name} является началом, просто посещаем ее и выделяем ее.";
             }
             else
             {
-                log = $"Переходим из вершины {edge.FirstNode.Name} в {edge.SecondNode.Name}, отмечаем вершину {edge.SecondNode.Name}, как посященную.";
+                log = $"Переходим из вершины {edge.FirstNode.Name} в {edge.SecondNode.Name}, отмечаем вершину {edge.SecondNode.Name}, как посещенную.";
             }
             Visited.Add(Tuple.Create(node, edge, log));
         }

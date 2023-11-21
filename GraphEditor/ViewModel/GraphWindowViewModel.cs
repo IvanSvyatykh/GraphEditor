@@ -331,6 +331,7 @@ namespace GraphEditor.ViewModel
             {
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
+                
                 visited = new List<Tuple<GraphNode, GraphEdge, string>>();
 
                 graphView.EndTaskWork();
@@ -367,10 +368,49 @@ namespace GraphEditor.ViewModel
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
-            string currentNodeName = "";
-            for (int i=0; i<=stepIndex; i++)
+            if (isTaskBFS)
             {
-                if (visited[i].Item1 is not null && visited[i].Item1.Name!=currentNodeName)
+                ShowCurrentSituationOfGraphForBFS();
+            }
+            else
+            {
+                ShowCurrentSituationOfGraphForDFS();
+            }
+
+        }
+
+        private void ShowCurrentSituationOfGraphForDFS()
+        {
+            string lastChosenNodeName = visited[0].Item1.Name;
+            for (int i = 0; i <= stepIndex; i++)
+            {
+                if (visited[i].Item1 is not null)
+                {
+                    graphView.ChangeNodeColor(lastChosenNodeName, Brushes.Green);
+                    lastChosenNodeName = visited[i].Item1.Name;
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
+                }
+
+                if (visited[i].Item2 is not null)
+                {
+                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
+                    }
+                    else
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.Green);
+                    }
+                }
+            }
+        }
+
+        private void ShowCurrentSituationOfGraphForBFS()
+        {
+            string currentNodeName = "";
+            for (int i = 0; i <= stepIndex; i++)
+            {
+                if (visited[i].Item1 is not null && visited[i].Item1.Name != currentNodeName)
                 {
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
                 }
@@ -390,11 +430,11 @@ namespace GraphEditor.ViewModel
                 {
                     graphView.ChangeNodeColor(currentNodeName, Brushes.Green);
                     currentNodeName = visited[i].Item1.Name;
-                    graphView.ChangeNodeColor(currentNodeName,Brushes.GreenYellow);
+                    graphView.ChangeNodeColor(currentNodeName, Brushes.GreenYellow);
                 }
-                
             }
         }
+
         public bool HasErrors => throw new NotImplementedException();
 
         public event PropertyChangedEventHandler PropertyChanged;
