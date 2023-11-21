@@ -15,94 +15,6 @@ namespace Graph
 {
     public class GraphView : property_base
     {
-        private Canvas canvas;
-
-        private List<EdgeView> edgeList = new List<EdgeView>();
-        private List<NodeView> nodeList = new List<NodeView>();
-
-        private bool isOriented = false;
-
-        private bool isNodeAdding;
-        private bool isNodeDeleting;
-        private bool isEdgeAdding; 
-        private bool isEdgeDeleting;
-        private bool isTaskWork;
-
-        private int uniqueNameLetterNumber = 65;
-        private int uniqueNameLettersCount = 1;
-
-        public NodeView FirstTop;
-
-        public delegate void PointPositionChanged(NodeView top);
-
-        private Line lineForEdgeDemonstration;
-
-        public GraphView(Canvas canvas)
-        {
-            this.canvas = canvas;
-            
-            lineForEdgeDemonstration = new Line();
-            lineForEdgeDemonstration.Stroke = Brushes.Black;
-            lineForEdgeDemonstration.StrokeThickness = 2;
-            
-            canvas.MouseMove += DrawingFutureEdge;
-            canvas.MouseRightButtonDown += StopEdgeAdding;
-        }
-
-        private void StopEdgeAdding(object sender, MouseButtonEventArgs e)
-        {
-            FirstTop = null;
-
-            if (canvas.Children.Contains(lineForEdgeDemonstration))
-            {
-                canvas.Children.Remove(lineForEdgeDemonstration);
-            }
-        }
-
-        private Point GiveMeRightMousePosition()
-        {
-            Point p = Mouse.GetPosition(canvas);
-
-            if (p.X < 0)
-            {
-                p.X = 0;
-            }
-            else if (p.X > canvas.ActualWidth)
-            {
-                p.X = canvas.ActualWidth;
-            }
-
-            if (p.Y < 0)
-            {
-                p.Y = 0;
-            }
-            else if (p.Y > canvas.ActualHeight)
-            {
-                p.Y = canvas.ActualHeight;
-            }
-
-            return p;
-        }
-        private void DrawingFutureEdge(object sender, MouseEventArgs e)
-        {
-            if (FirstTop is not null)
-            {
-                lineForEdgeDemonstration.X1 = FirstTop.Position.X + FirstTop.ViewPartNode.Width / 2;
-                lineForEdgeDemonstration.Y1 = FirstTop.Position.Y + ViewNode.NodeRadius / 2;
-
-                Point point = GiveMeRightMousePosition();
-
-                lineForEdgeDemonstration.X2 = point.X;
-                lineForEdgeDemonstration.Y2 = point.Y;
-
-                if (!canvas.Children.Contains(lineForEdgeDemonstration))
-                {
-                    canvas.Children.Add(lineForEdgeDemonstration);
-                }
-            }
-        }
-
-
         public List<NodeView> Tops
         {
             get { return nodeList; }
@@ -138,6 +50,39 @@ namespace Graph
             set { isOriented = value; OnPropertyChanged("IsOriented"); }
         }
 
+        private Canvas canvas;
+
+        private List<EdgeView> edgeList = new List<EdgeView>();
+        private List<NodeView> nodeList = new List<NodeView>();
+
+        private bool isOriented = false;
+
+        private bool isNodeAdding;
+        private bool isNodeDeleting;
+        private bool isEdgeAdding; 
+        private bool isEdgeDeleting;
+        private bool isTaskWork;
+
+        private int uniqueNameLetterNumber = 65;
+        private int uniqueNameLettersCount = 1;
+
+        public NodeView FirstTop;
+
+        public delegate void PointPositionChanged(NodeView top);
+
+        private Line lineForEdgeDemonstration;
+
+        public GraphView(Canvas canvas)
+        {
+            this.canvas = canvas;
+            
+            lineForEdgeDemonstration = new Line();
+            lineForEdgeDemonstration.Stroke = Brushes.Black;
+            lineForEdgeDemonstration.StrokeThickness = 2;
+            
+            canvas.MouseMove += DrawingFutureEdge;
+            canvas.MouseRightButtonDown += StopEdgeAdding;
+        }
         public bool CheckNameIsUnique(NodeView node)
         {   
             if (node.NodeName == "")
@@ -172,7 +117,7 @@ namespace Graph
             string uniqueName = "";
             for (int i=0; i < uniqueNameLettersCount;i++)
             {
-                uniqueName+= ((char)uniqueNameLetterNumber).ToString();
+                uniqueName += ((char)uniqueNameLetterNumber).ToString();
             }
             
             uniqueNameLetterNumber++;
@@ -232,6 +177,58 @@ namespace Graph
 
             EdgeView line = new EdgeView(this, startNode, endNode);
             edgeList.Add(line);       
+        }
+        private void StopEdgeAdding(object sender, MouseButtonEventArgs e)
+        {
+            FirstTop = null;
+
+            if (canvas.Children.Contains(lineForEdgeDemonstration))
+            {
+                canvas.Children.Remove(lineForEdgeDemonstration);
+            }
+        }
+
+        private Point GiveMeRightMousePosition()
+        {
+            Point p = Mouse.GetPosition(canvas);
+
+            if (p.X < 0)
+            {
+                p.X = 0;
+            }
+            else if (p.X > canvas.ActualWidth)
+            {
+                p.X = canvas.ActualWidth;
+            }
+
+            if (p.Y < 0)
+            {
+                p.Y = 0;
+            }
+            else if (p.Y > canvas.ActualHeight)
+            {
+                p.Y = canvas.ActualHeight;
+            }
+
+            return p;
+        }
+        private void DrawingFutureEdge(object sender, MouseEventArgs e)
+        {
+            if (FirstTop is not null)
+            {
+                lineForEdgeDemonstration.X1 = FirstTop.Position.X + FirstTop.ViewPartNode.Width / 2;
+                lineForEdgeDemonstration.Y1 = FirstTop.Position.Y + ViewNode.NodeRadius / 2;
+
+                Point point = GiveMeRightMousePosition();
+
+                lineForEdgeDemonstration.X2 = point.X;
+                lineForEdgeDemonstration.Y2 = point.Y;
+
+                if (!canvas.Children.Contains(lineForEdgeDemonstration))
+                {
+                    canvas.Children.Add(lineForEdgeDemonstration);
+                }
+            }
         }
         public void DeleteEdge(EdgeView line)
         {
