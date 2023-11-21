@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphEditor.Model.Graph;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace Model.Graph
 {
-    public class DFSLogger
+    public class DFSLogger: ILogger
     {
-        public List<Tuple<GraphEdge, GraphNode, string>> Visited { get; private set; }
+        public List<Tuple<GraphNode, GraphEdge, string>> Visited { get; private set; }
+        public List<Tuple<GraphNode, GraphEdge, string>> GetVisisted()
+        {
+            return Visited;
+        }
         public DFSLogger()
         {
-            Visited = new List<Tuple<GraphEdge, GraphNode, string>>();
+            Visited = new List<Tuple<GraphNode, GraphEdge, string>>();
         }
 
         public void AddMarkedElement(GraphNode node, GraphEdge edge)
@@ -23,9 +28,9 @@ namespace Model.Graph
             }
             else
             {
-                log = $"Переходи из вершины {edge.FirstNode.Name} в {edge.SecondNode.Name}, отмечаем вершину {edge.SecondNode.Name}, как посященную.";
+                log = $"Переходим из вершины {edge.FirstNode.Name} в {edge.SecondNode.Name}, отмечаем вершину {edge.SecondNode.Name}, как посященную.";
             }
-            Visited.Add(Tuple.Create(edge, node, log));
+            Visited.Add(Tuple.Create(node,edge, log));
         }
 
         public void AddCommentToLastLog(string str)

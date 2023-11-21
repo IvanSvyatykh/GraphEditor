@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace GraphEditor.Model.Graph
 {
-    public class BFSLogger
+    public class BFSLogger : ILogger
     {
         public List<Tuple<GraphNode, GraphEdge, string>> Visited { get; private set; }
 
+        public List<Tuple<GraphNode, GraphEdge, string>> GetVisisted() { 
+            return Visited;
+        }
         public BFSLogger()
         {
             Visited = new List<Tuple<GraphNode, GraphEdge, string>>();

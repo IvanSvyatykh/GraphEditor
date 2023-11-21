@@ -57,7 +57,7 @@ namespace Model.Graph
                             _visited[neighbor.Name] = true;
                             GraphEdge graphEdge = currentNode.GetEdgeBetween(currentNode, neighbor);
                             _logger.AddLog(neighbor, graphEdge,
-                                $"Обошли вершину {neighbor.Name}. Выделим её и ребро между вершинами{currentNode.Name} и {neighbor.Name}.");
+                                $"Обошли вершину {neighbor.Name}. Выделим её и ребро между вершинами {currentNode.Name} и {neighbor.Name}.");
                             queue.Enqueue(neighbor.Name);
                         }
                     }

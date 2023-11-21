@@ -103,7 +103,8 @@ namespace GraphEditor.ViewModel
 
         private byte currentMode = 0;
 
-        private BFSLogger loggerForBFS;
+        private List<Tuple<GraphNode, GraphEdge, string>> visited;
+
         private string startNodeName = "A";
         private string explanation = "Тут пока ничего нет";
 
@@ -238,15 +239,20 @@ namespace GraphEditor.ViewModel
                     SetZeroMode();
                     IsTaskWorking = true;
 
+                    ILogger logger;
                     if (isTaskBFS)
                     {
                         graphView.StartTaskWork();
                         BFS bFS = new BFS(graphView.GetEdgeMatrix());
-                        loggerForBFS = bFS.StartAlgorithm(startNodeName);
+                        logger = bFS.StartAlgorithm(startNodeName);
+                        visited = logger.GetVisisted();
                     }
                     else
                     {
-                        MessageBox.Show("Скоро будет");
+                        graphView.StartTaskWork();
+                        DFS dFS = new DFS(graphView.GetEdgeMatrix());
+                        logger = dFS.StartAlgorithm(startNodeName);
+                        visited = logger.GetVisisted();
                     }
 
                     IsStepForwardEnabled = true;
@@ -269,7 +275,7 @@ namespace GraphEditor.ViewModel
             stepIndex = 0;
             if (true)
             {
-                for (int i = 0; i < loggerForBFS.Visited.Count; i++)
+                for (int i = 0; i < visited.Count; i++)
                 {
                     Button step = new Button();
                     step.Content = "Шаг номер " + (i + 1);
@@ -325,6 +331,7 @@ namespace GraphEditor.ViewModel
             {
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
+                visited = new List<Tuple<GraphNode, GraphEdge, string>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
@@ -356,33 +363,33 @@ namespace GraphEditor.ViewModel
 
         private void ShowCurrentSituationOfGraph()
         {
-            Explanation = loggerForBFS.Visited[stepIndex].Item3;
+            Explanation = visited[stepIndex].Item3;
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
             string currentNodeName = "";
             for (int i=0; i<=stepIndex; i++)
             {
-                if (loggerForBFS.Visited[i].Item1 is not null && loggerForBFS.Visited[i].Item1.Name!=currentNodeName)
+                if (visited[i].Item1 is not null && visited[i].Item1.Name!=currentNodeName)
                 {
-                    graphView.ChangeNodeColor(loggerForBFS.Visited[i].Item1.Name, Brushes.Green);
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
                 }
 
-                if (loggerForBFS.Visited[i].Item2 is not null)
+                if (visited[i].Item2 is not null)
                 {
-                    if (loggerForBFS.Visited[i].Item1.Name != loggerForBFS.Visited[i].Item2.SecondNode.Name)
+                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
                     {
-                        graphView.ChangeEdgeColor(loggerForBFS.Visited[i].Item1.Name, loggerForBFS.Visited[i].Item2.SecondNode.Name, Brushes.Green);
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
                     }
                     else
                     {
-                        graphView.ChangeEdgeColor(loggerForBFS.Visited[i].Item1.Name, loggerForBFS.Visited[i].Item2.FirstNode.Name, Brushes.Green);
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.Green);
                     }
                 }
-                else if (loggerForBFS.Visited[i].Item1 is not null)
+                else if (visited[i].Item1 is not null)
                 {
                     graphView.ChangeNodeColor(currentNodeName, Brushes.Green);
-                    currentNodeName = loggerForBFS.Visited[i].Item1.Name;
+                    currentNodeName = visited[i].Item1.Name;
                     graphView.ChangeNodeColor(currentNodeName,Brushes.GreenYellow);
                 }
                 
