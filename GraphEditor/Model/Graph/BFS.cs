@@ -64,7 +64,6 @@ namespace Model.Graph
 
                     _logger.AddLog(null, null, $"Из вершины {currentNode.Name}, обошли всех соседей");
                 }
-
             }
         }
 
