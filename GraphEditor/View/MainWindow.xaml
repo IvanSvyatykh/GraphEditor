@@ -67,8 +67,8 @@
             <TextBlock x:Name="TextBlockWithExplanation" FontSize="15" Text="{Binding Explanation}" />
         </ScrollViewer>
 
-        <Button Content="Обход графа в ширину" Grid.Row="14" Grid.Column="1" FontSize="19" IsEnabled="{Binding IsTaskWorking }"/>
-        <Button Content="Обход графа в глубину" Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19" IsEnabled="{Binding IsTaskWorking }"/>
+        <Button Content="Обход графа в ширину" Grid.Row="14" Grid.Column="1" FontSize="19" Background="{Binding BackgroundForBFS}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeTaskCommand}"/>
+        <Button Content="Обход графа в глубину" Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19" Background="{Binding BackgroundForDFS}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeTaskCommand}"/>
         <Button Content="Решить" Grid.Row="14" Grid.Column="7" FontSize="20" Command="{Binding StartProgrammCommand}" IsEnabled="{Binding IsTaskWorking }"/>
 
         <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="2" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18" />

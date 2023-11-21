@@ -24,6 +24,8 @@ namespace GraphEditor.ViewModel
         public ICommand SetDeletingModeCommand { get; }
         public ICommand LeftButtonClickCommand { get; }
 
+        public ICommand ChangeTaskCommand { get; }
+
         public ICommand StartProgrammCommand { get; }
         public ICommand StepForwardCommand { get; }
         public ICommand StepBackwardCommand { get; }
@@ -44,6 +46,24 @@ namespace GraphEditor.ViewModel
             {
                 explanation = value;
                 OnPropertyChanged(nameof(Explanation));
+            }
+        }
+        public SolidColorBrush BackgroundForBFS
+        {
+            get => backgroundForBFS;
+            set
+            {
+                backgroundForBFS = value;
+                OnPropertyChanged(nameof(BackgroundForBFS));
+            }
+        }
+        public SolidColorBrush BackgroundForDFS
+        {
+            get => backgroundForDFS;
+            set
+            {
+                backgroundForDFS = value;
+                OnPropertyChanged(nameof(BackgroundForDFS));
             }
         }
         public bool IsTaskWorking
@@ -73,7 +93,10 @@ namespace GraphEditor.ViewModel
                 OnPropertyChanged(nameof(IsStepBackwardEnabled));
             }
         }
-
+        
+        private SolidColorBrush backgroundForBFS = new SolidColorBrush(Color.FromRgb(255, 199, 199));
+        private SolidColorBrush backgroundForDFS = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+        private bool isTaskBFS = true;
 
         private SolidColorBrush offModeButtonBackground = new SolidColorBrush(Color.FromRgb(221, 221, 221));
         private SolidColorBrush onModeButtonBackground = new SolidColorBrush(Color.FromRgb(255, 199, 199));
@@ -86,6 +109,7 @@ namespace GraphEditor.ViewModel
 
         private int stepIndex = 0;
         private ObservableCollection<Button> stepsButtons;
+        
         private bool isStepForwardEnabled = false;
         private bool isStepBackwardEnabled = false;
         private bool isTaskWorking = false;
@@ -103,6 +127,9 @@ namespace GraphEditor.ViewModel
             SetDeletingModeCommand = new RelayCommand(SetDeletingMode);
 
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
+
+            ChangeTaskCommand = new RelayCommand(ChangeTask);
+
 
             StartProgrammCommand = new RelayCommand(StartProgramm);
             StepForwardCommand = new RelayCommand(StepForward);
@@ -187,6 +214,21 @@ namespace GraphEditor.ViewModel
             }
         }
 
+        private void ChangeTask()
+        {
+            if (isTaskBFS)
+            {
+                isTaskBFS = false;
+                BackgroundForBFS = offModeButtonBackground;
+                BackgroundForDFS = onModeButtonBackground;
+            }
+            else
+            {
+                isTaskBFS = true;
+                BackgroundForBFS = onModeButtonBackground;
+                BackgroundForDFS = offModeButtonBackground;
+            }
+        }
         private void StartProgramm()
         {
             if (graphView.ValidateState())
@@ -195,9 +237,17 @@ namespace GraphEditor.ViewModel
                 {
                     SetZeroMode();
                     IsTaskWorking = true;
-                    graphView.StartTaskWork();
-                    BFS bFS = new BFS(graphView.GetEdgeMatrix());
-                    loggerForBFS = bFS.StartAlgorithm(startNodeName);
+
+                    if (isTaskBFS)
+                    {
+                        graphView.StartTaskWork();
+                        BFS bFS = new BFS(graphView.GetEdgeMatrix());
+                        loggerForBFS = bFS.StartAlgorithm(startNodeName);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Скоро будет");
+                    }
 
                     IsStepForwardEnabled = true;
                     ShowSteps();
@@ -276,7 +326,6 @@ namespace GraphEditor.ViewModel
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
-
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
                 graphView.ChangeEdgesColorToBlack();
@@ -311,9 +360,10 @@ namespace GraphEditor.ViewModel
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
+            string currentNodeName = "";
             for (int i=0; i<=stepIndex; i++)
             {
-                if (loggerForBFS.Visited[i].Item1 is not null)
+                if (loggerForBFS.Visited[i].Item1 is not null && loggerForBFS.Visited[i].Item1.Name!=currentNodeName)
                 {
                     graphView.ChangeNodeColor(loggerForBFS.Visited[i].Item1.Name, Brushes.Green);
                 }
@@ -328,6 +378,12 @@ namespace GraphEditor.ViewModel
                     {
                         graphView.ChangeEdgeColor(loggerForBFS.Visited[i].Item1.Name, loggerForBFS.Visited[i].Item2.FirstNode.Name, Brushes.Green);
                     }
+                }
+                else if (loggerForBFS.Visited[i].Item1 is not null)
+                {
+                    graphView.ChangeNodeColor(currentNodeName, Brushes.Green);
+                    currentNodeName = loggerForBFS.Visited[i].Item1.Name;
+                    graphView.ChangeNodeColor(currentNodeName,Brushes.GreenYellow);
                 }
                 
             }
