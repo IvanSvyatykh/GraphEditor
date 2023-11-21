@@ -46,7 +46,7 @@ namespace Model.Graph
                 List<GraphNode> neighbors = currentNode.LinkedNodes;
 
 
-                if (neighbors.Count > 1)
+                if (neighbors.Count >= 1)
                 {
                     _logger.AddLog(_graph.GetNodeByName(currentNode.Name), null, $"Находимся в вершине {_graph.GetNodeByName(currentNode.Name).Name}.");
 
