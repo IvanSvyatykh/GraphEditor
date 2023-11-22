@@ -23,7 +23,7 @@ namespace Model.WriteToFile
 
             foreach (var item in matrix)
             {
-                streamWriter.WriteLine(StringFormer(item.Key, item.Value, matrix.Keys.ToList().Count));
+                streamWriter.WriteLine(StringFormer(item.Key, item.Value, matrix.Keys.ToList()));
             }
 
             streamWriter.Close();
@@ -41,28 +41,27 @@ namespace Model.WriteToFile
             return sb.ToString();
         }
 
-        private static string StringFormer(string key, List<Tuple<int, string>> line, int amount)
+        private static string StringFormer(string key, List<Tuple<int, string>> line, List<string> keys)
         {
             line.Sort((x, y) => x.Item2.CompareTo(y.Item2));
 
             StringBuilder sb = new StringBuilder();
 
             sb.Append(key + ";");
-            int count = 0;
 
-            foreach (var item in line)
+            foreach (var k in keys)
             {
-                sb.Append(item.Item1.ToString() + ";");
-                count++;
-            }
-            if (count < amount)
-            {
-                for (int i = count; i < amount; i++)
+                Tuple<int, string> tuple = line.FirstOrDefault(x => Equals(x.Item2, k));
+
+                if (tuple != null)
+                {
+                    sb.Append(tuple.Item1 + ";");
+                }
+                else
                 {
                     sb.Append("-;");
                 }
-
-            }
+            }            
 
             return sb.ToString();
         }
