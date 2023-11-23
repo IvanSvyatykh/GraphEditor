@@ -43,7 +43,7 @@ namespace Model.Graph
                 else
                 {
                     firstGraphNode = _nodes.First(x => Equals(x.Name, firstNodeName));
-                    
+
                 }
                 if (_nodes.All(x => !Equals(x.Name, secondNodeName)))
                 {
@@ -52,13 +52,13 @@ namespace Model.Graph
                 else
                 {
                     secondGraphNode = _nodes.First(x => Equals(x.Name, secondNodeName));
-                    
+
                 }
 
                 Names.Add(firstNodeName);
                 Names.Add(secondNodeName);
-                firstGraphNode.AddEdge(secondGraphNode);
-                secondGraphNode.AddEdge(firstGraphNode);
+                firstGraphNode.AddEdge(secondGraphNode, edgeWeight);
+                secondGraphNode.AddEdge(firstGraphNode, edgeWeight);
 
                 _edges.Add(new GraphEdge(firstGraphNode, secondGraphNode, edgeWeight));
             }

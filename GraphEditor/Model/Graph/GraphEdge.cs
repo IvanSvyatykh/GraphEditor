@@ -29,6 +29,22 @@ namespace Model.Graph
             return first || second;
         }
 
+        public  GraphNode GetOtherNode(GraphNode node)
+        {
+            if (Equals(node.Name, FirstNode.Name))
+            {
+                return SecondNode;
+            }
+            else if(Equals(node.Name,SecondNode.Name))
+            {
+                return FirstNode; 
+            }
+            else
+            {
+                throw new ArgumentException($"Ребро не содержи такой узел {node.Name}");
+            }
+        }
+
         public GraphNode GetNext()
         {
             return SecondNode;

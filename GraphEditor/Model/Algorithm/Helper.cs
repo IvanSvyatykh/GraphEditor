@@ -8,6 +8,18 @@ namespace Model.Graph
 {
     public static class Helper
     {
+        public static void TranslateToGraphWithWeights(Dictionary<string, List<Tuple<int, string>>> matrix, Graph graph)
+        {
+
+            foreach (var key in matrix.Keys)
+            {
+                foreach (var node in matrix[key])
+                {
+                    graph.AddEdge(key, node.Item2, edgeWeight: node.Item1);
+                }
+            }
+        }
+
         public static void TranslateToGraph(Dictionary<string, List<string>> matrix, Graph graph)
         {
 
