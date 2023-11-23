@@ -1,5 +1,4 @@
 ﻿using Graph;
-using GraphEditor.Model.Algorithm;
 using GraphEditor.Model.Loggers;
 using Model.Graph;
 using System;

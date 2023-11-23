@@ -19,7 +19,8 @@ namespace Model.Graph
         {
             _matrix = matrix;
             _graph = new Graph();
-            TranslateToGraph();
+            Helper.TranslateToGraph(_matrix, _graph);
+            //TranslateToGraph();
         }
 
         public BFSLogger StartAlgorithm(string startNodeName)
