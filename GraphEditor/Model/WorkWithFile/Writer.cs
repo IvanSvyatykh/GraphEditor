@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Model.Graph;
 using System.Threading.Tasks;
 
 namespace Model.WriteToFile
@@ -15,7 +16,7 @@ namespace Model.WriteToFile
             using StreamWriter streamWriter = new StreamWriter(path);
 
 
-            //matrix = MatrixRecovery(matrix);
+            //matrix = Helper.MatrixRecovery(matrix);
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
             streamWriter.WriteLine("Graph");
             if (IsOriented)
@@ -74,23 +75,4 @@ namespace Model.WriteToFile
             return sb.ToString();
         }
 
-        private static Dictionary<string, List<Tuple<int, string>>> MatrixRecovery(Dictionary<string, List<Tuple<int, string>>> matrix)
-        {
-
-            foreach (var key in matrix.Keys)
-            {
-                foreach (var item in matrix[key])
-                {
-                    var temp = Tuple.Create(item.Item1, key);
-                    if (!matrix[item.Item2].Contains(temp))
-                    {
-                        matrix[item.Item2].Add(temp);
-                    }
-                }
-            }
-
-
-            return matrix;
-        }
     }
-}

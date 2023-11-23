@@ -19,7 +19,7 @@ namespace Model.Graph
             _matrix = matrix;
             _graph = new Graph();
             Helper.TranslateToGraph(_matrix, _graph);
-            //TranslateToGraph();
+            //Helper.TranslateToGraph();
         }
 
         public DFSLogger StartAlgorithm(string startNodeName)
