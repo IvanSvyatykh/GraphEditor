@@ -31,6 +31,13 @@ namespace Model.Graph
                 }
             }
         }
+        public static void CheckGraph(Graph graph)
+        {
+            if (graph.Edges.Any(x => x.Weight == null) || graph.Edges.All(x => x.Weight == 0))
+            {
+                throw new ArgumentException($"Заданнный граф иммет стоимость всех ребер 0 или имеет ребро с весом null");
+            }
+        }
 
         public static Dictionary<string, List<Tuple<int, string>>> MatrixRecovery(Dictionary<string, List<Tuple<int, string>>> matrix)
         {
