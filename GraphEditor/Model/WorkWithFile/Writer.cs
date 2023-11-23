@@ -10,15 +10,23 @@ namespace Model.WriteToFile
     public static class Writer
     {
 
-        public static void WriteNonOriented(Dictionary<string, List<Tuple<int, string>>> matrix, string path)
+        public static void WriteGraph(Dictionary<string, List<Tuple<int, string>>> matrix, string path, bool IsOriented)
         {
             using StreamWriter streamWriter = new StreamWriter(path);
 
 
-            matrix = MatrixRecovery(matrix);
+            //matrix = MatrixRecovery(matrix);
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
             streamWriter.WriteLine("Graph");
-            streamWriter.WriteLine("Non Oriented");
+            if (IsOriented)
+            {
+                streamWriter.WriteLine("Oriented");
+            }
+            else
+            {
+                streamWriter.WriteLine("Non Oriented");
+            }
+
             streamWriter.WriteLine(HeadFormer(matrix.Keys.ToList()));
 
             foreach (var item in matrix)
@@ -61,7 +69,7 @@ namespace Model.WriteToFile
                 {
                     sb.Append("-;");
                 }
-            }            
+            }
 
             return sb.ToString();
         }
