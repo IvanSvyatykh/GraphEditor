@@ -21,6 +21,8 @@ namespace Model.Graph
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
         }
 
+
+
         public PrimaLogger StartAlgorithm()
         {
             Random random = new Random();
@@ -30,6 +32,8 @@ namespace Model.Graph
                 ToList().
                 ForEach(name => { _visited.Add(name, false); });
 
+           CheckGraph();
+
 
             string startNodeName = _graph.Names.ToList()[random.Next(0, _graph.Names.Count - 1)];
             _visited[startNodeName] = true;
@@ -37,6 +41,14 @@ namespace Model.Graph
             MinOstTree(startNodeName);
 
             return _logger;
+        }
+
+        private void CheckGraph()
+        {          
+            if (_graph.Edges.Any(x => x.Weight == null)|| _graph.Edges.All(x => x.Weight == 0))
+            {
+                throw new ArgumentException($"Заданнный граф иммет стоимость всех ребер 0 или имеет ребро с весом null");
+            }
         }
 
         private void MinOstTree(string randNode)
