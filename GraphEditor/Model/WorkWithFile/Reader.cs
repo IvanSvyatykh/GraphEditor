@@ -20,11 +20,11 @@ namespace Model.WorkWithFile
             line = streamReader.ReadLine();
             if (Equals(line, "Non Oriented"))
             {
-                return ReadNonOriented(streamReader);
+                return ReadGraph(streamReader);
             }
             else
             {
-                return ReadOriented(streamReader);
+                return ReadGraph(streamReader);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Model.WorkWithFile
             throw new Exception("Не готово");
         }
 
-        private static Dictionary<string, List<Tuple<int, string>>> ReadNonOriented(StreamReader streamReader)
+        private static Dictionary<string, List<Tuple<int, string>>> ReadGraph(StreamReader streamReader)
         {
             string line = streamReader.ReadLine();
             string[] splitted = line.Trim(' ').TrimEnd(';').Split(";");
