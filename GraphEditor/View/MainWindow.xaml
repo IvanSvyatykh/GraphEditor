@@ -53,9 +53,9 @@
             <MenuItem Header="Words sort" BorderBrush="WhiteSmoke" Click="WordsSortingMenuItem_Click"/>
             <MenuItem Header="Words sort time tesing" BorderBrush="WhiteSmoke" Click="WordsTimeTestingMenuItem_Click"/>-->
         </Menu>
-        
-        <Button Content="Save graph" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Command="{Binding SaveGraphCommand}"/>
-        <Button Content="Load graph" Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" Command="{Binding LoadGraphCommand}"/>
+
+        <Button Content="Сохранить граф" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding SaveGraphCommand}"/>
+        <Button Content="Загрузить граф" Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding LoadGraphCommand}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="Выбор режима:" VerticalAlignment="Bottom" FontSize="18"/>
 
