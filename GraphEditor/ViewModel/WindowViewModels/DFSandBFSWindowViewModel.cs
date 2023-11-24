@@ -20,7 +20,7 @@ using System.Windows.Media;
 
 namespace GraphEditor.ViewModel
 {
-    public class GraphWindowViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
+    public class DFSandBFSWindowViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         public ICommand SetAddNodesModeCommand { get; }
         public ICommand SetAddEdgesModeCommand { get; }
@@ -121,8 +121,8 @@ namespace GraphEditor.ViewModel
         private bool isTaskWorking = false;
 
         private GraphView graphView;
-        private MainWindow window;
-        public GraphWindowViewModel(MainWindow window)
+        private DFSandBFSWindow window;
+        public DFSandBFSWindowViewModel(DFSandBFSWindow window)
         {
             this.window = window;
 

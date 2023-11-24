@@ -1,0 +1,101 @@
+﻿<Window x:Class="GraphEditor.DFSandBFSWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GraphEditor"
+        mc:Ignorable="d"
+        Title="DFS and BFS" MinHeight="800" MinWidth="800" Height="800" Width="900">
+    <Grid Background="#FFEFFCFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4.5*"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="4.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Menu Grid.Column="0" VerticalAlignment="Center"  Grid.ColumnSpan="15" Foreground="Black"  Background="White">
+            <MenuItem Header="DFS and BFS" BorderBrush="WhiteSmoke" Background="#FFEFFCFF" Click="DFSandBFSMenuItemClick" />
+            <MenuItem Header="Prima algorithm" BorderBrush="WhiteSmoke" Click="PrimaAlgorithmMenuItemClick" />
+        </Menu>
+
+        <Button Content="Сохранить граф" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding SaveGraphCommand}"/>
+        <Button Content="Загрузить граф" Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding LoadGraphCommand}"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="Выбор режима:" VerticalAlignment="Bottom" FontSize="18"/>
+
+        <Button x:Name="SetAddNodesModeButton" Grid.Row="4" Grid.Column="1" Content="Режим добавления узлов" FontSize="15" IsEnabled="{Binding IsTaskWorking }" Command="{Binding SetAddNodesModeCommand}"/>
+        <Button x:Name="SetAddEdgesModeButton" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" Content="Режим добавления связей" FontSize="15" IsEnabled="{Binding IsTaskWorking }" Command="{Binding SetAddEdgesModeCommand}"/>
+        <Button x:Name="SetDeletingModeButton" Grid.Row="4" Grid.Column="7" Content="Режим удаления" FontSize="15" IsEnabled="{Binding IsTaskWorking }" Command="{Binding SetDeletingModeCommand}"/>
+        
+        <TextBlock Text="Граф:"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
+
+        <Canvas Grid.Row="6" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="7" Background="White" x:Name="CanvasForGraph">
+            <Canvas.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding LeftButtonClickCommand}" />
+            </Canvas.InputBindings>
+        </Canvas>
+
+        <TextBlock x:Name="TextBlockStepExplanation" Text="Объяснение шага:" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18"/>
+        
+        <ScrollViewer Grid.Column="1" Grid.Row="12" Grid.RowSpan="2" Grid.ColumnSpan="7" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <TextBlock x:Name="TextBlockWithExplanation" FontSize="15" Text="{Binding Explanation}" />
+        </ScrollViewer>
+
+        <Button Content="Обход графа в ширину" Grid.Row="15" Grid.Column="1" FontSize="19" Background="{Binding BackgroundForBFS}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeTaskCommand}"/>
+        <Button Content="Обход графа в глубину" Grid.Row="15" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19" Background="{Binding BackgroundForDFS}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeTaskCommand}"/>
+        <Button Content="Решить" Grid.Row="15" Grid.Column="7" FontSize="20" Command="{Binding StartProgrammCommand}" IsEnabled="{Binding IsTaskWorking }"/>
+
+        <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="3" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18" />
+
+        <ScrollViewer Grid.Column="9" Grid.Row="4" Grid.RowSpan="7" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Background="White">
+            <ItemsControl ItemsSource="{Binding StepsButtons}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid  HorizontalAlignment="Left" VerticalAlignment="Top" Columns="1"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+        
+        <Button x:Name="ButtonStepForward" Grid.Column="11" Grid.ColumnSpan="1" Grid.Row="13"  Content="Вперед" FontSize="20" IsEnabled="{Binding IsStepForwardEnabled}" Command="{Binding StepForwardCommand}" />
+        <Button x:Name="ButtonStepBackward" Grid.Column="9" Grid.ColumnSpan="1" Grid.Row="13"  Content="Назад" FontSize="20" IsEnabled="{Binding IsStepBackwardEnabled}" Command="{Binding StepBackwardCommand}" />
+
+        <TextBlock Grid.Column="9" Grid.Row="15" FontSize="15">
+            Начальный
+            <LineBreak/>
+            узел:
+        </TextBlock>
+        <TextBox Grid.Column="11" Grid.Row="15" Text="{Binding StartNodeName}" IsEnabled="{Binding IsTaskWorking }"/>
+    </Grid>
+</Window>

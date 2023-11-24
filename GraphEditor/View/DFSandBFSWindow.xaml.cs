@@ -1,5 +1,6 @@
 ﻿using Graph;
 using GraphEditor.ViewModel;
+using GraphEditor.ViewModel.Servises;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,22 @@ namespace GraphEditor
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DFSandBFSWindow : Window
     {   
-        private GraphWindowViewModel windowViewModel;
-        public MainWindow()
+        private DFSandBFSWindowViewModel windowViewModel;
+        public DFSandBFSWindow()
         {
             InitializeComponent();
-            windowViewModel = new GraphWindowViewModel(this);
+            windowViewModel = new DFSandBFSWindowViewModel(this);
             DataContext = windowViewModel;
+        }
+        private void DFSandBFSMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            INavigationService.SetDFSandBFSWindow(this);
+        }
+        private void PrimaAlgorithmMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            INavigationService.SetPrimaAlgorithmWindow(this);
         }
     }
 }

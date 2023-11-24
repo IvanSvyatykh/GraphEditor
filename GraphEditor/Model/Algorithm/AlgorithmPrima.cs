@@ -21,8 +21,6 @@ namespace Model.Graph
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
         }
 
-
-
         public PrimaLogger StartAlgorithm()
         {
             Random random = new Random();
