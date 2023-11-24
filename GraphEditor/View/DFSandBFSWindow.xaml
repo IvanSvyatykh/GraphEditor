@@ -47,6 +47,7 @@
         <Menu Grid.Column="0" VerticalAlignment="Center"  Grid.ColumnSpan="15" Foreground="Black"  Background="White">
             <MenuItem Header="DFS and BFS" BorderBrush="WhiteSmoke" Background="#FFEFFCFF" Click="DFSandBFSMenuItemClick" />
             <MenuItem Header="Prima algorithm" BorderBrush="WhiteSmoke" Click="PrimaAlgorithmMenuItemClick" />
+            <MenuItem Header="Dijkstra algorithm" BorderBrush="WhiteSmoke" Click="DijkstraAlgorithmMenuItemClick" />
         </Menu>
 
         <Button Content="Сохранить граф" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding SaveGraphCommand}"/>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphEditor.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace GraphEditor.ViewModel.Servises
             newWindow.Show();
             window.Close();
         }
-        
+        static void SetDijkstraAlgorithmWindow(Window window)
+        {
+            window.Hide();
+            DijkstraAlgorithmWindow newWindow = new DijkstraAlgorithmWindow();
+            newWindow.Show();
+            window.Close();
+        }
     }
 }

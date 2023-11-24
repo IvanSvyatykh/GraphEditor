@@ -37,5 +37,9 @@ namespace GraphEditor
         {
             INavigationService.SetPrimaAlgorithmWindow(this);
         }
+        private void DijkstraAlgorithmMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            INavigationService.SetDijkstraAlgorithmWindow(this);
+        }
     }
 }

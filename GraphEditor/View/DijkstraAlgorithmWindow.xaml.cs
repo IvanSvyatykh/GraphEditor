@@ -1,6 +1,5 @@
-﻿using Graph;
+﻿using GraphEditor.ViewModel.Servises;
 using GraphEditor.ViewModel;
-using GraphEditor.ViewModel.Servises;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,26 +9,24 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GraphEditor.ViewModel.WindowViewModels;
 
-namespace GraphEditor
+namespace GraphEditor.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для DijkstraAlgorithmWindow.xaml
     /// </summary>
-    public partial class DFSandBFSWindow : Window
-    {   
-        private DFSandBFSWindowViewModel windowViewModel;
-        public DFSandBFSWindow()
+    public partial class DijkstraAlgorithmWindow : Window
+    {
+        private DijkstraAlgorithmWindowViewModel windowViewModel;
+        public DijkstraAlgorithmWindow()
         {
             InitializeComponent();
-            windowViewModel = new DFSandBFSWindowViewModel(this);
+            windowViewModel = new DijkstraAlgorithmWindowViewModel(this);
             DataContext = windowViewModel;
         }
         private void DFSandBFSMenuItemClick(object sender, RoutedEventArgs e)
