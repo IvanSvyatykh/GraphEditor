@@ -13,9 +13,9 @@ namespace Model.Graph
 
         public GraphNode SecondNode { get; private set; }
 
-        public int? Weight { get; private set; }
+        public int Weight { get; private set; }
 
-        public GraphEdge(GraphNode firstNode, GraphNode secondNode, int? weight = null)
+        public GraphEdge(GraphNode firstNode, GraphNode secondNode, int weight = 0)
         {
             FirstNode = firstNode;
             SecondNode = secondNode;

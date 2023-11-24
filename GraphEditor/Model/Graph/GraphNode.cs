@@ -49,7 +49,7 @@ namespace Model.Graph
 
         }
 
-        public void AddEdge(GraphNode node, int? weigtOfEdge = null)
+        public void AddEdge(GraphNode node, int weigtOfEdge = 0)
         {
 
             if (LinkedNodes.All(n => !Equals(n.Name, node.Name)))

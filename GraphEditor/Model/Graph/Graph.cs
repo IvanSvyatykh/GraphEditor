@@ -30,7 +30,7 @@ namespace Model.Graph
             }
         }
 
-        public void AddEdge(string firstNodeName, string secondNodeName, int? firstNodeWeight = null, int? secondNodeWeight = null, int? edgeWeight = null)
+        public void AddEdge(string firstNodeName, string secondNodeName, int? firstNodeWeight = null, int? secondNodeWeight = null, int edgeWeight = 0)
         {
             if (Edges.All(x => !x.IsEqual(firstNodeName, secondNodeName)))
             {
