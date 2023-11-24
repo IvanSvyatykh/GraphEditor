@@ -98,7 +98,8 @@ namespace GraphEditor
         }
         private void TxtBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {   
-            if (!parentViewNode.Graph.IsTaskWork)
+            if (!parentViewNode.Graph.IsTaskWork && !parentViewNode.Graph.IsNodeDeleting && 
+                !parentViewNode.Graph.IsEdgeAdding && !parentViewNode.Graph.IsNodeAdding)
             {
                 TextBoxForNodeLabel.IsReadOnly = false;
                 TextBoxForNodeLabel.CaretBrush = Brushes.Black;

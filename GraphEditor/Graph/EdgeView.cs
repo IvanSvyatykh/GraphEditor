@@ -14,7 +14,6 @@ namespace Graph
 {
     public class EdgeView
     {
-
         public bool isValid { get; set; }
         public int Weight
         {
@@ -23,7 +22,7 @@ namespace Graph
 
         public TextBox TxtBox
         {
-            get { return textBox1; }
+            get { return textBox; }
         }
 
         public NodeView StartNode
@@ -61,7 +60,7 @@ namespace Graph
         private Line LeftLine;
         private Line RightLine;
 
-        private TextBox textBox1;
+        private TextBox textBox;
 
         private Brush invisibleBrush;
 
@@ -138,35 +137,34 @@ namespace Graph
                 }
             }
 
+            isValid = true;
+            if (_graph.IsWeighted)
+            {
+                textBox = new TextBox();
+                textBox.Width = 50;
+                textBox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+                textBox.Background = new SolidColorBrush(Colors.Transparent);
+                textBox.VerticalContentAlignment = VerticalAlignment.Center;
+                textBox.HorizontalContentAlignment = HorizontalAlignment.Center;
+                textBox.FontWeight = FontWeights.Bold;
+                textBox.FontSize = 14;
+                textBox.IsReadOnly = true;
 
-            textBox1 = new TextBox();
-            textBox1.Width = 50;
-            textBox1.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            textBox1.Background = new SolidColorBrush(Colors.Transparent);
-            textBox1.VerticalContentAlignment = VerticalAlignment.Center;
-            textBox1.HorizontalContentAlignment = HorizontalAlignment.Center;
-            textBox1.FontWeight = FontWeights.Bold;
-            textBox1.FontSize = 14;
-            textBox1.IsReadOnly = true;
+                textBox.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(TxtBox_PreviewMouseLeftButtonDown);
+                textBox.TextChanged += new TextChangedEventHandler(TxtBox_TextChanged);
+                textBox.KeyDown += new KeyEventHandler(TxtBox_KeyDown);
+                textBox.MouseEnter += new MouseEventHandler(TextBox_MouseEnter);
+                textBox.MouseLeave += new MouseEventHandler(TextBox_MouseLeave);
 
-            TxtBox1_TextChanged(null, null);
+                textBox.Text = weight.ToString();
 
-            textBox1.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(TxtBox1_PreviewMouseLeftButtonDown);
-            textBox1.TextChanged += new TextChangedEventHandler(TxtBox1_TextChanged);
-            textBox1.KeyDown += new KeyEventHandler(TxtBox1_KeyDown);
-            textBox1.MouseEnter += new MouseEventHandler(TextBox1MouseEnter);
-            textBox1.MouseLeave += new MouseEventHandler(TextBox1MouseLeave);
+                _graph.GraphCanvas.Children.Add(textBox);
+                
+                Canvas.SetZIndex(textBox, 2);
+            }
 
-            textBox1.Text = weight.ToString();
-            
-            invisibleBrush = new SolidColorBrush(Colors.White);
-            invisibleBrush.Opacity = 0;
-
-            _graph.GraphCanvas.Children.Add(textBox1);
             _graph.GraphCanvas.Children.Add(Line);
-            
             Canvas.SetZIndex(Line, 0);
-            Canvas.SetZIndex(textBox1, 2);
             
             this.startNode = from_node;
             this.endNode = to_node;
@@ -180,6 +178,9 @@ namespace Graph
             {
                 OnPointPositionChanged(from_node);
             }
+            
+            invisibleBrush = new SolidColorBrush(Colors.White);
+            invisibleBrush.Opacity = 0;
         }
 
         private void SetColor(Brush color)
@@ -188,7 +189,7 @@ namespace Graph
             baseColor = color;
         }
 
-        private void TxtBox1_KeyDown(object sender, KeyEventArgs e)
+        private void TxtBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {   
@@ -196,15 +197,15 @@ namespace Graph
                 OnMouseLeave();
             }            
         }
-        private void TxtBox1_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TxtBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             OnMouseEnter();
         }
-        private void TxtBox1_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                edge_weight = int.Parse(textBox1.Text);
+                edge_weight = int.Parse(textBox.Text);
                 
                 if (edge_weight >= 1000)
                 {
@@ -215,20 +216,20 @@ namespace Graph
                     throw new Exception();
                 }
 
-                textBox1.Foreground = Brushes.ForestGreen;
+                textBox.Foreground = Brushes.ForestGreen;
                 isValid = true;
             }
             catch (Exception ex)
             {
-                textBox1.Foreground = Brushes.Red;
+                textBox.Foreground = Brushes.Red;
                 isValid = false;
             }
         }
-        private void TextBox1MouseLeave(object sender, MouseEventArgs e)
+        private void TextBox_MouseLeave(object sender, MouseEventArgs e)
         {
             OnMouseLeave();
         }
-        private void TextBox1MouseEnter(object sender, MouseEventArgs e)
+        private void TextBox_MouseEnter(object sender, MouseEventArgs e)
         {
             OnMouseEnter();
         }
@@ -262,15 +263,14 @@ namespace Graph
                         LeftLine.Stroke = RightLine.Stroke = Brushes.Green;
                     }
 
-                    textBox1.IsReadOnly = false;
+                    if (graph.IsWeighted && !graph.IsEdgeDeleting)
+                    {
+                        textBox.IsReadOnly = false;
 
-                    textBox1.CaretBrush = Brushes.Black;
-                    textBox1.Background = Brushes.White;
+                        textBox.CaretBrush = Brushes.Black;
+                        textBox.Background = Brushes.White;
+                    }
                 }
-            }
-            else
-            {
-                textBox1.IsReadOnly = true;
             }
         }
         private void OnMouseLeave()
@@ -283,9 +283,13 @@ namespace Graph
                     LeftLine.Stroke = RightLine.Stroke = Brushes.Black;
                 }
 
-                textBox1.IsReadOnly = true;
-                textBox1.CaretBrush = invisibleBrush;
-                textBox1.Background = new SolidColorBrush(Colors.Transparent);
+                if (graph.IsWeighted)
+                {
+                    textBox.IsReadOnly = true;
+
+                    textBox.CaretBrush = invisibleBrush;
+                    textBox.Background = new SolidColorBrush(Colors.Transparent);
+                }
             }
         }
 
@@ -302,20 +306,25 @@ namespace Graph
                 ((Line)Line).X2 = endNode.Position.X + startNode.ViewPartNode.Width / 2;
                 ((Line)Line).Y2 = endNode.Position.Y + ViewNode.NodeRadius / 2;
 
-                double hypotenuse = Math.Sqrt(Math.Abs(((Line)Line).X2 - ((Line)Line).X1) * Math.Abs(((Line)Line).X2 - ((Line)Line).X1) +
+
+                if (graph.IsWeighted)
+                {
+                    double hypotenuse = Math.Sqrt(Math.Abs(((Line)Line).X2 - ((Line)Line).X1) * Math.Abs(((Line)Line).X2 - ((Line)Line).X1) +
                     Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) * Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1));
 
-                double angle = Math.Asin(Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) / hypotenuse);
+                    double angle = Math.Asin(Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) / hypotenuse);
 
-                if (angle <= 7*Math.PI/24) {
-                    Canvas.SetLeft(textBox1, startNode.Position.X + (((Line)Line).X2 - ((Line)Line).X1) / 2);
-                }
-                else
-                {
-                    Canvas.SetLeft(textBox1, startNode.Position.X + 12 + (((Line)Line).X2 - ((Line)Line).X1) / 2);
-                }
+                    if (angle <= 7 * Math.PI / 24)
+                    {
+                        Canvas.SetLeft(textBox, startNode.Position.X + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(textBox, startNode.Position.X + 12 + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                    }
 
-                Canvas.SetTop(textBox1, startNode.Position.Y + (((Line)Line).Y2 - ((Line)Line).Y1) / 2 - textBox1.FontSize / 3);
+                    Canvas.SetTop(textBox, startNode.Position.Y + (((Line)Line).Y2 - ((Line)Line).Y1) / 2 - textBox.FontSize / 3);
+                }
 
                 if (graph.IsOriented)
                 {
@@ -339,7 +348,7 @@ namespace Graph
 
                     Canvas.SetLeft(LeftLine, startNode.Position.X + endNode.ViewPartNode.Width / 2);
                     Canvas.SetTop(LeftLine, startNode.Position.Y + ViewNode.NodeRadius / 2);
-                    
+
                     Canvas.SetLeft(RightLine, startNode.Position.X + endNode.ViewPartNode.Width / 2);
                     Canvas.SetTop(RightLine, startNode.Position.Y + ViewNode.NodeRadius / 2);
                 }
@@ -348,9 +357,12 @@ namespace Graph
             {
                 Canvas.SetLeft(Line, startNode.Position.X);
                 Canvas.SetTop(Line, startNode.Position.Y - 35);
-
-                Canvas.SetLeft(textBox1, startNode.Position.X + 10);
-                Canvas.SetTop(textBox1, startNode.Position.Y - 35);
+                
+                if (graph.IsWeighted)
+                {
+                    Canvas.SetLeft(textBox, startNode.Position.X + 10);
+                    Canvas.SetTop(textBox, startNode.Position.Y - 35);
+                }
             }
         }
     }

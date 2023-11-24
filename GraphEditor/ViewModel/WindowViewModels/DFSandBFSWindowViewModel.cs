@@ -122,7 +122,7 @@ namespace GraphEditor.ViewModel
         {
             this.window = window;
 
-            graphView = new GraphView(window.CanvasForGraph);
+            graphView = new GraphView(window.CanvasForGraph, false, false);
 
             SetAddNodesModeCommand = new RelayCommand(SetAddNodesMode);
             SetAddEdgesModeCommand = new RelayCommand(SetAddEdgesMode);
@@ -243,7 +243,7 @@ namespace GraphEditor.ViewModel
                 try
                 {       
                     window.CanvasForGraph.Children.Clear();
-                    graphView = new GraphView(window.CanvasForGraph);
+                    graphView = new GraphView(window.CanvasForGraph, false, false);
 
                     Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
 

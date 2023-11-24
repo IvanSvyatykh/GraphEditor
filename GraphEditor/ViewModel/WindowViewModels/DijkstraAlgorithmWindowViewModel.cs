@@ -44,6 +44,11 @@ namespace GraphEditor.ViewModel.WindowViewModels
             get => startNodeName;
             set => startNodeName = value;
         }
+        public string EndNodeName
+        {
+            get => endNodeName;
+            set => endNodeName = value;
+        }
         public string Explanation
         {
             get => explanation;
@@ -53,22 +58,22 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 OnPropertyChanged(nameof(Explanation));
             }
         }
-        public SolidColorBrush BackgroundForBFS
+        public SolidColorBrush BackgroundForOrientedGraph
         {
-            get => backgroundForBFS;
+            get => backgroundForOrientedGraph;
             set
             {
-                backgroundForBFS = value;
-                OnPropertyChanged(nameof(BackgroundForBFS));
+                backgroundForOrientedGraph = value;
+                OnPropertyChanged(nameof(BackgroundForOrientedGraph));
             }
         }
-        public SolidColorBrush BackgroundForDFS
+        public SolidColorBrush BackgroundForNoOrientedGraph
         {
-            get => backgroundForDFS;
+            get => backgroundForNoOrientedGraph;
             set
             {
-                backgroundForDFS = value;
-                OnPropertyChanged(nameof(BackgroundForDFS));
+                backgroundForNoOrientedGraph = value;
+                OnPropertyChanged(nameof(BackgroundForNoOrientedGraph));
             }
         }
         public bool IsTaskWorking
@@ -99,9 +104,9 @@ namespace GraphEditor.ViewModel.WindowViewModels
             }
         }
 
-        private SolidColorBrush backgroundForBFS = new SolidColorBrush(Color.FromRgb(255, 199, 199));
-        private SolidColorBrush backgroundForDFS = new SolidColorBrush(Color.FromRgb(211, 211, 211));
-        private bool isTaskBFS = true;
+        private SolidColorBrush backgroundForOrientedGraph = new SolidColorBrush(Color.FromRgb(255, 199, 199));
+        private SolidColorBrush backgroundForNoOrientedGraph = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+        private bool isGraphOriented = true;
 
         private SolidColorBrush offModeButtonBackground = new SolidColorBrush(Color.FromRgb(221, 221, 221));
         private SolidColorBrush onModeButtonBackground = new SolidColorBrush(Color.FromRgb(255, 199, 199));
@@ -111,6 +116,8 @@ namespace GraphEditor.ViewModel.WindowViewModels
         private List<Tuple<GraphNode, GraphEdge, string>> visited;
 
         private string startNodeName = "A";
+        private string endNodeName = "B";
+
         private string explanation = "Тут пока ничего нет";
 
         private int stepIndex = 0;
@@ -126,7 +133,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
         {
             this.window = window;
 
-            graphView = new GraphView(window.CanvasForGraph);
+            graphView = new GraphView(window.CanvasForGraph, isGraphOriented, true);
 
             SetAddNodesModeCommand = new RelayCommand(SetAddNodesMode);
             SetAddEdgesModeCommand = new RelayCommand(SetAddEdgesMode);
@@ -248,7 +255,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 try
                 {
                     window.CanvasForGraph.Children.Clear();
-                    graphView = new GraphView(window.CanvasForGraph);
+                    graphView = new GraphView(window.CanvasForGraph, isGraphOriented, true);
 
                     Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
 
@@ -272,30 +279,30 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private void ChangeTask()
         {
-            if (isTaskBFS)
+            if (isGraphOriented)
             {
-                isTaskBFS = false;
-                BackgroundForBFS = offModeButtonBackground;
-                BackgroundForDFS = onModeButtonBackground;
+                isGraphOriented = false;
+                BackgroundForOrientedGraph = offModeButtonBackground;
+                BackgroundForNoOrientedGraph = onModeButtonBackground;
             }
             else
             {
-                isTaskBFS = true;
-                BackgroundForBFS = onModeButtonBackground;
-                BackgroundForDFS = offModeButtonBackground;
+                isGraphOriented = true;
+                BackgroundForOrientedGraph = onModeButtonBackground;
+                BackgroundForNoOrientedGraph = offModeButtonBackground;
             }
         }
         private void StartProgramm()
         {
             if (graphView.ValidateState())
             {
-                if (graphView.IsThisNodeExistInGraph(startNodeName))
+                if (graphView.IsThisNodeExistInGraph(startNodeName) && graphView.IsThisNodeExistInGraph(endNodeName))
                 {
                     SetZeroMode();
                     IsTaskWorking = true;
 
                     ILogger logger;
-                    if (isTaskBFS)
+                    if (isGraphOriented)
                     {
                         graphView.StartTaskWork();
                         BFS bFS = new BFS(graphView.GetEdgeMatrix());
@@ -315,7 +322,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 }
                 else
                 {
-                    MessageBox.Show("В графе нет такого узла");
+                    MessageBox.Show("В графе нет одного из этих узлов");
                 }
             }
             else
@@ -421,7 +428,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
-            if (isTaskBFS)
+            if (isGraphOriented)
             {
                 ShowCurrentSituationOfGraphForBFS();
             }
