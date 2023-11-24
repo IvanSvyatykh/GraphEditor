@@ -256,7 +256,7 @@ namespace GraphEditor.ViewModel
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    MessageBox.Show("К сожалению, при загрузке файла произошла ошибка:\n"+e.Message);
                 }
             }
         }
