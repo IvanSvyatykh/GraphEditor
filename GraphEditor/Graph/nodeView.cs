@@ -106,7 +106,8 @@ namespace Graph
             graphNode = new ViewNode(this);
             graphNode.TextBoxForNodeLabel.Text = uniqueName;
 
-            IsValid = true;
+            IsValid = false;
+            Validate();
         }
 
         public void OnMouseLeave()

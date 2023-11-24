@@ -130,6 +130,8 @@ namespace Graph
             newNode.pointPositionChange += OnPointPositionChanged;
 
             OnPointPositionChanged(newNode);
+
+            ValidateNamesIsUnique();
         }
         private void AddNodeFromLoadedFile(string nodeName, Point coordinats)
         {

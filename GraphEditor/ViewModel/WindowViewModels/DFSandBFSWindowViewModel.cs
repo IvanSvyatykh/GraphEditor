@@ -447,14 +447,7 @@ namespace GraphEditor.ViewModel
 
                 if (visited[i].Item2 is not null)
                 {
-                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
-                    }
-                    else
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.Green);
-                    }
+                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
                 }
             }
         }
@@ -471,14 +464,7 @@ namespace GraphEditor.ViewModel
 
                 if (visited[i].Item2 is not null)
                 {
-                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
-                    }
-                    else
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.Green);
-                    }
+                   graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
                 }
                 else if (visited[i].Item1 is not null)
                 {

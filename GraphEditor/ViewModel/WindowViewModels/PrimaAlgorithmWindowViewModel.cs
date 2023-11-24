@@ -372,29 +372,34 @@ namespace GraphEditor.ViewModel
             }
         }
 
+        // 0 ничего не выделять просто лог сообщения
+        // 1 выделить вершину и ребро как взятую
+        // 2 выделить вершину и ребро как возможную к рассмотрению
+        // 3 выделить вершину и ребро временно, на следующем шаге убрать
         private void ShowCurrentSituationOfGraph()
         {
             Explanation = visited[stepIndex].Item3;
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
-            ShowCurrentSituationOfGraphForDFS();
-        }
-
-        private void ShowCurrentSituationOfGraphForDFS()
-        {
-            string lastChosenNodeName = visited[0].Item1.Name;
+            string temporaryNodeName = null;
+            string temporaryStartNodeName = null;
+            string temporaryEndNodeName = null;
             for (int i = 0; i <= stepIndex; i++)
-            {
-                if (visited[i].Item1 is not null)
+            {   
+                if (temporaryNodeName is not null)
                 {
-                    graphView.ChangeNodeColor(lastChosenNodeName, Brushes.Green);
-                    lastChosenNodeName = visited[i].Item1.Name;
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
+                    graphView.ChangeNodeColor(temporaryNodeName, Brushes.Black);
+                    graphView.ChangeEdgeColor(temporaryStartNodeName, temporaryEndNodeName, Brushes.Black);
+                    
+                    temporaryNodeName = null;
+                    temporaryStartNodeName = null;
+                    temporaryEndNodeName = null;
                 }
-
-                if (visited[i].Item2 is not null)
+                if (visited[i].Item4 == 1)
                 {
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
+
                     if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
                     {
                         graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
@@ -403,6 +408,37 @@ namespace GraphEditor.ViewModel
                     {
                         graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.Green);
                     }
+                }
+                else if (visited[i].Item4 == 2)
+                {
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
+
+                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.YellowGreen);
+                    }
+                    else
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.YellowGreen);
+                    }
+                }
+                else if (visited[i].Item4 == 3)
+                {   
+                    
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.LightGreen);
+
+                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.LightGreen);
+                    }
+                    else
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.LightGreen);
+                    }
+
+                    temporaryNodeName = visited[i].Item1.Name;
+                    temporaryStartNodeName = visited[i].Item2.FirstNode.Name;
+                    temporaryEndNodeName = visited[i].Item2.SecondNode.Name;
                 }
             }
         }
