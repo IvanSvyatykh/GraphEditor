@@ -245,8 +245,9 @@ namespace GraphEditor.ViewModel
             if (!(fileDialog.FileName == ""))
             {
                 try
-                {   
-                    graphView.GraphCanvas.Children.Clear();
+                {       
+                    window.CanvasForGraph.Children.Clear();
+                    graphView = new GraphView(window.CanvasForGraph);
 
                     Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
 

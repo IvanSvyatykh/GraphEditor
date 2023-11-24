@@ -137,7 +137,8 @@ namespace Graph
             nodeList.Add(newNode);
             canvas.Children.Add(newNode.ViewPartNode);
             newNode.pointPositionChange += OnPointPositionChanged;
-            
+
+            newNode.Position = coordinats;
             Canvas.SetLeft(newNode.ViewPartNode, coordinats.X);
             Canvas.SetTop(newNode.ViewPartNode, coordinats.Y);
         }
