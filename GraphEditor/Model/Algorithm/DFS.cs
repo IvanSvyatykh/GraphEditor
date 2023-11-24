@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GraphEditor.Model.Loggers;
+using Model.Graph;
 
 namespace Model.Graph
 {
@@ -16,7 +18,8 @@ namespace Model.Graph
         {
             _matrix = matrix;
             _graph = new Graph();
-            TranslateToGraph();
+            Helper.TranslateToGraph(_matrix, _graph);
+            //Helper.TranslateToGraph();
         }
 
         public DFSLogger StartAlgorithm(string startNodeName)

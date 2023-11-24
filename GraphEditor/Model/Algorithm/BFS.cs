@@ -1,4 +1,5 @@
-﻿using GraphEditor.Model.Graph;
+﻿using GraphEditor.Model.Loggers;
+using Model.Graph;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,8 @@ namespace Model.Graph
         {
             _matrix = matrix;
             _graph = new Graph();
-            TranslateToGraph();
+            Helper.TranslateToGraph(_matrix, _graph);
+            //TranslateToGraph();
         }
 
         public BFSLogger StartAlgorithm(string startNodeName)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphEditor.Model.Graph
+namespace GraphEditor.Model.Loggers
 {
     internal interface ILogger
     {
