@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
 
 namespace Model.WorkWithFile
 {
     public static class Reader
     {
-        public static Dictionary<string, List<Tuple<int, string>>> ReadGraph(string path)
+        public static Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> ReadGraph(string path)
         {
             using StreamReader streamReader = new StreamReader(path);
             string line = streamReader.ReadLine();
@@ -20,12 +22,26 @@ namespace Model.WorkWithFile
             line = streamReader.ReadLine();
             if (Equals(line, "Non Oriented"))
             {
-                return ReadGraph(streamReader);
+                return Tuple.Create(ReadGraph(streamReader),ReadCoordinats(streamReader));
             }
             else
             {
-                return ReadGraph(streamReader);
+                return Tuple.Create(ReadGraph(streamReader), ReadCoordinats(streamReader));
             }
+        }
+
+        private static Dictionary<string, Point> ReadCoordinats(StreamReader streamReader)
+        {
+            Dictionary<string, Point> coordinats = new Dictionary<string, Point>();
+            string line = streamReader.ReadLine();
+
+            while (line != null)
+            {
+                string[] nodesLength = line.Split(";");
+                coordinats.Add(nodesLength[0], new Point(int.Parse(nodesLength[1]), int.Parse(nodesLength[2])));
+            }
+
+            return coordinats;
         }
 
         private static Dictionary<string, List<Tuple<int, string>>> ReadOriented(StreamReader streamReader)
@@ -43,7 +59,7 @@ namespace Model.WorkWithFile
 
 
             line = streamReader.ReadLine();
-            while (line != null)
+            while (line != "Coordinats")
             {
 
                 string[] nodesLength = line.TrimEnd(';').Split(";");
@@ -51,7 +67,7 @@ namespace Model.WorkWithFile
                 {
                     if (int.TryParse(nodesLength[i], out int res))
                     {
-                        matrix[nodesLength[0]].Add(Tuple.Create(res, splitted[i-1]));
+                        matrix[nodesLength[0]].Add(Tuple.Create(res, splitted[i - 1]));
                     }
                 }
                 line = streamReader.ReadLine();

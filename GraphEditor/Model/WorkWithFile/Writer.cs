@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using Model.Graph;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Model.WriteToFile
 {
     public static class Writer
     {
 
-        public static void WriteGraph(Dictionary<string, List<Tuple<int, string>>> matrix, string path, bool IsOriented)
+        public static void WriteGraph(Dictionary<string, List<Tuple<int, string>>> matrix, Dictionary<string, Point> coordinats, string path, bool IsOriented)
         {
             using StreamWriter streamWriter = new StreamWriter(path);
 
@@ -35,7 +36,19 @@ namespace Model.WriteToFile
                 streamWriter.WriteLine(StringFormer(item.Key, item.Value, matrix.Keys.ToList()));
             }
 
+            streamWriter.WriteLine("Coordinats");
+
+            foreach (var item in coordinats)
+            {
+                streamWriter.WriteLine(FormCoordinatsLine(item.Key, item.Value));
+            }
+
             streamWriter.Close();
+        }
+
+        private static string FormCoordinatsLine(string name, Point coordinate)
+        {
+            return name + $";{coordinate.X};{coordinate.Y}";
         }
 
         private static string HeadFormer(List<string> nodes)
