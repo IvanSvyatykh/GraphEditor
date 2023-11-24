@@ -2,6 +2,7 @@
 using GraphEditor.Model.Loggers;
 using Microsoft.Win32;
 using Model.Graph;
+using Model.WorkWithFile;
 using Model.WriteToFile;
 using System;
 using System.Collections;
@@ -244,14 +245,18 @@ namespace GraphEditor.ViewModel
             if (!(fileDialog.FileName == ""))
             {
                 try
-                {
-                    
+                {   
+                    graphView.GraphCanvas.Children.Clear();
+
+                    Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
+
+                    graphView.CreateNodes(loadedGraph.Item2);
+                    graphView.CreateEdges(loadedGraph.Item1);
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("К сожалению, файл который вы пытаетесть загрузить, либо не содержит \nпрограмму, либо программа, записанная в него, содержит ошибки.");
+                    MessageBox.Show(e.Message);
                 }
-
             }
         }
 

@@ -10,6 +10,7 @@ using System.Text;
 using GraphEditor;
 using Model.Graph;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace Graph
 {
@@ -130,6 +131,16 @@ namespace Graph
 
             OnPointPositionChanged(newNode);
         }
+        private void AddNodeFromLoadedFile(string nodeName, Point coordinats)
+        {
+            NodeView newNode = new NodeView(this, nodeName);
+            nodeList.Add(newNode);
+            canvas.Children.Add(newNode.ViewPartNode);
+            newNode.pointPositionChange += OnPointPositionChanged;
+            
+            Canvas.SetLeft(newNode.ViewPartNode, coordinats.X);
+            Canvas.SetTop(newNode.ViewPartNode, coordinats.Y);
+        }
         public void OnPointPositionChanged(NodeView node)
         {   
             node.UpdPos();
@@ -161,11 +172,15 @@ namespace Graph
             }
         }
 
-        public void AddEdge(NodeView startNode, NodeView endNode)
+        public void AddEdge(NodeView startNode, NodeView endNode,int weight)
         {
             FirstTop = null;
-            canvas.Children.Remove(lineForEdgeDemonstration);
-            
+
+            if (canvas.Children.Contains(lineForEdgeDemonstration))
+            {
+                canvas.Children.Remove(lineForEdgeDemonstration);
+            }
+
             foreach (EdgeView edge in edgeList)
             {
                 if ((edge.StartNode == startNode && edge.EndNode == endNode)||
@@ -175,7 +190,7 @@ namespace Graph
                 }
             }
 
-            EdgeView line = new EdgeView(this, startNode, endNode);
+            EdgeView line = new EdgeView(this, startNode, endNode, weight);
             edgeList.Add(line);       
         }
         private void StopEdgeAdding(object sender, MouseButtonEventArgs e)
@@ -188,7 +203,7 @@ namespace Graph
             }
         }
 
-        private Point GiveMeRightMousePosition()
+        private Point GiveMeСorrectMousePosition()
         {
             Point p = Mouse.GetPosition(canvas);
 
@@ -219,7 +234,7 @@ namespace Graph
                 lineForEdgeDemonstration.X1 = FirstTop.Position.X + FirstTop.ViewPartNode.Width / 2;
                 lineForEdgeDemonstration.Y1 = FirstTop.Position.Y + ViewNode.NodeRadius / 2;
 
-                Point point = GiveMeRightMousePosition();
+                Point point = GiveMeСorrectMousePosition();
 
                 lineForEdgeDemonstration.X2 = point.X;
                 lineForEdgeDemonstration.Y2 = point.Y;
@@ -227,6 +242,27 @@ namespace Graph
                 if (!canvas.Children.Contains(lineForEdgeDemonstration))
                 {
                     canvas.Children.Add(lineForEdgeDemonstration);
+                }
+            }
+        }
+        private void AddEdgeFromLoadedFile(string startNodeName, string endNodeName, int weight)
+        {   
+            NodeView firstNode = null;
+            NodeView endNode = null;
+            foreach(NodeView node in nodeList)
+            {
+                if (node.NodeName == startNodeName)
+                {
+                    firstNode = node;
+                }
+                if (node.NodeName == endNodeName)
+                {
+                    endNode = node;
+                }
+                if (firstNode is not null && endNode is not null)
+                {
+                    AddEdge(firstNode, endNode, weight);
+                    return;
                 }
             }
         }
@@ -322,142 +358,8 @@ namespace Graph
             foreach (EdgeView edge in edgeList)
             {
                 edge.Color = Brushes.Black;
-               
             }
         }
-        //Можно использовать для Бека
-
-        ////deijkstra
-        //public bool IsShowDeijkstra
-        //{
-        //    get { return showDeijkstra; }
-        //}
-        //public void StartDeijkstra()
-        //{
-        //    if (showDeijkstra)
-        //        EndShowDeijkstra();
-        //    deijkstra = true;
-        //    canvas.Cursor = Cursors.ScrollAll;
-        //}
-        //public void EndDeijkstra()
-        //{
-        //    deijkstra = false;
-        //    canvas.Cursor = Cursors.Arrow;
-        //}
-        //public void EndShowDeijkstra()
-        //{
-        //    showDeijkstra = false;
-        //    foreach (Label label in labels_list.Values)
-        //        canvas.Children.Remove(label);
-        //    labels_list = null;
-        //}
-        //public void StartShowDeijkstra()
-        //{
-        //    try
-        //    {
-        //        showDeijkstra = true;
-        //        labels_list = new Dictionary<node_view, Label>();
-        //        Label label;
-        //        for (int i = 0; i < TopList.Count; ++i)
-        //        {
-        //            label = new Label();
-        //            labels_list[TopList[i]] = label;
-        //            if (distances_list[TopList[i].TopNum] == 10000)
-        //            {
-        //                label.Content = "∞";
-        //            }
-        //            else
-        //            {
-        //                label.Content = distances_list[TopList[i].TopNum].ToString();
-        //            }
-        //            label.FontSize = 15;
-        //            label.Foreground = System.Windows.Media.Brushes.Blue;
-        //            canvas.Children.Add(label);
-        //            Canvas.SetLeft(label, TopList[i].RELPos.X + ViewNode.Radius / 2);
-        //            Canvas.SetTop(label, TopList[i].RELPos.Y - ViewNode.Radius * 1.5);
-        //            Canvas.SetZIndex(label, 2);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Помилка виведення алгоритму Дейкстри");
-        //        EndShowDeijkstra();
-        //    }
-        //}
-        //public void Deijkstra(node_view from)
-        //{
-        //    if (!ValidateState())
-        //    {
-        //        MessageBox.Show("Граф заданий невірно");
-        //        return;
-        //    }
-        //    foreach (edge_view line in edgeList)
-        //        if (line.Weight < 0)
-        //        {
-        //            MessageBox.Show("Помилка виконання алгоритму:\nІснують ребра з від'ємною вагою");
-        //            return;
-        //        }
-        //    if (!BeginDeijkstra(from))
-        //    {
-        //        MessageBox.Show("Помилка при виконанні алгоритму Дейкстри");
-        //        return;
-        //    }
-        //    StartShowDeijkstra();
-        //}
-        //private bool BeginDeijkstra(node_view from)
-        //{
-        //    try
-        //    {
-        //        FillDictionaries();
-        //        distances_list = new Dictionary<int, int>();
-        //        List<int> went = new List<int>();
-        //        foreach (int top in neighbors_nodes.Keys)
-        //            if (top != from.TopNum)
-        //                distances_list[top] = INFINITY;
-        //            else
-        //                distances_list[top] = 0;
-
-        //        int curTop = from.TopNum;
-        //        int pathSum;
-        //        int index;
-        //        List<int> list;
-        //        int minDistance;
-        //        while (went.Count != TopList.Count)
-        //        {
-        //            foreach (int neighbor in neighbors_nodes[curTop])
-        //            {
-        //                pathSum = distances_list[curTop] + edge_weight[new KeyValuePair<int, int>(curTop, neighbor)];
-        //                if (pathSum < distances_list[neighbor])
-        //                    distances_list[neighbor] = pathSum;
-        //            }
-        //            went.Add(curTop);
-        //            index = went.Count - 1;
-        //            do
-        //            {
-        //                if (curTop == INFINITY)
-        //                    curTop = went[--index];
-        //                list = neighbors_nodes[curTop];
-        //                curTop = minDistance = INFINITY;
-        //                for (int i = 0; i < list.Count; ++i)
-        //                {
-        //                    if (!went.Contains(list[i]) && distances_list[list[i]] < minDistance)
-        //                    {
-        //                        minDistance = distances_list[list[i]];
-        //                        curTop = list[i];
-        //                    }
-        //                }
-        //            }
-        //            while (curTop == INFINITY && index != 0);
-        //            if (index == -1 || curTop == INFINITY)
-        //                break;
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-        //}
         public bool ValidateState()
         {
             foreach (EdgeView edge in edgeList)
@@ -527,6 +429,29 @@ namespace Graph
                 nodeNamesAndCoordinats.Add(node.NodeName, node.Position);
             }
             return nodeNamesAndCoordinats;
+        }
+
+        public void CreateNodes(Dictionary<string, Point> nodeNamesAndCoordinats)
+        {
+            foreach (string nodeName in nodeNamesAndCoordinats.Keys) 
+            {
+                if (nodeNamesAndCoordinats[nodeName].X > canvas.ActualWidth || nodeNamesAndCoordinats[nodeName].X < 0 ||
+                    nodeNamesAndCoordinats[nodeName].Y > canvas.ActualHeight || nodeNamesAndCoordinats[nodeName].Y < 0)
+                {
+                    throw new Exception("Узлы в вашем графе выходят за пределы холста");
+                }
+                AddNodeFromLoadedFile(nodeName, nodeNamesAndCoordinats[nodeName]);
+            }
+        }
+        public void CreateEdges(Dictionary<string, List<Tuple<int, string>>> edgeMatrix)
+        {
+            foreach(string firstNodeName in edgeMatrix.Keys)
+            {
+                foreach(Tuple<int,string> weightAndEndNodeName in edgeMatrix[firstNodeName])
+                {
+                    AddEdgeFromLoadedFile(firstNodeName, weightAndEndNodeName.Item2, weightAndEndNodeName.Item1);
+                }
+            }
         }
     }
 }

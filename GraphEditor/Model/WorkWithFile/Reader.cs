@@ -11,7 +11,9 @@ namespace Model.WorkWithFile
     {
         public static Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> ReadGraph(string path)
         {
+            
             using StreamReader streamReader = new StreamReader(path);
+            
             string line = streamReader.ReadLine();
             if (!Equals(line, "Graph"))
             {
@@ -36,9 +38,9 @@ namespace Model.WorkWithFile
             while (line != null)
             {
                 string[] nodesLength = line.Split(";");
-                coordinats.Add(nodesLength[0], new Point(int.Parse(nodesLength[1]), int.Parse(nodesLength[2])));
+                coordinats.Add(nodesLength[0], new Point(double.Parse(nodesLength[1]), double.Parse(nodesLength[2])));
             }
-
+            
             return coordinats;
         }
 
@@ -70,7 +72,7 @@ namespace Model.WorkWithFile
                 }
                 line = streamReader.ReadLine();
             }
-
+            
             return matrix;
         }
     }

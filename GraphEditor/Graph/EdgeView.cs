@@ -75,7 +75,7 @@ namespace Graph
         private NodeView startNode;
         private NodeView endNode;
 
-        public EdgeView(GraphView _graph, NodeView from_node, NodeView to_node)
+        public EdgeView(GraphView _graph, NodeView from_node, NodeView to_node, int weight)
         {
             this.graph = _graph;
 
@@ -157,7 +157,7 @@ namespace Graph
             textBox1.MouseEnter += new MouseEventHandler(TextBox1MouseEnter);
             textBox1.MouseLeave += new MouseEventHandler(TextBox1MouseLeave);
 
-            textBox1.Text = "0";
+            textBox1.Text = weight.ToString();
             
             invisibleBrush = new SolidColorBrush(Colors.White);
             invisibleBrush.Opacity = 0;
