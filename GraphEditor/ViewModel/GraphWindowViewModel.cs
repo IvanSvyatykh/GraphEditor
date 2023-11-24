@@ -1,6 +1,8 @@
 ﻿using Graph;
 using GraphEditor.Model.Loggers;
+using Microsoft.Win32;
 using Model.Graph;
+using Model.WriteToFile;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +20,13 @@ using System.Windows.Media;
 namespace GraphEditor.ViewModel
 {
     public class GraphWindowViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
-    {   
+    {
         public ICommand SetAddNodesModeCommand { get; }
         public ICommand SetAddEdgesModeCommand { get; }
         public ICommand SetDeletingModeCommand { get; }
         public ICommand LeftButtonClickCommand { get; }
+        public ICommand SaveGraphCommand { get; }
+        public ICommand LoadGraphCommand { get; }
 
         public ICommand ChangeTaskCommand { get; }
 
@@ -126,6 +130,8 @@ namespace GraphEditor.ViewModel
             SetAddNodesModeCommand = new RelayCommand(SetAddNodesMode);
             SetAddEdgesModeCommand = new RelayCommand(SetAddEdgesMode);
             SetDeletingModeCommand = new RelayCommand(SetDeletingMode);
+            SaveGraphCommand = new RelayCommand(SaveGraph);
+            LoadGraphCommand = new RelayCommand(LoadGraph);
 
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
 
@@ -207,6 +213,48 @@ namespace GraphEditor.ViewModel
             window.SetAddEdgesModeButton.Background = color2;
             window.SetDeletingModeButton.Background = color3;
         }
+        private void SaveGraph()
+        {   
+            if (!graphView.ValidateState())
+            {
+                MessageBox.Show("Вы не можете сохранять граф, содержащий ошибки");
+                return;
+            }
+
+            var fileDialog = new SaveFileDialog
+            {
+                Filter = "Text files(*.txt)| *.txt"
+            };
+
+            fileDialog.ShowDialog();
+
+            if (!(fileDialog.FileName == ""))
+            {
+                Writer.WriteGraph(graphView.GetEdgeMatrixWithWeights(), graphView.GetNodeNamesAndCoordinats(), fileDialog.FileName, false);
+            }
+        }
+        private void LoadGraph()
+        {
+            var fileDialog = new OpenFileDialog()
+            {
+                Filter = "Text files(*.txt)| *.txt"
+            };
+            fileDialog.ShowDialog();
+
+            if (!(fileDialog.FileName == ""))
+            {
+                try
+                {
+                    
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("К сожалению, файл который вы пытаетесть загрузить, либо не содержит \nпрограмму, либо программа, записанная в него, содержит ошибки.");
+                }
+
+            }
+        }
+
         private void LeftButtonClick()
         {
             if (currentMode == 1)

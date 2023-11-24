@@ -503,5 +503,30 @@ namespace Graph
             }
             return edgeMatrix;
         }
+        
+        public Dictionary<string, List<Tuple<int, string>>> GetEdgeMatrixWithWeights()
+        {
+            Dictionary<string, List<Tuple<int, string>>> edgeMatrix = new Dictionary<string, List<Tuple<int, string>>>();
+
+            foreach (NodeView node in nodeList)
+            {
+                edgeMatrix.Add(node.NodeName, new List<Tuple<int, string>>());
+            }
+
+            foreach (EdgeView line in edgeList)
+            {
+                edgeMatrix[line.StartNode.NodeName].Add(Tuple.Create(line.Weight,line.EndNode.NodeName));
+            }
+            return edgeMatrix;
+        }
+        public Dictionary<string, Point> GetNodeNamesAndCoordinats()
+        {
+            Dictionary<string, Point> nodeNamesAndCoordinats = new Dictionary<string, Point>();
+            foreach (NodeView node in nodeList)
+            {
+                nodeNamesAndCoordinats.Add(node.NodeName, node.Position);
+            }
+            return nodeNamesAndCoordinats;
+        }
     }
 }
