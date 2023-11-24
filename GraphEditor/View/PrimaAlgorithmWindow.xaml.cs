@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GraphEditor.View
+namespace GraphEditor
 {
     /// <summary>
     /// Логика взаимодействия для PrimaAndDeijkstraAlgorithmsWindow.xaml

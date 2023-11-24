@@ -9,10 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -327,21 +323,19 @@ namespace GraphEditor.ViewModel
         {
             stepsButtons = new ObservableCollection<Button>();
             stepIndex = 0;
-            if (true)
+            
+            for (int i = 0; i < visited.Count; i++)
             {
-                for (int i = 0; i < visited.Count; i++)
-                {
-                    Button step = new Button();
-                    step.Content = "Шаг номер " + (i + 1);
+                Button step = new Button();
+                step.Content = "Шаг номер " + (i + 1);
 
-                    step.Height = 20;
-                    step.Width = (900d / 41.7) * 8.5 - 25;
-                    step.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
-                    step.Click += StepClick;
-                    stepsButtons.Add(step);
-                }
+                step.Height = 20;
+                step.Width = (900d / 41.7) * 8.5 - 25;
+                step.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+                step.Click += StepClick;
+                stepsButtons.Add(step);
             }
-
+            
             OnPropertyChanged(nameof(StepsButtons));
 
             ChooseStep(stepsButtons[stepIndex]);

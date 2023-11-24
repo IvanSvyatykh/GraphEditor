@@ -1,5 +1,6 @@
 ﻿using Graph;
 using GraphEditor.Model.Loggers;
+using Microsoft.Win32;
 using Model.Graph;
 using Model.WorkWithFile;
 using Model.WriteToFile;
@@ -8,19 +9,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
-using GraphEditor.View;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphEditor.ViewModel
 {
-    internal class PrimaAlgorithmWindowViewModel
+    public class PrimaAlgorithmWindowViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         public ICommand SetAddNodesModeCommand { get; }
         public ICommand SetAddEdgesModeCommand { get; }
@@ -283,20 +279,19 @@ namespace GraphEditor.ViewModel
         {
             stepsButtons = new ObservableCollection<Button>();
             stepIndex = 0;
-            if (true)
-            {
-                for (int i = 0; i < visited.Count; i++)
-                {
-                    Button step = new Button();
-                    step.Content = "Шаг номер " + (i + 1);
 
-                    step.Height = 20;
-                    step.Width = (900d / 41.7) * 8.5 - 25;
-                    step.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
-                    step.Click += StepClick;
-                    stepsButtons.Add(step);
-                }
+            for (int i = 0; i < visited.Count; i++)
+            {
+                Button step = new Button();
+                step.Content = "Шаг номер " + (i + 1);
+
+                step.Height = 20;
+                step.Width = (900d / 41.7) * 8.5 - 25;
+                step.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+                step.Click += StepClick;
+                stepsButtons.Add(step);
             }
+            
 
             OnPropertyChanged(nameof(StepsButtons));
 
@@ -399,43 +394,22 @@ namespace GraphEditor.ViewModel
                 if (visited[i].Item4 == 1)
                 {
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
-
-                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
+                    if (visited[i].Item2 is not null)
                     {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
-                    }
-                    else
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.Green);
+                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
                     }
                 }
                 else if (visited[i].Item4 == 2)
                 {
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
-
-                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.YellowGreen);
-                    }
-                    else
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.YellowGreen);
-                    }
+                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.YellowGreen);
                 }
                 else if (visited[i].Item4 == 3)
                 {   
                     
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.LightGreen);
-
-                    if (visited[i].Item1.Name != visited[i].Item2.SecondNode.Name)
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.SecondNode.Name, Brushes.LightGreen);
-                    }
-                    else
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item1.Name, visited[i].Item2.FirstNode.Name, Brushes.LightGreen);
-                    }
-
+                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.LightGreen);
+                    
                     temporaryNodeName = visited[i].Item1.Name;
                     temporaryStartNodeName = visited[i].Item2.FirstNode.Name;
                     temporaryEndNodeName = visited[i].Item2.SecondNode.Name;
