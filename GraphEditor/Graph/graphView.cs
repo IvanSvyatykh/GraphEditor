@@ -410,6 +410,16 @@ namespace Graph
                 }
             }
         }
+        public void ChangeNodesColorFromTo(Brush fromColor, Brush toColor)
+        {
+            foreach (NodeView node in nodeList)
+            {
+                if (node.Color == fromColor)
+                {
+                    node.Color = toColor;
+                }
+            }
+        }
         public void ChangeEdgeColor(string startNodeName, string endNodeName, Brush color)
         {
             foreach (EdgeView edge in edgeList)
@@ -419,6 +429,16 @@ namespace Graph
                 {
                     edge.Color = color;
                     return;
+                }
+            }
+        }
+        public void ChangeEdgesColorFromTo(Brush fromColor, Brush toColor)
+        {
+            foreach (EdgeView edge in edgeList)
+            {
+                if (edge.Color==fromColor)
+                {
+                    edge.Color = toColor;
                 }
             }
         }

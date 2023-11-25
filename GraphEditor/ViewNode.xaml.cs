@@ -42,7 +42,10 @@ namespace GraphEditor
             point.Fill = color;
             pointColor = color;
         }
-
+        public Brush GetColor()
+        {
+            return pointColor;
+        }
         private void NodeMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             parentViewNode.IsNodeMove = false;

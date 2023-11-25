@@ -113,7 +113,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private byte currentMode = 0;
 
-        private List<Tuple<GraphNode, GraphEdge, string>> visited;
+        private List<Tuple<GraphNode, GraphEdge, string, byte>> visited;
 
         private string startNodeName = "A";
         private string endNodeName = "B";
@@ -306,23 +306,12 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 {
                     SetZeroMode();
                     IsTaskWorking = true;
-
-                    ILogger logger;
-                    if (isGraphOriented)
-                    {
-                        graphView.StartTaskWork();
-                        BFS bFS = new BFS(graphView.GetEdgeMatrix());
-                        logger = bFS.StartAlgorithm(startNodeName);
-                        visited = logger.GetVisisted();
-                    }
-                    else
-                    {
-                        graphView.StartTaskWork();
-                        DFS dFS = new DFS(graphView.GetEdgeMatrix());
-                        logger = dFS.StartAlgorithm(startNodeName);
-                        visited = logger.GetVisisted();
-                    }
-
+                    
+                    graphView.StartTaskWork();
+                    DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(),isGraphOriented);
+                    DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
+                    visited = logger.Visited;
+                   
                     IsStepForwardEnabled = true;
                     ShowSteps();
                 }
@@ -398,7 +387,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
-                visited = new List<Tuple<GraphNode, GraphEdge, string>>();
+                visited = new List<Tuple<GraphNode, GraphEdge, string, byte>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
@@ -427,65 +416,37 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 IsStepBackwardEnabled = false;
             }
         }
-
+        // 0 - ничего не делаем и не выделяем лог просто с сообщением
+        // 1 - пометить как вершину из которой происходит обход соседей(временным цветом)
+        // 2 - пометить вершину как пройденную навсегда (каким-то ярким цветом типо красного)
         private void ShowCurrentSituationOfGraph()
         {
             Explanation = visited[stepIndex].Item3;
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
-            if (isGraphOriented)
-            {
-                ShowCurrentSituationOfGraphForBFS();
-            }
-            else
-            {
-                ShowCurrentSituationOfGraphForDFS();
-            }
-
-        }
-
-        private void ShowCurrentSituationOfGraphForDFS()
-        {
-            string lastChosenNodeName = visited[0].Item1.Name;
+            string temporaryNodeName = null;
+            string temporaryStartNodeName = null;
+            string temporaryEndNodeName = null;
             for (int i = 0; i <= stepIndex; i++)
             {
-                if (visited[i].Item1 is not null)
-                {
-                    graphView.ChangeNodeColor(lastChosenNodeName, Brushes.Green);
-                    lastChosenNodeName = visited[i].Item1.Name;
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
-                }
-
-                if (visited[i].Item2 is not null)
-                {
-                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
-                }
-            }
-        }
-
-        private void ShowCurrentSituationOfGraphForBFS()
-        {
-            string currentNodeName = "";
-            for (int i = 0; i <= stepIndex; i++)
-            {
-                if (visited[i].Item1 is not null && visited[i].Item1.Name != currentNodeName)
+                if (visited[i].Item4 == 1)
                 {
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
+                    if (visited[i].Item2 is not null)
+                    {
+                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
+                    }
                 }
-
-                if (visited[i].Item2 is not null)
+                else if (visited[i].Item4 == 2)
                 {
-                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
-                }
-                else if (visited[i].Item1 is not null)
-                {
-                    graphView.ChangeNodeColor(currentNodeName, Brushes.Green);
-                    currentNodeName = visited[i].Item1.Name;
-                    graphView.ChangeNodeColor(currentNodeName, Brushes.GreenYellow);
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
+                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.YellowGreen);
                 }
             }
         }
+
+        
 
         public bool HasErrors => throw new NotImplementedException();
 

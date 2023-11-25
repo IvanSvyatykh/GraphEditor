@@ -41,10 +41,8 @@ namespace Graph
         }
         public Brush Color
         {
-            set
-            {
-                graphNode.SetColor(value);
-            }
+            get => graphNode.GetColor();
+            set => graphNode.SetColor(value);
         }
         public bool IsNodeMove
         {

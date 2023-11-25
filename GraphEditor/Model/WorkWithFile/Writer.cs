@@ -12,18 +12,18 @@ namespace Model.WriteToFile
     public static class Writer
     {
 
-        public static void WriteGraph(Dictionary<string, List<Tuple<int, string>>> matrix, Dictionary<string, Point> coordinats, string path, bool IsOriented)
+        public static void WriteGraph(Dictionary<string, List<Tuple<int, string>>> matrix, Dictionary<string, Point> coordinats, string path, bool isOriented)
         {
             using StreamWriter streamWriter = new StreamWriter(path);
 
-            if (!IsOriented)
+            if (!isOriented)
             {
                 matrix = Helper.MatrixRecovery(matrix);
             }
 
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
             streamWriter.WriteLine("Graph");
-            if (IsOriented)
+            if (isOriented)
             {
                 streamWriter.WriteLine("Oriented");
             }

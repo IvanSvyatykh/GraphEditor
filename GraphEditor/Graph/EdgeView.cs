@@ -42,6 +42,7 @@ namespace Graph
         }
         public Brush Color
         {
+            get => baseColor;
             set
             {
                 SetColor(value);
@@ -188,6 +189,10 @@ namespace Graph
         private void SetColor(Brush color)
         {
             Line.Stroke = color;
+            if (graph.IsOriented)
+            {
+                RightLine.Stroke = LeftLine.Stroke = color;
+            }
             baseColor = color;
         }
 

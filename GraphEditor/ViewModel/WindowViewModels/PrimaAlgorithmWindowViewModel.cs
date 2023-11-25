@@ -24,6 +24,8 @@ namespace GraphEditor.ViewModel
         public ICommand LeftButtonClickCommand { get; }
         public ICommand SaveGraphCommand { get; }
         public ICommand LoadGraphCommand { get; }
+        public ICommand SaveOstTreeCommand { get; }
+        public ICommand LoadOstTreeCommand { get; }
 
         public ICommand StartProgrammCommand { get; }
         public ICommand StepForwardCommand { get; }
@@ -120,9 +122,10 @@ namespace GraphEditor.ViewModel
             SaveGraphCommand = new RelayCommand(SaveGraph);
             LoadGraphCommand = new RelayCommand(LoadGraph);
 
+            SaveOstTreeCommand = new RelayCommand(SaveOstTree);
+            LoadOstTreeCommand = new RelayCommand(LoadGraph);
+
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
-
-
 
             StartProgrammCommand = new RelayCommand(StartProgramm);
             StepForwardCommand = new RelayCommand(StepForward);
@@ -220,6 +223,11 @@ namespace GraphEditor.ViewModel
                 Writer.WriteGraph(graphView.GetEdgeMatrixWithWeights(), graphView.GetNodeNamesAndCoordinats(), fileDialog.FileName, false);
             }
         }
+        private void SaveOstTree()
+        {
+            //Хмм, если делать мнё то придётся просто всё красное фильтровать
+            //Можно, но ХЗ нужно ли
+        }
         private void LoadGraph()
         {
             var fileDialog = new OpenFileDialog()
@@ -260,7 +268,8 @@ namespace GraphEditor.ViewModel
             {
                 SetZeroMode();
                 IsTaskWorking = true;
-                  
+                IsLoadOstTreeEnabled = false;
+
                 graphView.StartTaskWork();
                 AlgorithmPrima algorithmPrima = new AlgorithmPrima(graphView.GetEdgeMatrixWithWeights());
                 PrimaLogger logger= algorithmPrima.StartAlgorithm();
@@ -346,9 +355,20 @@ namespace GraphEditor.ViewModel
                 IsStepBackwardEnabled = false;
                 IsStepForwardEnabled = false;
                 IsTaskWorking = false;
+                IsSaveOstTreeEnabled = false;
+                IsLoadOstTreeEnabled = true;
             }
             else
             {
+                if (stepIndex == stepsButtons.Count - 2)
+                {
+                    IsSaveOstTreeEnabled = true;
+                }
+                else
+                {
+                    IsSaveOstTreeEnabled = false;
+                }
+
                 IsStepBackwardEnabled = true;
 
                 ChooseStep(stepsButtons[stepIndex + 1]);
@@ -380,40 +400,44 @@ namespace GraphEditor.ViewModel
             string temporaryNodeName = null;
             string temporaryStartNodeName = null;
             string temporaryEndNodeName = null;
+
+            Brush colorForPossibleEdges = Brushes.GreenYellow;
             for (int i = 0; i <= stepIndex; i++)
             {   
-                if (temporaryNodeName is not null)
-                {
-                    graphView.ChangeNodeColor(temporaryNodeName, Brushes.Black);
-                    graphView.ChangeEdgeColor(temporaryStartNodeName, temporaryEndNodeName, Brushes.Black);
+                //if (temporaryNodeName is not null)
+                //{
+                //    graphView.ChangeNodeColor(temporaryNodeName, Brushes.Blue);
+                //    graphView.ChangeEdgeColor(temporaryStartNodeName, temporaryEndNodeName, Brushes.Black);
                     
-                    temporaryNodeName = null;
-                    temporaryStartNodeName = null;
-                    temporaryEndNodeName = null;
-                }
+                //    temporaryNodeName = null;
+                //    temporaryStartNodeName = null;
+                //    temporaryEndNodeName = null;
+                //}
                 if (visited[i].Item4 == 1)
                 {
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
+                    graphView.ChangeNodesColorFromTo(colorForPossibleEdges, Brushes.Blue);
+                    graphView.ChangeEdgesColorFromTo(colorForPossibleEdges, Brushes.Black);
+
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Red);
                     if (visited[i].Item2 is not null)
                     {
-                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
+                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Red);
                     }
                 }
                 else if (visited[i].Item4 == 2)
                 {
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
-                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.YellowGreen);
+                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, colorForPossibleEdges);
                 }
-                else if (visited[i].Item4 == 3)
-                {   
+                //else if (visited[i].Item4 == 3)
+                //{   
                     
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.LightGreen);
-                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.LightGreen);
+                //    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.LightGreen);
+                //    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.LightGreen);
                     
-                    temporaryNodeName = visited[i].Item1.Name;
-                    temporaryStartNodeName = visited[i].Item2.FirstNode.Name;
-                    temporaryEndNodeName = visited[i].Item2.SecondNode.Name;
-                }
+                //    temporaryNodeName = visited[i].Item1.Name;
+                //    temporaryStartNodeName = visited[i].Item2.FirstNode.Name;
+                //    temporaryEndNodeName = visited[i].Item2.SecondNode.Name;
+                //}
             }
         }
 

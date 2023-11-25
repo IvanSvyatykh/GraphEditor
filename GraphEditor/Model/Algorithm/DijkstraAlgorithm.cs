@@ -14,10 +14,19 @@ namespace Model.Graph
         private DijkstraLogger _logger;
         private Dictionary<string, bool> _visited;
         private Dictionary<string, int> _distance;
-        public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix)
+        public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix, bool isOriented)
         {
             _graph = new Graph();
-            _matrix = matrix;
+
+            if (!isOriented)
+            {
+                _matrix = Helper.MatrixRecovery(matrix);
+            }
+            else
+            {
+                _matrix = matrix;
+            }
+            
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
         }
 
