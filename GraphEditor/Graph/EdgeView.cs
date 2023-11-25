@@ -340,12 +340,6 @@ namespace Graph
 
                     RightLine.X2 = ((Line)Line).X2 + 30 * Math.Sin(u_l - 2 * u);
                     RightLine.Y2 = ((Line)Line).Y2 + 30 * Math.Cos(u_l - 2 * u);
-
-                    Canvas.SetLeft(LeftLine, startNode.Position.X + endNode.ViewPartNode.Width / 2);
-                    Canvas.SetTop(LeftLine, startNode.Position.Y + ViewNode.NodeRadius / 2);
-
-                    Canvas.SetLeft(RightLine, startNode.Position.X + endNode.ViewPartNode.Width / 2);
-                    Canvas.SetTop(RightLine, startNode.Position.Y + ViewNode.NodeRadius / 2);
                 }
             }
             else

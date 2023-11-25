@@ -11,6 +11,7 @@ using GraphEditor;
 using Model.Graph;
 using System.Windows.Media;
 using System.Xml.Linq;
+using System.Windows.Media.TextFormatting;
 
 namespace Graph
 {
@@ -56,7 +57,7 @@ namespace Graph
         private List<EdgeView> edgeList = new List<EdgeView>();
         private List<NodeView> nodeList = new List<NodeView>();
 
-        private bool isOriented = false;
+        private bool isOriented;
 
         private bool isNodeAdding;
         private bool isNodeDeleting;
@@ -72,7 +73,8 @@ namespace Graph
         public delegate void PointPositionChanged(NodeView top);
 
         private Line lineForEdgeDemonstration;
-
+        private Line leftLineForOrientedEdgeDemo;
+        private Line rightLineForOrientedEdgeDemo;
         public GraphView(Canvas canvas, bool isOriented)
         {
             this.canvas = canvas;
@@ -82,6 +84,15 @@ namespace Graph
             lineForEdgeDemonstration.Stroke = Brushes.Black;
             lineForEdgeDemonstration.StrokeThickness = 2;
             
+            leftLineForOrientedEdgeDemo = new Line();
+            leftLineForOrientedEdgeDemo.Stroke = Brushes.Black;
+            leftLineForOrientedEdgeDemo.StrokeThickness = 2;
+
+            rightLineForOrientedEdgeDemo = new Line();
+            rightLineForOrientedEdgeDemo.Stroke = Brushes.Black;
+            rightLineForOrientedEdgeDemo.StrokeThickness = 2;
+
+
             canvas.MouseMove += DrawingFutureEdge;
             canvas.MouseRightButtonDown += StopEdgeAdding;
         }
@@ -186,6 +197,12 @@ namespace Graph
                 canvas.Children.Remove(lineForEdgeDemonstration);
             }
 
+            if (canvas.Children.Contains(leftLineForOrientedEdgeDemo) && canvas.Children.Contains(rightLineForOrientedEdgeDemo))
+            {
+                canvas.Children.Remove(leftLineForOrientedEdgeDemo);
+                canvas.Children.Remove(rightLineForOrientedEdgeDemo);
+            }
+
             foreach (EdgeView edge in edgeList)
             {
                 if ((edge.StartNode == startNode && edge.EndNode == endNode)||
@@ -205,6 +222,12 @@ namespace Graph
             if (canvas.Children.Contains(lineForEdgeDemonstration))
             {
                 canvas.Children.Remove(lineForEdgeDemonstration);
+            }
+
+            if (canvas.Children.Contains(leftLineForOrientedEdgeDemo) && canvas.Children.Contains(rightLineForOrientedEdgeDemo))
+            {
+                canvas.Children.Remove(leftLineForOrientedEdgeDemo);
+                canvas.Children.Remove(rightLineForOrientedEdgeDemo);
             }
         }
 
@@ -247,6 +270,30 @@ namespace Graph
                 if (!canvas.Children.Contains(lineForEdgeDemonstration))
                 {
                     canvas.Children.Add(lineForEdgeDemonstration);
+                }
+
+                if (isOriented)
+                {
+                    double u_l = Math.Atan2(lineForEdgeDemonstration.X1 - lineForEdgeDemonstration.X2, lineForEdgeDemonstration.Y1 - lineForEdgeDemonstration.Y2);
+                    double u = Math.PI / 33;
+
+                    leftLineForOrientedEdgeDemo.X1 = lineForEdgeDemonstration.X2 + 10 * Math.Sin(u_l);
+                    leftLineForOrientedEdgeDemo.Y1 = lineForEdgeDemonstration.Y2 + 10 * Math.Cos(u_l);
+
+                    leftLineForOrientedEdgeDemo.X2 = lineForEdgeDemonstration.X2 + 30 * Math.Sin(u_l + 2 * u);
+                    leftLineForOrientedEdgeDemo.Y2 = lineForEdgeDemonstration.Y2 + 30 * Math.Cos(u_l + 2 * u);
+
+                    rightLineForOrientedEdgeDemo.X1 = lineForEdgeDemonstration.X2 + 10 * Math.Sin(u_l);
+                    rightLineForOrientedEdgeDemo.Y1 = lineForEdgeDemonstration.Y2 + 10 * Math.Cos(u_l);
+                        
+                    rightLineForOrientedEdgeDemo.X2 = lineForEdgeDemonstration.X2 + 30 * Math.Sin(u_l - 2 * u);
+                    rightLineForOrientedEdgeDemo.Y2 = lineForEdgeDemonstration.Y2 + 30 * Math.Cos(u_l - 2 * u);
+                    
+                    if (!canvas.Children.Contains(leftLineForOrientedEdgeDemo) && !canvas.Children.Contains(rightLineForOrientedEdgeDemo))
+                    {
+                        canvas.Children.Add(leftLineForOrientedEdgeDemo);
+                        canvas.Children.Add(rightLineForOrientedEdgeDemo);
+                    }
                 }
             }
         }
@@ -310,6 +357,11 @@ namespace Graph
             if (canvas.Children.Contains(lineForEdgeDemonstration))
             {
                 canvas.Children.Remove(lineForEdgeDemonstration);
+            }
+            if (canvas.Children.Contains(leftLineForOrientedEdgeDemo) && canvas.Children.Contains(rightLineForOrientedEdgeDemo))
+            {
+                canvas.Children.Remove(leftLineForOrientedEdgeDemo);
+                canvas.Children.Remove(rightLineForOrientedEdgeDemo);
             }
         }
         public void StartDeletingEdge()
