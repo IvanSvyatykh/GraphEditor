@@ -279,18 +279,24 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private void ChangeTask()
         {
+            window.CanvasForGraph.Children.Clear();
+
             if (isGraphOriented)
             {
                 isGraphOriented = false;
+                
                 BackgroundForOrientedGraph = offModeButtonBackground;
                 BackgroundForNoOrientedGraph = onModeButtonBackground;
             }
             else
             {
                 isGraphOriented = true;
+                
                 BackgroundForOrientedGraph = onModeButtonBackground;
                 BackgroundForNoOrientedGraph = offModeButtonBackground;
             }
+
+            graphView = new GraphView(window.CanvasForGraph, isGraphOriented);
         }
         private void StartProgramm()
         {

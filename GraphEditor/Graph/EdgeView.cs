@@ -320,7 +320,6 @@ namespace Graph
 
                 Canvas.SetTop(textBox, startNode.Position.Y + (((Line)Line).Y2 - ((Line)Line).Y1) / 2 - textBox.FontSize / 3);
                 
-
                 if (graph.IsOriented)
                 {
                     double u_l = Math.Atan2(((Line)Line).X1 - ((Line)Line).X2, ((Line)Line).Y1 - ((Line)Line).Y2);

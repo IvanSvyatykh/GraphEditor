@@ -192,7 +192,6 @@ namespace Graph
         {
             FirstTop = null;
 
-            //Нужно ли оно мне здесь?
             if (canvas.Children.Contains(lineForEdgeDemonstration))
             {
                 canvas.Children.Remove(lineForEdgeDemonstration);
@@ -206,10 +205,20 @@ namespace Graph
 
             foreach (EdgeView edge in edgeList)
             {
-                if ((edge.StartNode == startNode && edge.EndNode == endNode)||
-                    (edge.StartNode == endNode && edge.EndNode == startNode))
+                if (isOriented)
                 {
-                    return;
+                    if (edge.StartNode == startNode && edge.EndNode == endNode)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    if ((edge.StartNode == startNode && edge.EndNode == endNode) ||
+                        (edge.StartNode == endNode && edge.EndNode == startNode))
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -360,6 +369,7 @@ namespace Graph
             {
                 canvas.Children.Remove(lineForEdgeDemonstration);
             }
+
             if (canvas.Children.Contains(leftLineForOrientedEdgeDemo) && canvas.Children.Contains(rightLineForOrientedEdgeDemo))
             {
                 canvas.Children.Remove(leftLineForOrientedEdgeDemo);
