@@ -55,7 +55,7 @@ namespace Model.Graph
 
                 foreach (NonOrientedGraphEdge edge in _graph.GetNodeByName(currentNodeName).Edges)
                 {
-                    if (_visited[currentNodeName])
+                    if (_visited[edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name])
                     {
                         _logger.AddLog(edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)), edge,
                            $"Путь до вершины {edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name} через {currentNodeName} не возможен, так как она уже пройдена.", 1);
