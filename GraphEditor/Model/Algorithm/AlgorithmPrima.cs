@@ -10,14 +10,14 @@ namespace Model.Graph
     public class AlgorithmPrima
     {
 
-        private Graph _graph;
+        private NonOrientedGraph _graph;
         private Dictionary<string, List<Tuple<int, string>>> _matrix;
         private Dictionary<string, bool> _visited;
         private PrimaLogger _logger;
         public AlgorithmPrima(Dictionary<string, List<Tuple<int, string>>> matrix)
         {
             _matrix = matrix;
-            _graph = new Graph();
+            _graph = new NonOrientedGraph();
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
         }
 
@@ -49,14 +49,14 @@ namespace Model.Graph
                 randNode
             };
             int? weigth = 0;
-            GraphNode minDisNode = null;
-            GraphEdge minDisEdge = null;
+            NonOrientedGraphNode minDisNode = null;
+            NonOrientedGraphEdge minDisEdge = null;
 
             while (_visited.Any(x => !x.Value))
             {
                 foreach (var item in currentNodes)
                 {
-                    List<GraphEdge> graphEdges = _graph.GetNodeByName(item).Edges;
+                    List<NonOrientedGraphEdge> graphEdges = _graph.GetNodeByName(item).Edges;
 
                     foreach (var edge in graphEdges)
                     {

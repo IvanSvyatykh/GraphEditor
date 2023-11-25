@@ -10,15 +10,15 @@ namespace Model.Graph
 {
     public class DFS
     {
-        private Graph _graph;
+        private NonOrientedGraph _graph;
         private Dictionary<string, List<string>> _matrix;
         private Dictionary<string, bool> _visited;
         private DFSLogger _logger;
         public DFS(Dictionary<string, List<string>> matrix)
         {
             _matrix = matrix;
-            _graph = new Graph();
-            Helper.TranslateToGraph(_matrix, _graph);
+            _graph = new NonOrientedGraph();
+            Helper.TranslateToNonOrientedGraph(_matrix, _graph);
             //Helper.TranslateToGraph();
         }
 
@@ -30,22 +30,22 @@ namespace Model.Graph
                 ToList().
                 ForEach(name => { _visited.Add(name, false); });
 
-            GraphNode basic = _graph.GetNodeByName(startNodeName);
+            NonOrientedGraphNode basic = _graph.GetNodeByName(startNodeName);
             _logger.AddMarkedElement(basic, null);
             DFSRecursive(basic, null);
 
             return _logger;
         }
 
-        private void DFSRecursive(GraphNode node, GraphNode prev)
+        private void DFSRecursive(NonOrientedGraphNode node, NonOrientedGraphNode prev)
         {
             _visited[node.Name] = true;
 
-            foreach (GraphNode adjacentVertex in node.LinkedNodes)
+            foreach (NonOrientedGraphNode adjacentVertex in node.LinkedNodes)
             {
                 if (!_visited[adjacentVertex.Name])
                 {
-                    GraphEdge graphEdge = node.GetEdgeBetween(node, adjacentVertex);
+                    NonOrientedGraphEdge graphEdge = node.GetEdgeBetween(node, adjacentVertex);
                     _logger.AddMarkedElement(adjacentVertex, graphEdge);
                     DFSRecursive(adjacentVertex, node);
                 }

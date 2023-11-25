@@ -11,15 +11,15 @@ namespace Model.Graph
 {
     public class BFS
     {
-        private Graph _graph;
+        private NonOrientedGraph _graph;
         private Dictionary<string, List<string>> _matrix;
         private Dictionary<string, bool> _visited;
         private BFSLogger _logger;
         public BFS(Dictionary<string, List<string>> matrix)
         {
             _matrix = matrix;
-            _graph = new Graph();
-            Helper.TranslateToGraph(_matrix, _graph);
+            _graph = new NonOrientedGraph();
+            Helper.TranslateToNonOrientedGraph(_matrix, _graph);
             //TranslateToGraph();
         }
 
@@ -44,20 +44,20 @@ namespace Model.Graph
 
             while (queue.Count > 0)
             {
-                GraphNode currentNode = _graph.GetNodeByName(queue.Dequeue());
-                List<GraphNode> neighbors = currentNode.LinkedNodes;
+                NonOrientedGraphNode currentNode = _graph.GetNodeByName(queue.Dequeue());
+                List<NonOrientedGraphNode> neighbors = currentNode.LinkedNodes;
 
 
                 if (neighbors.Count >= 1)
                 {
                     _logger.AddLog(_graph.GetNodeByName(currentNode.Name), null, $"Находимся в вершине {_graph.GetNodeByName(currentNode.Name).Name}.");
 
-                    foreach (GraphNode neighbor in neighbors)
+                    foreach (NonOrientedGraphNode neighbor in neighbors)
                     {
                         if (!_visited[neighbor.Name])
                         {
                             _visited[neighbor.Name] = true;
-                            GraphEdge graphEdge = currentNode.GetEdgeBetween(currentNode, neighbor);
+                            NonOrientedGraphEdge graphEdge = currentNode.GetEdgeBetween(currentNode, neighbor);
                             _logger.AddLog(neighbor, graphEdge,
                                 $"Обошли вершину {neighbor.Name}. Выделим её и ребро между вершинами {currentNode.Name} и {neighbor.Name}.");
                             queue.Enqueue(neighbor.Name);
@@ -65,18 +65,6 @@ namespace Model.Graph
                     }
 
                     _logger.AddLog(null, null, $"Из вершины {currentNode.Name}, обошли всех соседей");
-                }
-            }
-        }
-
-        private void TranslateToGraph()
-        {
-
-            foreach (var key in _matrix.Keys)
-            {
-                foreach (var node in _matrix[key])
-                {
-                    _graph.AddEdge(key, node);
                 }
             }
         }

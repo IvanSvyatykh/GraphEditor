@@ -9,24 +9,15 @@ namespace Model.Graph
 {
     public class DijkstraAlgorithm
     {
-        private Graph _graph;
+        private NonOrientedGraph _graph;
         private Dictionary<string, List<Tuple<int, string>>> _matrix;
         private DijkstraLogger _logger;
         private Dictionary<string, bool> _visited;
         private Dictionary<string, int> _distance;
         public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix, bool isOriented)
         {
-            _graph = new Graph();
-
-            if (!isOriented)
-            {
-                _matrix = Helper.MatrixRecovery(matrix);
-            }
-            else
-            {
-                _matrix = matrix;
-            }
-            
+            _graph = new NonOrientedGraph();
+            _matrix = matrix;
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
         }
 
@@ -62,7 +53,7 @@ namespace Model.Graph
                 string currentNodeName = _distance.Where(y => !_visited[y.Key]).MinBy(x => x.Value).Key;
                 _logger.AddLog(_graph.GetNodeByName(currentNodeName), null, $"Берем вершину из еще не пройденных путь до которой стоит меньше всего, это вершина {currentNodeName}.", 1);
 
-                foreach (GraphEdge edge in _graph.GetNodeByName(currentNodeName).Edges)
+                foreach (NonOrientedGraphEdge edge in _graph.GetNodeByName(currentNodeName).Edges)
                 {
                     if (_visited[currentNodeName])
                     {
