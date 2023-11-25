@@ -29,9 +29,33 @@ namespace Model.WorkWithFile
             {
                 return Tuple.Create(ReadGraph(streamReader), ReadCoordinats(streamReader));
             }
+            else if (Equals(line, "OstTree"))
+            {
+                return Tuple.Create(ReadGraph(streamReader), ReadCoordinats(streamReader));
+            }
             else
             {
                 throw new ArgumentException("Файл содержит ошибку. Не указан тип графа.");
+            }
+        }
+
+        public static Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> ReadOstTree(string path)
+        {
+            using StreamReader streamReader = new StreamReader(path);
+
+            string line = streamReader.ReadLine();
+            if (!Equals(line, "Graph"))
+            {
+                throw new ArgumentException($"Файл с именем {path}, не может содержать граф или файл был поврежден.");
+            }
+            line = streamReader.ReadLine();
+            if(Equals(line, "OstTree"))
+            {
+                return Tuple.Create(ReadGraph(streamReader), ReadCoordinats(streamReader));
+            }
+            else
+            {
+                throw new ArgumentException($"Файл с именем {path}, не может содержать остовое дерево или файл был поврежден.");
             }
         }
 

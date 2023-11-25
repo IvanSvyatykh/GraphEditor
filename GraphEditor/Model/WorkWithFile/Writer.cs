@@ -6,6 +6,7 @@ using System.Text;
 using Model.Graph;
 using System.Threading.Tasks;
 using System.Windows;
+using Model.Algorithm;
 
 namespace Model.WriteToFile
 {
@@ -31,6 +32,32 @@ namespace Model.WriteToFile
             {
                 streamWriter.WriteLine("Non Oriented");
             }
+
+            streamWriter.WriteLine(HeadFormer(matrix.Keys.ToList()));
+
+            foreach (var item in matrix)
+            {
+                streamWriter.WriteLine(StringFormer(item.Key, item.Value, matrix.Keys.ToList()));
+            }
+
+            streamWriter.WriteLine("Coordinats");
+
+            foreach (var item in coordinats)
+            {
+                streamWriter.WriteLine(FormCoordinatsLine(item.Key, item.Value));
+            }
+
+            streamWriter.Close();
+        }
+
+        public static void WriteOstTree(Dictionary<string, List<Tuple<int, string>>> matrix, Dictionary<string, Point> coordinats, string path)
+        {
+            using StreamWriter streamWriter = new StreamWriter(path);
+
+
+            matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
+            streamWriter.WriteLine("Graph");
+            streamWriter.WriteLine("OstTree");
 
             streamWriter.WriteLine(HeadFormer(matrix.Keys.ToList()));
 
