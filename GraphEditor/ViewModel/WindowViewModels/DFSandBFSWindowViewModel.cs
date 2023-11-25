@@ -1,6 +1,7 @@
 ﻿using Graph;
 using GraphEditor.Model.Loggers;
 using Microsoft.Win32;
+using Model.Algorithm;
 using Model.Graph;
 using Model.WorkWithFile;
 using Model.WriteToFile;
@@ -26,6 +27,7 @@ namespace GraphEditor.ViewModel
         public ICommand LoadGraphCommand { get; }
 
         public ICommand ChangeTaskCommand { get; }
+        public ICommand ChangeGraphTypeCommand { get; }
 
         public ICommand StartProgrammCommand { get; }
         public ICommand StepForwardCommand { get; }
@@ -67,6 +69,24 @@ namespace GraphEditor.ViewModel
                 OnPropertyChanged(nameof(BackgroundForDFS));
             }
         }
+        public SolidColorBrush BackgroundForOrientedGraph
+        {
+            get => backgroundForOrientedGraph;
+            set
+            {
+                backgroundForOrientedGraph = value;
+                OnPropertyChanged(nameof(BackgroundForOrientedGraph));
+            }
+        }
+        public SolidColorBrush BackgroundForNoOrientedGraph
+        {
+            get => backgroundForNoOrientedGraph;
+            set
+            {
+                backgroundForNoOrientedGraph = value;
+                OnPropertyChanged(nameof(BackgroundForNoOrientedGraph));
+            }
+        }
         public bool IsTaskWorking
         {
             get => !isTaskWorking;
@@ -94,7 +114,11 @@ namespace GraphEditor.ViewModel
                 OnPropertyChanged(nameof(IsStepBackwardEnabled));
             }
         }
-        
+
+        private SolidColorBrush backgroundForOrientedGraph = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+        private SolidColorBrush backgroundForNoOrientedGraph = new SolidColorBrush(Color.FromRgb(255, 199, 199));
+        private bool isGraphOriented = false;
+
         private SolidColorBrush backgroundForBFS = new SolidColorBrush(Color.FromRgb(255, 199, 199));
         private SolidColorBrush backgroundForDFS = new SolidColorBrush(Color.FromRgb(211, 211, 211));
         private bool isTaskBFS = true;
@@ -122,7 +146,7 @@ namespace GraphEditor.ViewModel
         {
             this.window = window;
 
-            graphView = new GraphView(window.CanvasForGraph, false);
+            graphView = new GraphView(window.CanvasForGraph, isGraphOriented);
 
             SetAddNodesModeCommand = new RelayCommand(SetAddNodesMode);
             SetAddEdgesModeCommand = new RelayCommand(SetAddEdgesMode);
@@ -133,7 +157,7 @@ namespace GraphEditor.ViewModel
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
 
             ChangeTaskCommand = new RelayCommand(ChangeTask);
-
+            ChangeGraphTypeCommand = new RelayCommand(ChangeGraphType);
 
             StartProgrammCommand = new RelayCommand(StartProgramm);
             StepForwardCommand = new RelayCommand(StepForward);
@@ -227,7 +251,7 @@ namespace GraphEditor.ViewModel
 
             if (!(fileDialog.FileName == ""))
             {
-                Writer.WriteGraph(graphView.GetEdgeMatrixWithWeights(), graphView.GetNodeNamesAndCoordinats(), fileDialog.FileName, false);
+                Writer.WriteGraph(graphView.GetEdgeMatrixWithWeights(), graphView.GetNodeNamesAndCoordinats(), fileDialog.FileName, isGraphOriented);
             }
         }
         private void LoadGraph()
@@ -243,7 +267,7 @@ namespace GraphEditor.ViewModel
                 try
                 {       
                     window.CanvasForGraph.Children.Clear();
-                    graphView = new GraphView(window.CanvasForGraph, false);
+                    graphView = new GraphView(window.CanvasForGraph, isGraphOriented);
 
                     Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
 
@@ -280,6 +304,27 @@ namespace GraphEditor.ViewModel
                 BackgroundForDFS = offModeButtonBackground;
             }
         }
+        private void ChangeGraphType()
+        {
+            window.CanvasForGraph.Children.Clear();
+
+            if (isGraphOriented)
+            {
+                isGraphOriented = false;
+
+                BackgroundForOrientedGraph = offModeButtonBackground;
+                BackgroundForNoOrientedGraph = onModeButtonBackground;
+            }
+            else
+            {
+                isGraphOriented = true;
+
+                BackgroundForOrientedGraph = onModeButtonBackground;
+                BackgroundForNoOrientedGraph = offModeButtonBackground;
+            }
+
+            graphView = new GraphView(window.CanvasForGraph, isGraphOriented);
+        }
         private void StartProgramm()
         {
             if (graphView.ValidateState())
@@ -291,11 +336,23 @@ namespace GraphEditor.ViewModel
 
                     ILogger logger;
                     if (isTaskBFS)
-                    {
-                        graphView.StartTaskWork();
-                        BFS bFS = new BFS(graphView.GetEdgeMatrix());
-                        logger = bFS.StartAlgorithm(startNodeName);
-                        visited = logger.GetVisisted();
+                    {   
+                        if (isGraphOriented)
+                        {
+                            graphView.StartTaskWork();
+                            BFSOriented bFS = new BFSOriented(graphView.GetEdgeMatrixWithWeights());
+                           
+                            logger = bFS.StartAlgorithm(startNodeName);
+                            visited = logger.GetVisisted();
+                            
+                        }
+                        else
+                        {
+                            graphView.StartTaskWork();
+                            BFS bFS = new BFS(graphView.GetEdgeMatrix());
+                            logger = bFS.StartAlgorithm(startNodeName);
+                            visited = logger.GetVisisted();
+                        }
                     }
                     else
                     {

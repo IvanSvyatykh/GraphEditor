@@ -50,8 +50,8 @@
             <MenuItem Header="Dijkstra algorithm" BorderBrush="WhiteSmoke" Click="DijkstraAlgorithmMenuItemClick" />
         </Menu>
 
-        <Button Content="Сохранить граф" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding SaveGraphCommand}"/>
-        <Button Content="Загрузить граф" Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" Command="{Binding LoadGraphCommand}"/>
+        <Button Content="Сохранить граф" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" IsEnabled="{Binding IsTaskWorking}" Command="{Binding SaveGraphCommand}"/>
+        <Button Content="Загрузить граф" Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" IsEnabled="{Binding IsTaskWorking}" Command="{Binding LoadGraphCommand}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="Выбор режима:" VerticalAlignment="Bottom" FontSize="18"/>
 
@@ -77,6 +77,9 @@
         <Button Content="Обход графа в глубину" Grid.Row="15" Grid.Column="3" Grid.ColumnSpan="3" FontSize="19" Background="{Binding BackgroundForDFS}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeTaskCommand}"/>
         <Button Content="Решить" Grid.Row="15" Grid.Column="7" FontSize="20" Command="{Binding StartProgrammCommand}" IsEnabled="{Binding IsTaskWorking }"/>
 
+
+        <Button Content="Ориентир." Grid.Row="2" Grid.Column="9"  Background="{Binding BackgroundForOrientedGraph}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeGraphTypeCommand}" />
+        <Button Content="Не Ориентир." Grid.Row="2" Grid.Column="11"  Background="{Binding BackgroundForNoOrientedGraph}" IsEnabled="{Binding IsTaskWorking}" Command="{Binding ChangeGraphTypeCommand}" />
         <TextBlock x:Name="TextBlockSteps" Text="Ход действий:" Grid.Row="3" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Bottom" FontSize="18" />
 
         <ScrollViewer Grid.Column="9" Grid.Row="4" Grid.RowSpan="7" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Background="White">
