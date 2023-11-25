@@ -50,11 +50,6 @@ namespace Graph
             get { return isOriented; }
             set { isOriented = value; OnPropertyChanged("IsOriented"); }
         }
-        public bool IsWeighted
-        {
-            get { return isWeighted; }
-            set { isWeighted = value; OnPropertyChanged("IsWeighted"); }
-        }
 
         private Canvas canvas;
 
@@ -62,7 +57,6 @@ namespace Graph
         private List<NodeView> nodeList = new List<NodeView>();
 
         private bool isOriented = false;
-        private bool isWeighted =false;
 
         private bool isNodeAdding;
         private bool isNodeDeleting;
@@ -79,11 +73,10 @@ namespace Graph
 
         private Line lineForEdgeDemonstration;
 
-        public GraphView(Canvas canvas, bool isOriented, bool isWeighted )
+        public GraphView(Canvas canvas, bool isOriented)
         {
             this.canvas = canvas;
             this.isOriented = isOriented;
-            this.isWeighted = isWeighted;
 
             lineForEdgeDemonstration = new Line();
             lineForEdgeDemonstration.Stroke = Brushes.Black;
@@ -171,10 +164,9 @@ namespace Graph
                         {
                             canvas.Children.Remove(line);
                         }
-                        if (isWeighted)
-                        {
-                            canvas.Children.Remove(currentEdge.TxtBox);
-                        }
+                        
+                        canvas.Children.Remove(currentEdge.TxtBox);
+                        
                         edgeList.Remove(currentEdge);
                         i--;
                     }
