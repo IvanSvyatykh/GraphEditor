@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Model.Graph
 {
-    public class GraphEdge
+    public class NonOrientedGraphEdge
     {
-        public GraphNode FirstNode { get; private set; }
+        public NonOrientedGraphNode FirstNode { get; private set; }
 
-        public GraphNode SecondNode { get; private set; }
+        public NonOrientedGraphNode SecondNode { get; private set; }
 
         public int Weight { get; private set; }
 
-        public GraphEdge(GraphNode firstNode, GraphNode secondNode, int weight = 0)
+        public NonOrientedGraphEdge(NonOrientedGraphNode firstNode, NonOrientedGraphNode secondNode, int weight = 0)
         {
             FirstNode = firstNode;
             SecondNode = secondNode;
@@ -29,7 +29,7 @@ namespace Model.Graph
             return first || second;
         }
 
-        public  GraphNode GetOtherNode(GraphNode node)
+        public  NonOrientedGraphNode GetOtherNode(NonOrientedGraphNode node)
         {
             if (Equals(node.Name, FirstNode.Name))
             {
@@ -45,7 +45,7 @@ namespace Model.Graph
             }
         }
 
-        public GraphNode GetNext()
+        public NonOrientedGraphNode GetNext()
         {
             return SecondNode;
         }

@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Model.Graph
 {
-    public class GraphNode
+    public class NonOrientedGraphNode
     {
         private int? _value;
         public string Name { get; private set; }
         public bool IsLinked { get; private set; }
 
-        public List<GraphEdge> Edges { get; private set; }
+        public List<NonOrientedGraphEdge> Edges { get; private set; }
 
-        public List<GraphNode> LinkedNodes { get; private set; }
+        public List<NonOrientedGraphNode> LinkedNodes { get; private set; }
 
-        public GraphEdge GetEdgeBetween(GraphNode first, GraphNode second)
+        public NonOrientedGraphEdge GetEdgeBetween(NonOrientedGraphNode first, NonOrientedGraphNode second)
         {
             foreach (var el in Edges)
             {
@@ -31,30 +31,30 @@ namespace Model.Graph
             return null;
         }
 
-        public GraphNode(string name, int? value = null, List<GraphEdge> grapgEdges = null)
+        public NonOrientedGraphNode(string name, int? value = null, List<NonOrientedGraphEdge> grapgEdges = null)
         {
             _value = value;
-            LinkedNodes = new List<GraphNode>();
+            LinkedNodes = new List<NonOrientedGraphNode>();
             Name = name;
             if (grapgEdges == null)
             {
-                Edges = new List<GraphEdge>();
+                Edges = new List<NonOrientedGraphEdge>();
                 IsLinked = false;
             }
             else
             {
-                Edges = new List<GraphEdge>(grapgEdges);
+                Edges = new List<NonOrientedGraphEdge>(grapgEdges);
                 IsLinked = true;
             }
 
         }
 
-        public void AddEdge(GraphNode node, int weigtOfEdge = 0)
+        public void AddEdge(NonOrientedGraphNode node, int weigtOfEdge = 0)
         {
 
             if (LinkedNodes.All(n => !Equals(n.Name, node.Name)))
             {
-                GraphEdge edge = new GraphEdge(this, node, weigtOfEdge);
+                NonOrientedGraphEdge edge = new NonOrientedGraphEdge(this, node, weigtOfEdge);
                 LinkedNodes.Add(node);
                 Edges.Add(edge);
                 IsLinked = true;
@@ -65,7 +65,7 @@ namespace Model.Graph
             }
         }
 
-        private bool IsBetween(GraphNode first, GraphNode second, GraphEdge el)
+        private bool IsBetween(NonOrientedGraphNode first, NonOrientedGraphNode second, NonOrientedGraphEdge el)
         {
             return (el.FirstNode == first && el.SecondNode == second) || (el.SecondNode == first && el.FirstNode == second);
         }

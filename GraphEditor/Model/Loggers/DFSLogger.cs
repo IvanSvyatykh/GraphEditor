@@ -9,17 +9,17 @@ namespace GraphEditor.Model.Loggers
 {
     public class DFSLogger : ILogger
     {
-        public List<Tuple<GraphNode, GraphEdge, string>> Visited { get; private set; }
-        public List<Tuple<GraphNode, GraphEdge, string>> GetVisisted()
+        public List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string>> Visited { get; private set; }
+        public List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string>> GetVisisted()
         {
             return Visited;
         }
         public DFSLogger()
         {
-            Visited = new List<Tuple<GraphNode, GraphEdge, string>>();
+            Visited = new List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string>>();
         }
 
-        public void AddMarkedElement(GraphNode node, GraphEdge edge)
+        public void AddMarkedElement(NonOrientedGraphNode node, NonOrientedGraphEdge edge)
         {
             string log;
             if (edge == null)
@@ -33,7 +33,7 @@ namespace GraphEditor.Model.Loggers
             Visited.Add(Tuple.Create(node, edge, log));
         }
 
-        public void AddComeback(GraphNode node, GraphEdge edge, string comment)
+        public void AddComeback(NonOrientedGraphNode node, NonOrientedGraphEdge edge, string comment)
         {
             Visited.Add(Tuple.Create(node, edge, comment));
         }

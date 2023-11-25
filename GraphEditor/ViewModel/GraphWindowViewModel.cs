@@ -103,7 +103,7 @@ namespace GraphEditor.ViewModel
 
         private byte currentMode = 0;
 
-        private List<Tuple<GraphNode, GraphEdge, string>> visited;
+        private List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string>> visited;
 
         private string startNodeName = "A";
         private string explanation = "Тут пока ничего нет";
@@ -332,7 +332,7 @@ namespace GraphEditor.ViewModel
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
                 
-                visited = new List<Tuple<GraphNode, GraphEdge, string>>();
+                visited = new List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();

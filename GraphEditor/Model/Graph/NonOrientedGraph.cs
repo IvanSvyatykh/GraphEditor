@@ -5,20 +5,20 @@ using System.Xml.Linq;
 
 namespace Model.Graph
 {
-    public class Graph
+    public class NonOrientedGraph
     {
-        private List<GraphNode> _nodes;
-        public List<GraphEdge> Edges { get; private set; }
+        private List<NonOrientedGraphNode> _nodes;
+        public List<NonOrientedGraphEdge> Edges { get; private set; }
         public HashSet<string> Names { get; private set; }
 
-        public Graph()
+        public NonOrientedGraph()
         {
-            _nodes = new List<GraphNode>();
+            _nodes = new List<NonOrientedGraphNode>();
             Names = new HashSet<string>();
-            Edges = new List<GraphEdge>();
+            Edges = new List<NonOrientedGraphEdge>();
         }
 
-        public GraphNode GetNodeByName(string name)
+        public NonOrientedGraphNode GetNodeByName(string name)
         {
             if (!Names.Contains(name))
             {
@@ -34,8 +34,8 @@ namespace Model.Graph
         {
             if (Edges.All(x => !x.IsEqual(firstNodeName, secondNodeName)))
             {
-                GraphNode firstGraphNode = new GraphNode(firstNodeName, firstNodeWeight);
-                GraphNode secondGraphNode = new GraphNode(secondNodeName, secondNodeWeight);
+                NonOrientedGraphNode firstGraphNode = new NonOrientedGraphNode(firstNodeName, firstNodeWeight);
+                NonOrientedGraphNode secondGraphNode = new NonOrientedGraphNode(secondNodeName, secondNodeWeight);
                 if (_nodes.All(x => !Equals(x.Name, firstNodeName)))
                 {
                     _nodes.Add(firstGraphNode);
@@ -60,7 +60,7 @@ namespace Model.Graph
                 firstGraphNode.AddEdge(secondGraphNode, edgeWeight);
                 secondGraphNode.AddEdge(firstGraphNode, edgeWeight);
 
-                Edges.Add(new GraphEdge(firstGraphNode, secondGraphNode, edgeWeight));
+                Edges.Add(new NonOrientedGraphEdge(firstGraphNode, secondGraphNode, edgeWeight));
             }
         }
 
