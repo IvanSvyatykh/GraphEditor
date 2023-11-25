@@ -425,14 +425,11 @@ namespace GraphEditor.ViewModel.WindowViewModels
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
-            string temporaryNodeName = null;
-            string temporaryStartNodeName = null;
-            string temporaryEndNodeName = null;
             for (int i = 0; i <= stepIndex; i++)
             {
                 if (visited[i].Item4 == 1)
                 {
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Green);
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
                     if (visited[i].Item2 is not null)
                     {
                         graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
@@ -440,8 +437,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 }
                 else if (visited[i].Item4 == 2)
                 {
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
-                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.YellowGreen);
+                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Red);
                 }
             }
         }
