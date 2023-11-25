@@ -192,6 +192,7 @@ namespace Graph
         {
             FirstTop = null;
 
+            //Нужно ли оно мне здесь?
             if (canvas.Children.Contains(lineForEdgeDemonstration))
             {
                 canvas.Children.Remove(lineForEdgeDemonstration);
@@ -354,6 +355,7 @@ namespace Graph
         {
             isEdgeAdding = false;
             FirstTop = null;
+
             if (canvas.Children.Contains(lineForEdgeDemonstration))
             {
                 canvas.Children.Remove(lineForEdgeDemonstration);
