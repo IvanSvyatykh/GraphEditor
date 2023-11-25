@@ -185,6 +185,7 @@ namespace Graph
 
                 canvas.Children.Remove(node.ViewPartNode);
                 nodeList.Remove(node);
+                ValidateNamesIsUnique();
             }
         }
 

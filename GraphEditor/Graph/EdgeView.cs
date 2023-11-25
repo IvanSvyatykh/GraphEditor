@@ -313,23 +313,41 @@ namespace Graph
 
                 double angle = Math.Asin(Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) / hypotenuse);
                 
-                if (angle <= 7 * Math.PI / 24)
+                if (graph.IsOriented)
                 {
-                    Canvas.SetLeft(textBox, startNode.Position.X + 3 * (((Line)Line).X2 - ((Line)Line).X1) / 4);
-                }
-                else
-                {
-                    Canvas.SetLeft(textBox, startNode.Position.X + 12 + 3 * (((Line)Line).X2 - ((Line)Line).X1) / 4);
-                }
+                    if (angle <= 7 * Math.PI / 24)
+                    {
+                        Canvas.SetLeft(textBox, startNode.Position.X + 0.65 * (((Line)Line).X2 - ((Line)Line).X1));
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(textBox, startNode.Position.X + 12 + 0.65 * (((Line)Line).X2 - ((Line)Line).X1));
+                    }
 
-                if (isEdgeTwoWays)
-                {
-                    Canvas.SetTop(textBox, startNode.Position.Y + 3* (((Line)Line).Y2 - ((Line)Line).Y1) / 4 + textBox.FontSize / 3 + 10);
+                    if (isEdgeTwoWays)
+                    {
+                        Canvas.SetTop(textBox, startNode.Position.Y + 0.65 * (((Line)Line).Y2 - ((Line)Line).Y1) + textBox.FontSize / 3 + 10);
+                    }
+                    else
+                    {
+                        Canvas.SetTop(textBox, startNode.Position.Y + 0.65 * (((Line)Line).Y2 - ((Line)Line).Y1) - textBox.FontSize / 3);
+                    }
                 }
                 else
                 {
-                    Canvas.SetTop(textBox, startNode.Position.Y + 3 * (((Line)Line).Y2 - ((Line)Line).Y1) / 4 - textBox.FontSize / 3);
+                    if (angle <= 7 * Math.PI / 24)
+                    {
+                        Canvas.SetLeft(textBox, startNode.Position.X + 0.5 * (((Line)Line).X2 - ((Line)Line).X1));
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(textBox, startNode.Position.X + 12 + 0.5 * (((Line)Line).X2 - ((Line)Line).X1));
+                    }
+
+                    Canvas.SetTop(textBox, startNode.Position.Y + 0.5 * (((Line)Line).Y2 - ((Line)Line).Y1) - textBox.FontSize / 3);
+                    
                 }
+                
                     
                 
                 if (graph.IsOriented)
