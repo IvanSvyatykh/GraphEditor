@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GraphEditor;
 using Model.Graph;
+using System.Threading;
 
 namespace Graph
 {
@@ -68,13 +69,14 @@ namespace Graph
         
         private int edge_weight;
         private bool isLine;
+        private bool isEdgeTwoWays;
         private Brush baseColor = Brushes.Black;
 
         private GraphView graph;
         private NodeView startNode;
         private NodeView endNode;
 
-        public EdgeView(GraphView _graph, NodeView from_node, NodeView to_node, int weight)
+        public EdgeView(GraphView _graph, NodeView from_node, NodeView to_node, int weight, bool isEdgeTwoWays)
         {
             this.graph = _graph;
 
@@ -112,7 +114,7 @@ namespace Graph
                     RightLine = new Line();
                     RightLine.Stroke = LeftLine.Stroke = baseColor;
 
-                    RightLine.StrokeThickness = LeftLine.StrokeThickness = 7;
+                    RightLine.StrokeThickness = LeftLine.StrokeThickness = 1.25;
                     
                     _graph.GraphCanvas.Children.Add(LeftLine);
                     _graph.GraphCanvas.Children.Add(RightLine);
@@ -158,9 +160,10 @@ namespace Graph
             textBox.Text = weight.ToString();
 
             _graph.GraphCanvas.Children.Add(textBox);
-                
-            Canvas.SetZIndex(textBox, 2);
             
+            Canvas.SetZIndex(textBox, 2);
+            this.isEdgeTwoWays = isEdgeTwoWays;
+
 
             _graph.GraphCanvas.Children.Add(Line);
             Canvas.SetZIndex(Line, 0);
@@ -256,6 +259,7 @@ namespace Graph
             {
                 if (!graph.IsEdgeAdding && !graph.IsNodeAdding)
                 {
+                    Canvas.SetZIndex(Line, 1);
                     Line.Stroke = Brushes.Green;
                     if (isLine && graph.IsOriented)
                     {
@@ -276,6 +280,7 @@ namespace Graph
         {
             if (!graph.IsEdgeAdding && !graph.IsNodeAdding && !graph.IsTaskWork)
             {
+                Canvas.SetZIndex(Line, 0);
                 Line.Stroke = Brushes.Black;
                 if (isLine && graph.IsOriented)
                 {
@@ -303,30 +308,34 @@ namespace Graph
                 ((Line)Line).X2 = endNode.Position.X + startNode.ViewPartNode.Width / 2;
                 ((Line)Line).Y2 = endNode.Position.Y + ViewNode.NodeRadius / 2;
 
-
                 double hypotenuse = Math.Sqrt(Math.Abs(((Line)Line).X2 - ((Line)Line).X1) * Math.Abs(((Line)Line).X2 - ((Line)Line).X1) +
-                Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) * Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1));
+                    Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) * Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1));
 
                 double angle = Math.Asin(Math.Abs(((Line)Line).Y2 - ((Line)Line).Y1) / hypotenuse);
-
+                
                 if (angle <= 7 * Math.PI / 24)
                 {
-                    Canvas.SetLeft(textBox, startNode.Position.X + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                    Canvas.SetLeft(textBox, startNode.Position.X + 3 * (((Line)Line).X2 - ((Line)Line).X1) / 4);
                 }
                 else
                 {
-                    Canvas.SetLeft(textBox, startNode.Position.X + 12 + (((Line)Line).X2 - ((Line)Line).X1) / 2);
+                    Canvas.SetLeft(textBox, startNode.Position.X + 12 + 3 * (((Line)Line).X2 - ((Line)Line).X1) / 4);
                 }
 
-                Canvas.SetTop(textBox, startNode.Position.Y + (((Line)Line).Y2 - ((Line)Line).Y1) / 2 - textBox.FontSize / 3);
+                if (isEdgeTwoWays)
+                {
+                    Canvas.SetTop(textBox, startNode.Position.Y + 3* (((Line)Line).Y2 - ((Line)Line).Y1) / 4 + textBox.FontSize / 3 + 10);
+                }
+                else
+                {
+                    Canvas.SetTop(textBox, startNode.Position.Y + 3 * (((Line)Line).Y2 - ((Line)Line).Y1) / 4 - textBox.FontSize / 3);
+                }
+                    
                 
                 if (graph.IsOriented)
                 {
                     double u_l = Math.Atan2(((Line)Line).X1 - ((Line)Line).X2, ((Line)Line).Y1 - ((Line)Line).Y2);
                     double u = Math.PI / 33;
-
-                    LeftLine.StrokeThickness = 1;
-                    RightLine.StrokeThickness = 1;
 
                     LeftLine.X1 = ((Line)Line).X2 + 10 * Math.Sin(u_l);
                     LeftLine.Y1 = ((Line)Line).Y2 + 10 * Math.Cos(u_l);

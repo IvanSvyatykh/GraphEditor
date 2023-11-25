@@ -202,7 +202,8 @@ namespace Graph
                 canvas.Children.Remove(leftLineForOrientedEdgeDemo);
                 canvas.Children.Remove(rightLineForOrientedEdgeDemo);
             }
-
+            bool isEdgeTwoWays = false;
+            
             foreach (EdgeView edge in edgeList)
             {
                 if (isOriented)
@@ -210,6 +211,11 @@ namespace Graph
                     if (edge.StartNode == startNode && edge.EndNode == endNode)
                     {
                         return;
+                    }
+                    else if (edge.StartNode == endNode && edge.EndNode == startNode)
+                    {
+                        isEdgeTwoWays = true;
+                        break;
                     }
                 }
                 else
@@ -222,7 +228,7 @@ namespace Graph
                 }
             }
 
-            EdgeView line = new EdgeView(this, startNode, endNode, weight);
+            EdgeView line = new EdgeView(this, startNode, endNode, weight, isEdgeTwoWays);
             edgeList.Add(line);       
         }
         private void StopEdgeAdding(object sender, MouseButtonEventArgs e)
