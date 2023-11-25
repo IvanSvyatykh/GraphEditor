@@ -437,6 +437,9 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 }
                 else if (visited[i].Item4 == 2)
                 {
+                    graphView.ChangeNodesColorFromTo(Brushes.YellowGreen, Brushes.Blue);
+                    graphView.ChangeEdgesColorFromTo(Brushes.Green, Brushes.Black);
+
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Red);
                 }
             }

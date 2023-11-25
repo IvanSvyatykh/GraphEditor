@@ -223,7 +223,7 @@ namespace Graph
                     throw new Exception();
                 }
 
-                textBox.Foreground = Brushes.RoyalBlue;
+                textBox.Foreground = Brushes.ForestGreen;
                 isValid = true;
             }
             catch (Exception ex)
