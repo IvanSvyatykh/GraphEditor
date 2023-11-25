@@ -16,8 +16,10 @@ namespace Model.WriteToFile
         {
             using StreamWriter streamWriter = new StreamWriter(path);
 
-
-            //matrix = Helper.MatrixRecovery(matrix);
+            if (!IsOriented)
+            {
+                matrix = Helper.MatrixRecovery(matrix);
+            }
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
             streamWriter.WriteLine("Graph");
             if (IsOriented)

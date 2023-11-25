@@ -239,7 +239,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
             if (!(fileDialog.FileName == ""))
             {
-                Writer.WriteGraph(graphView.GetEdgeMatrixWithWeights(), graphView.GetNodeNamesAndCoordinats(), fileDialog.FileName, false);
+                Writer.WriteGraph(graphView.GetEdgeMatrixWithWeights(), graphView.GetNodeNamesAndCoordinats(), fileDialog.FileName, isGraphOriented);
             }
         }
         private void LoadGraph()
