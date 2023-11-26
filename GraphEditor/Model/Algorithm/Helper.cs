@@ -73,7 +73,7 @@ namespace Model.Graph
             }
         }
 
-        public static bool BFS(Graph graph, string start, string end)
+        public static Dictionary<string, bool> BFS(Graph graph, string start)
         {
 
             Dictionary<string, bool> visited = new Dictionary<string, bool>();
@@ -106,7 +106,7 @@ namespace Model.Graph
                 }
             }
 
-            return visited[end];
+            return visited;
         }
 
         public static Dictionary<string, List<Tuple<int, string>>> MatrixRecovery(Dictionary<string, List<Tuple<int, string>>> matrix)

@@ -30,7 +30,7 @@ namespace Model.Graph
             _visited = new Dictionary<string, bool>();
             _graph.Names.ToList().ForEach(name => { _visited.Add(name, false); _distance.Add(name, int.MaxValue); _prev.Add(name); });
 
-            if (!Helper.BFS(_graph, startNode, destNode))
+            if (!Helper.BFS(_graph, startNode)[destNode])
             {
                 throw new Exception($"Добраться из узла {startNode} в {destNode} не возможно.");
             }
