@@ -66,6 +66,10 @@ namespace Model.Graph
 
                     _logger.AddLog(null, null, $"Из вершины {currentNode.Name}, обошли всех соседей");
                 }
+                else
+                {
+                    _logger.AddLog(_graph.GetNodeByName(currentNode.Name), null, $"Находимся в вершине {_graph.GetNodeByName(currentNode.Name).Name} из нее идти некуда.");
+                }
             }
         }
     }

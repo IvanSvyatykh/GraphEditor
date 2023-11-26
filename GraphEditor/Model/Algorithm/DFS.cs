@@ -47,7 +47,7 @@ namespace Model.Graph
                 {
                     GraphEdge graphEdge = node.GetEdgeBetween(node, adjacentVertex);
                     _logger.AddMarkedElement(adjacentVertex, graphEdge);
-                    DFSRecursive(adjacentVertex, node);
+                    DFSRecursive(_graph.GetNodeByName(adjacentVertex.Name), node);
                 }
             }
             if (prev != null)
