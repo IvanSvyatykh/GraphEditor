@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -31,7 +33,7 @@ namespace Model.Graph
                     {
                         graph.AddEdge(key, node.Item2, edgeWeight: node.Item1);
                     }
-                    
+
                 }
             }
         }
@@ -107,6 +109,56 @@ namespace Model.Graph
             }
 
             return visited;
+        }
+
+        public static int[][] TranslatoToMatrix(Dictionary<string, List<Tuple<int, string>>> matrix)
+        {
+            int[][] ints = new int[matrix.Count][];
+            int i = 0;
+            int j = 0;
+
+            Recovery(matrix);
+
+            foreach (var key in matrix.Keys)
+            {
+                matrix[key].Sort((x, y) => x.Item2.CompareTo(y.Item2));
+                ints[i] = new int[matrix.Count];
+                foreach (var value in matrix[key])
+                {
+                    ints[i][j] = value.Item1;
+                    j++;
+                }
+                j = 0;
+                i++;
+            }
+
+
+            return ints;
+        }
+
+        private static void Recovery(Dictionary<string, List<Tuple<int, string>>> matrix)
+        {
+            List<string> keys = matrix.Keys.ToList();
+            foreach (var key in matrix.Keys)
+            {
+                foreach (var e in keys)
+                {
+                    bool flag = true;
+                    foreach(var value in matrix[key])
+                    {
+                        if (Equals(value.Item2, e))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (flag)
+                    {
+                        matrix[key].Add(Tuple.Create(-1, e));
+                    }
+                }
+            }
         }
 
         public static Dictionary<string, List<Tuple<int, string>>> MatrixRecovery(Dictionary<string, List<Tuple<int, string>>> matrix)
