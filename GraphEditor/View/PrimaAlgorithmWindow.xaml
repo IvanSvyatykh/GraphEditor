@@ -48,6 +48,7 @@
             <MenuItem Header="DFS and BFS" BorderBrush="WhiteSmoke" Click="DFSandBFSMenuItemClick"/>
             <MenuItem Header="Prima algorithm" BorderBrush="WhiteSmoke"  Background="#FFEFFCFF" Click="PrimaAlgorithmMenuItemClick" />
             <MenuItem Header="Dijkstra algorithm" BorderBrush="WhiteSmoke" Click="DijkstraAlgorithmMenuItemClick" />
+            <MenuItem Header="Ford Fulkerson algorithm" BorderBrush="WhiteSmoke" Click="FordFulkersonAlgorithmMenuItemClick"/>
         </Menu>
 
         <Button Content="Сохранить граф" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" FontSize="15" IsEnabled="{Binding IsTaskWorking}" Command="{Binding SaveGraphCommand}"/>

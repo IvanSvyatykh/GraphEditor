@@ -41,5 +41,9 @@ namespace GraphEditor.View
         {
             INavigationService.SetDijkstraAlgorithmWindow(this);
         }
+        private void FordFulkersonAlgorithmMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            INavigationService.SetFordFulkersonAlgorithmWindow(this);
+        }
     }
 }

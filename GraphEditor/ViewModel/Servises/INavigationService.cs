@@ -31,5 +31,13 @@ namespace GraphEditor.ViewModel.Servises
             newWindow.Show();
             window.Close();
         }
+       
+        static void SetFordFulkersonAlgorithmWindow(Window window)
+        {
+            window.Hide();
+            FordFulkersonAlgorithmWindow newWindow = new FordFulkersonAlgorithmWindow();
+            newWindow.Show();
+            window.Close();
+        }
     }
 }

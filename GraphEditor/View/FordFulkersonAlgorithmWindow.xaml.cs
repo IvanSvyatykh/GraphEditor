@@ -1,5 +1,6 @@
 ﻿using GraphEditor.ViewModel;
 using GraphEditor.ViewModel.Servises;
+using GraphEditor.ViewModel.WindowViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,21 +15,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GraphEditor
+namespace GraphEditor.View
 {
     /// <summary>
-    /// Логика взаимодействия для PrimaAndDeijkstraAlgorithmsWindow.xaml
+    /// Логика взаимодействия для FordFulkersonAlgorithmWindow.xaml
     /// </summary>
-    public partial class PrimaAlgorithmWindow : Window
+    public partial class FordFulkersonAlgorithmWindow : Window
     {
-        private PrimaAlgorithmWindowViewModel windowViewModel;
-        public PrimaAlgorithmWindow()
+        private FordFulkersonAlgorithmWindowViewModel windowViewModel;
+        public FordFulkersonAlgorithmWindow()
         {
             InitializeComponent();
-            windowViewModel = new PrimaAlgorithmWindowViewModel(this);
+            windowViewModel = new FordFulkersonAlgorithmWindowViewModel(this);
             DataContext = windowViewModel;
         }
-
         private void DFSandBFSMenuItemClick(object sender, RoutedEventArgs e)
         {
             INavigationService.SetDFSandBFSWindow(this);
