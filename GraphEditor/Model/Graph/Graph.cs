@@ -87,7 +87,23 @@ namespace Model.Graph
 
         private void AddEdgeForNonOreinted(string firstNodeName, string secondNodeName, int edgeWeight = 0)
         {
-            if (Edges.All(x => !x.IsEqual(firstNodeName, secondNodeName)))
+            if (secondNodeName == null)
+            {
+                GraphNode firstGraphNode = new GraphNode(firstNodeName, _isOrinted);
+                if (_nodes.All(x => !Equals(x.Name, firstNodeName)))
+                {
+                    _nodes.Add(firstGraphNode);
+                }
+                else
+                {
+                    firstGraphNode = _nodes.First(x => Equals(x.Name, firstNodeName));
+
+                }
+
+                Names.Add(firstNodeName);
+
+            }
+            else if (Edges.All(x => !x.IsEqual(firstNodeName, secondNodeName)))
             {
                 GraphNode firstGraphNode = new GraphNode(firstNodeName, _isOrinted);
                 GraphNode secondGraphNode = new GraphNode(secondNodeName, _isOrinted);

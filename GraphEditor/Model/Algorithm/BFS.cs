@@ -20,7 +20,6 @@ namespace Model.Graph
             _matrix = matrix;
             _graph = new Graph(isOriented);
             Helper.TranslateToNonOrientedGraph(_matrix, _graph);
-            //TranslateToGraph();
         }
 
         public BFSLogger StartAlgorithm(string startNodeName)
