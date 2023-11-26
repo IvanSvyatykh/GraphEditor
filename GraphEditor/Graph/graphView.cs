@@ -569,8 +569,7 @@ namespace Graph
         public void BackNodeNamesToBase()
         {
             for (int i = 0; i < nodeList.Count; i++)
-            {
-                
+            {             
                 nodeList[i].ViewPartNode.TextBoxForNodeLabel.Text = nodeList[i].NodeName;
             }
         }

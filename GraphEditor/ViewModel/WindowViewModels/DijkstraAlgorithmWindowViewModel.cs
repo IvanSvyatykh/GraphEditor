@@ -29,7 +29,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
         public ICommand SaveGraphCommand { get; }
         public ICommand LoadGraphCommand { get; }
 
-        public ICommand ChangeTaskCommand { get; }
+        public ICommand ChangeGraphTypeCommand { get; }
 
         public ICommand StartProgrammCommand { get; }
         public ICommand StepForwardCommand { get; }
@@ -143,7 +143,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
 
-            ChangeTaskCommand = new RelayCommand(ChangeTask);
+            ChangeGraphTypeCommand = new RelayCommand(ChangeGraphType);
 
 
             StartProgrammCommand = new RelayCommand(StartProgramm);
@@ -277,7 +277,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
             }
         }
 
-        private void ChangeTask()
+        private void ChangeGraphType()
         {
             window.CanvasForGraph.Children.Clear();
 

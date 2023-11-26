@@ -28,8 +28,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
         public ICommand SaveGraphCommand { get; }
         public ICommand LoadGraphCommand { get; }
 
-        public ICommand ChangeTaskCommand { get; }
-
         public ICommand StartProgrammCommand { get; }
         public ICommand StepForwardCommand { get; }
         public ICommand StepBackwardCommand { get; }
@@ -55,24 +53,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
             {
                 explanation = value;
                 OnPropertyChanged(nameof(Explanation));
-            }
-        }
-        public SolidColorBrush BackgroundForOrientedGraph
-        {
-            get => backgroundForOrientedGraph;
-            set
-            {
-                backgroundForOrientedGraph = value;
-                OnPropertyChanged(nameof(BackgroundForOrientedGraph));
-            }
-        }
-        public SolidColorBrush BackgroundForNoOrientedGraph
-        {
-            get => backgroundForNoOrientedGraph;
-            set
-            {
-                backgroundForNoOrientedGraph = value;
-                OnPropertyChanged(nameof(BackgroundForNoOrientedGraph));
             }
         }
         public bool IsTaskWorking
@@ -103,8 +83,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
             }
         }
 
-        private SolidColorBrush backgroundForOrientedGraph = new SolidColorBrush(Color.FromRgb(255, 199, 199));
-        private SolidColorBrush backgroundForNoOrientedGraph = new SolidColorBrush(Color.FromRgb(211, 211, 211));
         private bool isGraphOriented = true;
 
         private SolidColorBrush offModeButtonBackground = new SolidColorBrush(Color.FromRgb(221, 221, 221));
@@ -141,8 +119,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
             LoadGraphCommand = new RelayCommand(LoadGraph);
 
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
-
-            ChangeTaskCommand = new RelayCommand(ChangeTask);
 
 
             StartProgrammCommand = new RelayCommand(StartProgramm);
@@ -276,27 +252,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
             }
         }
 
-        private void ChangeTask()
-        {
-            window.CanvasForGraph.Children.Clear();
-
-            if (isGraphOriented)
-            {
-                isGraphOriented = false;
-
-                BackgroundForOrientedGraph = offModeButtonBackground;
-                BackgroundForNoOrientedGraph = onModeButtonBackground;
-            }
-            else
-            {
-                isGraphOriented = true;
-
-                BackgroundForOrientedGraph = onModeButtonBackground;
-                BackgroundForNoOrientedGraph = offModeButtonBackground;
-            }
-
-            graphView = new GraphView(window.CanvasForGraph, isGraphOriented);
-        }
         private void StartProgramm()
         {
             if (graphView.ValidateState())
