@@ -8,7 +8,7 @@ namespace Model.Graph
 {
     public static class Helper
     {
-        public static void TranslateToGraphWithWeights(Dictionary<string, List<Tuple<int, string>>> matrix, NonOrientedGraph graph)
+        public static void TranslateToGraphWithWeights(Dictionary<string, List<Tuple<int, string>>> matrix, Graph graph)
         {
 
             foreach (var key in matrix.Keys)
@@ -32,7 +32,7 @@ namespace Model.Graph
             return ret;
         }
 
-        public static void TranslateToNonOrientedGraph(Dictionary<string, List<string>> matrix, NonOrientedGraph graph)
+        public static void TranslateToNonOrientedGraph(Dictionary<string, List<string>> matrix, Graph graph)
         {
 
             foreach (var key in matrix.Keys)
@@ -43,7 +43,7 @@ namespace Model.Graph
                 }
             }
         }
-        public static void CheckGraph(NonOrientedGraph graph)
+        public static void CheckGraph(Graph graph)
         {
             if (graph.Edges.Any(x => x.Weight == null) || graph.Edges.All(x => x.Weight == 0))
             {

@@ -9,6 +9,6 @@ namespace GraphEditor.Model.Loggers
 {
     internal interface ILogger
     {
-        public List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string>> GetVisisted();
+        public List<Tuple<GraphNode, GraphEdge, string>> GetVisisted();
     }
 }

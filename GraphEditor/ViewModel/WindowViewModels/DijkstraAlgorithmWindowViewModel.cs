@@ -113,7 +113,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private byte currentMode = 0;
 
-        private List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string, byte>> visited;
+        private List<Tuple<GraphNode, GraphEdge, string, byte>> visited;
 
         private string startNodeName = "A";
         private string endNodeName = "B";
@@ -310,7 +310,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                     graphView.StartTaskWork();
                     DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(),isGraphOriented);
                     DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
-                    visited = logger.Visited;
+                    //visited = logger.Visited;
                    
                     IsStepForwardEnabled = true;
                     ShowSteps();
@@ -387,7 +387,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
-                visited = new List<Tuple<NonOrientedGraphNode, NonOrientedGraphEdge, string, byte>>();
+                visited = new List<Tuple<GraphNode, GraphEdge, string, byte>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();

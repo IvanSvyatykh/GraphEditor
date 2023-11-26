@@ -11,14 +11,14 @@ namespace Model.Graph
 {
     public class BFS
     {
-        private NonOrientedGraph _graph;
+        private Graph _graph;
         private Dictionary<string, List<string>> _matrix;
         private Dictionary<string, bool> _visited;
         private BFSLogger _logger;
-        public BFS(Dictionary<string, List<string>> matrix)
+        public BFS(Dictionary<string, List<string>> matrix,bool isOriented = false)
         {
             _matrix = matrix;
-            _graph = new NonOrientedGraph();
+            _graph = new Graph(isOriented);
             Helper.TranslateToNonOrientedGraph(_matrix, _graph);
             //TranslateToGraph();
         }
@@ -44,20 +44,20 @@ namespace Model.Graph
 
             while (queue.Count > 0)
             {
-                NonOrientedGraphNode currentNode = _graph.GetNodeByName(queue.Dequeue());
-                List<NonOrientedGraphNode> neighbors = currentNode.LinkedNodes;
+                GraphNode currentNode = _graph.GetNodeByName(queue.Dequeue());
+                List<GraphNode> neighbors = currentNode.LinkedNodes;
 
 
                 if (neighbors.Count >= 1)
                 {
                     _logger.AddLog(_graph.GetNodeByName(currentNode.Name), null, $"Находимся в вершине {_graph.GetNodeByName(currentNode.Name).Name}.");
 
-                    foreach (NonOrientedGraphNode neighbor in neighbors)
+                    foreach (GraphNode neighbor in neighbors)
                     {
                         if (!_visited[neighbor.Name])
                         {
                             _visited[neighbor.Name] = true;
-                            NonOrientedGraphEdge graphEdge = currentNode.GetEdgeBetween(currentNode, neighbor);
+                            GraphEdge graphEdge = currentNode.GetEdgeBetween(currentNode, neighbor);
                             _logger.AddLog(neighbor, graphEdge,
                                 $"Обошли вершину {neighbor.Name}. Выделим её и ребро между вершинами {currentNode.Name} и {neighbor.Name}.");
                             queue.Enqueue(neighbor.Name);
