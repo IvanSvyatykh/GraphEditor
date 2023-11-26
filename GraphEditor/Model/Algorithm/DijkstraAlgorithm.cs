@@ -9,15 +9,15 @@ namespace Model.Graph
 {
     public class DijkstraAlgorithm
     {
-        private NonOrientedGraph _graph;
+        private Graph _graph;
         private Dictionary<string, List<Tuple<int, string>>> _matrix;
         private DijkstraLogger _logger;
         private Dictionary<string, bool> _visited;
         private Dictionary<string, int> _distance;
         private List<string> _prev;
-        public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix)
+        public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix, bool isOriented = false)
         {
-            _graph = new NonOrientedGraph();
+            _graph = new Graph(isOriented);
             _matrix = matrix;
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
         }
@@ -29,6 +29,11 @@ namespace Model.Graph
             _distance = new Dictionary<string, int>();
             _visited = new Dictionary<string, bool>();
             _graph.Names.ToList().ForEach(name => { _visited.Add(name, false); _distance.Add(name, int.MaxValue); _prev.Add(name); });
+
+            if (!Helper.BFS(_graph, startNode)[destNode])
+            {
+                throw new Exception($"Добраться из узла {startNode} в {destNode} не возможно.");
+            }
 
             if (_distance.ContainsKey(startNode))
             {
@@ -58,7 +63,7 @@ namespace Model.Graph
                     $"Берем вершину из еще не пройденных путь до которой стоит меньше всего, это вершина {currentNodeName}.", 1,
                     Helper.CloneDictionaryCloningValues<string, string>(DictionaryTranslator(_distance, _prev)));
 
-                foreach (NonOrientedGraphEdge edge in _graph.GetNodeByName(currentNodeName).Edges)
+                foreach (GraphEdge edge in _graph.GetNodeByName(currentNodeName).Edges)
                 {
                     if (_visited[edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name])
                     {

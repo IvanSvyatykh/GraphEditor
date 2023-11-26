@@ -6,6 +6,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+
 namespace Model.WorkWithFile
 {
     public static class Reader
@@ -67,7 +69,7 @@ namespace Model.WorkWithFile
             while (line != null)
             {
                 string[] nodesLength = line.Split(";");
-                coordinats.Add(nodesLength[0], new Point(double.Parse(nodesLength[1]), double.Parse(nodesLength[2])));
+                coordinats.Add(nodesLength[0], new Point(int.Parse(nodesLength[1]), int.Parse(nodesLength[2])));
                 line = streamReader.ReadLine();
             }
 

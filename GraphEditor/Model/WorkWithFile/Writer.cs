@@ -7,6 +7,7 @@ using Model.Graph;
 using System.Threading.Tasks;
 using System.Windows;
 using Model.Algorithm;
+using System.Drawing;
 
 namespace Model.WriteToFile
 {
