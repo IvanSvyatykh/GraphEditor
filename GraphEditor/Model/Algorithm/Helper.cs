@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GraphEditor.Model.Loggers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Model.Graph
 {
@@ -10,12 +12,26 @@ namespace Model.Graph
     {
         public static void TranslateToGraphWithWeights(Dictionary<string, List<Tuple<int, string>>> matrix, Graph graph)
         {
-
+            foreach (var item in matrix.Keys)
+            {
+                if (matrix[item].Count == 0)
+                {
+                    matrix[item].Add(null);
+                }
+            }
             foreach (var key in matrix.Keys)
             {
                 foreach (var node in matrix[key])
                 {
-                    graph.AddEdge(key, node.Item2, edgeWeight: node.Item1);
+                    if (node == null)
+                    {
+                        graph.AddEdge(key, null, edgeWeight: 0);
+                    }
+                    else
+                    {
+                        graph.AddEdge(key, node.Item2, edgeWeight: node.Item1);
+                    }
+                    
                 }
             }
         }
@@ -34,7 +50,13 @@ namespace Model.Graph
 
         public static void TranslateToNonOrientedGraph(Dictionary<string, List<string>> matrix, Graph graph)
         {
-
+            foreach (var item in matrix.Keys)
+            {
+                if (matrix[item].Count == 0)
+                {
+                    matrix[item].Add(null);
+                }
+            }
             foreach (var key in matrix.Keys)
             {
                 foreach (var node in matrix[key])
@@ -49,6 +71,42 @@ namespace Model.Graph
             {
                 throw new ArgumentException($"Заданнный граф иммет стоимость всех ребер 0 или имеет ребро с весом null");
             }
+        }
+
+        public static bool BFS(Graph graph, string start, string end)
+        {
+
+            Dictionary<string, bool> visited = new Dictionary<string, bool>();
+            graph.Names.
+                ToList().
+                ForEach(name => { visited.Add(name, false); });
+
+            Queue<string> queue = new Queue<string>();
+            visited[start] = true;
+            queue.Enqueue(start);
+
+            while (queue.Count > 0)
+            {
+                GraphNode currentNode = graph.GetNodeByName(queue.Dequeue());
+                List<GraphNode> neighbors = currentNode.LinkedNodes;
+
+
+                if (neighbors.Count >= 1)
+                {
+
+                    foreach (GraphNode neighbor in neighbors)
+                    {
+                        if (!visited[neighbor.Name])
+                        {
+                            visited[neighbor.Name] = true;
+                            GraphEdge graphEdge = currentNode.GetEdgeBetween(currentNode, neighbor);
+                            queue.Enqueue(neighbor.Name);
+                        }
+                    }
+                }
+            }
+
+            return visited[end];
         }
 
         public static Dictionary<string, List<Tuple<int, string>>> MatrixRecovery(Dictionary<string, List<Tuple<int, string>>> matrix)

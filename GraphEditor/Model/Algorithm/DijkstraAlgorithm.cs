@@ -15,7 +15,7 @@ namespace Model.Graph
         private Dictionary<string, bool> _visited;
         private Dictionary<string, int> _distance;
         private List<string> _prev;
-        public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix, bool isOriented =false)
+        public DijkstraAlgorithm(Dictionary<string, List<Tuple<int, string>>> matrix, bool isOriented = false)
         {
             _graph = new Graph(isOriented);
             _matrix = matrix;
@@ -29,6 +29,11 @@ namespace Model.Graph
             _distance = new Dictionary<string, int>();
             _visited = new Dictionary<string, bool>();
             _graph.Names.ToList().ForEach(name => { _visited.Add(name, false); _distance.Add(name, int.MaxValue); _prev.Add(name); });
+
+            if (!Helper.BFS(_graph, startNode, destNode))
+            {
+                throw new Exception($"Добраться из узла {startNode} в {destNode} не возможно.");
+            }
 
             if (_distance.ContainsKey(startNode))
             {
