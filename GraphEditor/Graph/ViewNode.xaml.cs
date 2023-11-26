@@ -30,11 +30,14 @@ namespace GraphEditor
         private NodeView parentViewNode;
 
         private void TxtBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            parentViewNode.txt = TextBoxForNodeLabel.Text;
+        {   
+            if (!parentViewNode.Graph.IsTaskWork)
+            {
+                parentViewNode.txt = TextBoxForNodeLabel.Text;
 
-            parentViewNode.Validate();
-            parentViewNode.Graph.ValidateNamesIsUnique();
+                parentViewNode.Validate();
+                parentViewNode.Graph.ValidateNamesIsUnique();
+            }
         }
 
         public void SetColor(Brush color)
