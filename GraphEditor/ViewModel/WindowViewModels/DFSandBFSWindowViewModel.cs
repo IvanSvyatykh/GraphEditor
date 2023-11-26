@@ -1,7 +1,6 @@
 ﻿using Graph;
 using GraphEditor.Model.Loggers;
 using Microsoft.Win32;
-using Model.Algorithm;
 using Model.Graph;
 using Model.WorkWithFile;
 using Model.WriteToFile;
@@ -337,27 +336,17 @@ namespace GraphEditor.ViewModel
                     ILogger logger;
                     if (isTaskBFS)
                     {   
-                        if (isGraphOriented)
-                        {
-                            graphView.StartTaskWork();
-                            BFSOriented bFS = new BFSOriented(graphView.GetEdgeMatrixWithWeights());
-                           
-                            logger = bFS.StartAlgorithm(startNodeName);
-                            visited = logger.GetVisisted();
-                            
-                        }
-                        else
-                        {
-                            graphView.StartTaskWork();
-                            BFS bFS = new BFS(graphView.GetEdgeMatrix());
-                            logger = bFS.StartAlgorithm(startNodeName);
-                            visited = logger.GetVisisted();
-                        }
+                        
+                        graphView.StartTaskWork();
+                        BFS bFS = new BFS(graphView.GetEdgeMatrix(), isGraphOriented);
+                        logger = bFS.StartAlgorithm(startNodeName);
+                        visited = logger.GetVisisted();
+                        
                     }
                     else
                     {
                         graphView.StartTaskWork();
-                        DFS dFS = new DFS(graphView.GetEdgeMatrix());
+                        DFS dFS = new DFS(graphView.GetEdgeMatrix(),isGraphOriented);
                         logger = dFS.StartAlgorithm(startNodeName);
                         visited = logger.GetVisisted();
                     }

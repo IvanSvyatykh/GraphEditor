@@ -123,7 +123,7 @@ namespace GraphEditor.ViewModel
             LoadGraphCommand = new RelayCommand(LoadGraph);
 
             SaveOstTreeCommand = new RelayCommand(SaveOstTree);
-            LoadOstTreeCommand = new RelayCommand(LoadGraph);
+            LoadOstTreeCommand = new RelayCommand(LoadOstTree);
 
             LeftButtonClickCommand = new RelayCommand(LeftButtonClick);
 
@@ -225,8 +225,17 @@ namespace GraphEditor.ViewModel
         }
         private void SaveOstTree()
         {
-            //Хмм, если делать мнё то придётся просто всё красное фильтровать
-            //Можно, но ХЗ нужно ли
+            var fileDialog = new SaveFileDialog
+            {
+                Filter = "Text files(*.txt)| *.txt"
+            };
+
+            fileDialog.ShowDialog();
+
+            if (!(fileDialog.FileName == ""))
+            {
+                Writer.WriteOstTree(graphView.GetEdgeMatrixWithWeightsWhereColorIs(Brushes.Red), graphView.GetNodeNamesAndCoordinatsWhereColorIs(Brushes.Red), fileDialog.FileName);
+            }
         }
         private void LoadGraph()
         {
@@ -254,7 +263,32 @@ namespace GraphEditor.ViewModel
                 }
             }
         }
+        private void LoadOstTree()
+        {
+            var fileDialog = new OpenFileDialog()
+            {
+                Filter = "Text files(*.txt)| *.txt"
+            };
+            fileDialog.ShowDialog();
 
+            if (!(fileDialog.FileName == ""))
+            {
+                try
+                {
+                    window.CanvasForGraph.Children.Clear();
+                    graphView = new GraphView(window.CanvasForGraph, false);
+
+                    Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
+
+                    graphView.CreateNodes(loadedGraph.Item2);
+                    graphView.CreateEdges(loadedGraph.Item1);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("К сожалению, при загрузке файла произошла ошибка:\n" + e.Message);
+                }
+            }
+        }
         private void LeftButtonClick()
         {
             if (currentMode == 1)
@@ -271,8 +305,11 @@ namespace GraphEditor.ViewModel
                 IsLoadOstTreeEnabled = false;
 
                 graphView.StartTaskWork();
-                AlgorithmPrima algorithmPrima = new AlgorithmPrima(graphView.GetEdgeMatrixWithWeights());
+                
+                AlgorithmPrima algorithmPrima = new AlgorithmPrima(graphView.GetEdgeMatrixWithWeights(),false);
+                
                 PrimaLogger logger= algorithmPrima.StartAlgorithm();
+                
                 visited = logger.Visited;    
 
                 IsStepForwardEnabled = true;
@@ -387,10 +424,6 @@ namespace GraphEditor.ViewModel
             }
         }
 
-        // 0 ничего не выделять просто лог сообщения
-        // 1 выделить вершину и ребро как взятую
-        // 2 выделить вершину и ребро как возможную к рассмотрению
-        // 3 выделить вершину и ребро временно, на следующем шаге убрать
         private void ShowCurrentSituationOfGraph()
         {
             Explanation = visited[stepIndex].Item3;
@@ -404,15 +437,6 @@ namespace GraphEditor.ViewModel
             Brush colorForPossibleEdges = Brushes.GreenYellow;
             for (int i = 0; i <= stepIndex; i++)
             {   
-                //if (temporaryNodeName is not null)
-                //{
-                //    graphView.ChangeNodeColor(temporaryNodeName, Brushes.Blue);
-                //    graphView.ChangeEdgeColor(temporaryStartNodeName, temporaryEndNodeName, Brushes.Black);
-                    
-                //    temporaryNodeName = null;
-                //    temporaryStartNodeName = null;
-                //    temporaryEndNodeName = null;
-                //}
                 if (visited[i].Item4 == 1)
                 {
                     graphView.ChangeNodesColorFromTo(colorForPossibleEdges, Brushes.Blue);
@@ -428,16 +452,6 @@ namespace GraphEditor.ViewModel
                 {
                     graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, colorForPossibleEdges);
                 }
-                //else if (visited[i].Item4 == 3)
-                //{   
-                    
-                //    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.LightGreen);
-                //    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.LightGreen);
-                    
-                //    temporaryNodeName = visited[i].Item1.Name;
-                //    temporaryStartNodeName = visited[i].Item2.FirstNode.Name;
-                //    temporaryEndNodeName = visited[i].Item2.SecondNode.Name;
-                //}
             }
         }
 

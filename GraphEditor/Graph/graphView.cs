@@ -517,6 +517,27 @@ namespace Graph
             }
             return edgeMatrix;
         }
+        public Dictionary<string, List<Tuple<int, string>>> GetEdgeMatrixWithWeightsWhereColorIs(Brush color)
+        {
+            Dictionary<string, List<Tuple<int, string>>> edgeMatrix = new Dictionary<string, List<Tuple<int, string>>>();
+
+            foreach (NodeView node in nodeList)
+            {   
+                if (node.Color == color)
+                {
+                    edgeMatrix.Add(node.NodeName, new List<Tuple<int, string>>());
+                }
+            }
+
+            foreach (EdgeView line in edgeList)
+            {
+                if (line.Color == color)
+                {
+                    edgeMatrix[line.StartNode.NodeName].Add(Tuple.Create(line.Weight, line.EndNode.NodeName));
+                }
+            }
+            return edgeMatrix;
+        }
         public Dictionary<string, Point> GetNodeNamesAndCoordinats()
         {
             Dictionary<string, Point> nodeNamesAndCoordinats = new Dictionary<string, Point>();
@@ -526,7 +547,18 @@ namespace Graph
             }
             return nodeNamesAndCoordinats;
         }
-
+        public Dictionary<string, Point> GetNodeNamesAndCoordinatsWhereColorIs(Brush color)
+        {
+            Dictionary<string, Point> nodeNamesAndCoordinats = new Dictionary<string, Point>();
+            foreach (NodeView node in nodeList)
+            {
+                if (node.Color == color)
+                {
+                    nodeNamesAndCoordinats.Add(node.NodeName, node.Position);
+                }
+            }
+            return nodeNamesAndCoordinats;
+        }
         public void CreateNodes(Dictionary<string, Point> nodeNamesAndCoordinats)
         {
             foreach (string nodeName in nodeNamesAndCoordinats.Keys) 

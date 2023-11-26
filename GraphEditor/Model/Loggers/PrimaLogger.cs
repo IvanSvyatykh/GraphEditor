@@ -14,7 +14,7 @@ namespace GraphEditor.Model.Loggers
         // 1 выделить вершину и ребро как взятую
         // 2 выделить вершину и ребро как возможную к рассмотрению
         // 3 выделить вершину и ребро временно, на следующем шаге убрать
-        public List<Tuple<GraphNode, GraphEdge, string,byte>> Visited { get; private set; }
+        public List<Tuple<GraphNode, GraphEdge, string, byte>> Visited { get; private set; }
 
         public PrimaLogger()
         {
