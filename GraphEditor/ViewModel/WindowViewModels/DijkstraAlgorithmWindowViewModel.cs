@@ -113,7 +113,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private byte currentMode = 0;
 
-        private List<Tuple<GraphNode, GraphEdge, string, byte>> visited;
+        private List<Tuple<GraphNode, GraphEdge, string, byte, Dictionary<string, string>>> visited;
 
         private string startNodeName = "A";
         private string endNodeName = "B";
@@ -310,7 +310,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                     graphView.StartTaskWork();
                     DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(),isGraphOriented);
                     DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
-                    //visited = logger.Visited;
+                    visited = logger.Visited;
                    
                     IsStepForwardEnabled = true;
                     ShowSteps();
@@ -387,11 +387,12 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
-                visited = new List<Tuple<GraphNode, GraphEdge, string, byte>>();
+                visited = new List<Tuple<GraphNode, GraphEdge, string, byte, Dictionary<string, string>>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
                 graphView.ChangeEdgesColorToBlack();
+                graphView.BackNodeNamesToBase();
 
                 IsStepBackwardEnabled = false;
                 IsStepForwardEnabled = false;
@@ -416,9 +417,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 IsStepBackwardEnabled = false;
             }
         }
-        // 0 - ничего не делаем и не выделяем лог просто с сообщением
-        // 1 - пометить как вершину из которой происходит обход соседей(временным цветом)
-        // 2 - пометить вершину как пройденную навсегда (каким-то ярким цветом типо красного)
         private void ShowCurrentSituationOfGraph()
         {
             Explanation = visited[stepIndex].Item3;
@@ -442,6 +440,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Red);
                 }
+                graphView.RenameNodes(visited[i].Item5);
             }
         }
 

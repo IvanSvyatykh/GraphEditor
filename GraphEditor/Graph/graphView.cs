@@ -559,6 +559,20 @@ namespace Graph
             }
             return nodeNamesAndCoordinats;
         }
+        public void RenameNodes(Dictionary<string,string> oldAndNewNames)
+        {
+            for(int i=0; i<nodeList.Count; i++)
+            {
+                nodeList[i].ViewPartNode.TextBoxForNodeLabel.Text = oldAndNewNames[nodeList[i].NodeName];
+            }
+        }
+        public void BackNodeNamesToBase()
+        {
+            for (int i = 0; i < nodeList.Count; i++)
+            {
+                nodeList[i].ViewPartNode.TextBoxForNodeLabel.Text = nodeList[i].NodeName;
+            }
+        }
         public void CreateNodes(Dictionary<string, Point> nodeNamesAndCoordinats)
         {
             foreach (string nodeName in nodeNamesAndCoordinats.Keys) 

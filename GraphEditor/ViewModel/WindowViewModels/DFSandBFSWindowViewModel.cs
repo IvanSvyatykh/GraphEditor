@@ -336,7 +336,6 @@ namespace GraphEditor.ViewModel
                     ILogger logger;
                     if (isTaskBFS)
                     {   
-                        
                         graphView.StartTaskWork();
                         BFS bFS = new BFS(graphView.GetEdgeMatrix(), isGraphOriented);
                         logger = bFS.StartAlgorithm(startNodeName);
