@@ -56,9 +56,15 @@ namespace Model.Graph
 
             foreach (var key in distance)
             {
-                keyValuePairs.Add(key.Key, key.Value.ToString());
+                if (key.Value == int.MaxValue)
+                {
+                    keyValuePairs.Add(key.Key, key.Key + "-" + "∞");
+                }
+                else
+                {
+                    keyValuePairs.Add(key.Key, key.Key + "-" + key.Value.ToString());
+                }
             }
-
             return keyValuePairs;
         }
 
