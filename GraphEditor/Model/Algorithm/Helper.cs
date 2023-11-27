@@ -50,6 +50,18 @@ namespace Model.Graph
             return ret;
         }
 
+        public static Dictionary<string, string> IntToString(Dictionary<string, int> distance)
+        {
+            Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+
+            foreach (var key in distance)
+            {
+                keyValuePairs.Add(key.Key, key.Value.ToString());
+            }
+
+            return keyValuePairs;
+        }
+
         public static void TranslateToNonOrientedGraph(Dictionary<string, List<string>> matrix, Graph graph)
         {
             foreach (var item in matrix.Keys)
@@ -144,7 +156,7 @@ namespace Model.Graph
                 foreach (var e in keys)
                 {
                     bool flag = true;
-                    foreach(var value in matrix[key])
+                    foreach (var value in matrix[key])
                     {
                         if (Equals(value.Item2, e))
                         {
