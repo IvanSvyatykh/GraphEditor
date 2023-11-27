@@ -486,6 +486,10 @@ namespace Graph
             }
             return false;
         }
+        public bool IsEdgeExist()
+        {
+            return !(edgeList.Count == 0);
+        }
         public Dictionary<string, List<string>> GetEdgeMatrix()
         {
             Dictionary<string, List<string>> edgeMatrix = new Dictionary<string, List<string>>();

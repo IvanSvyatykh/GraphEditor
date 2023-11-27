@@ -84,7 +84,7 @@ namespace Model.Graph
                             else if (weigth > edge.Weight)
                             {
                                 _logger.AddLog(edge.GetOtherNode(_graph.GetNodeByName(item)), edge,
-                                    $"Рассмотрим путь из вершины {item}, до {edge.GetOtherNode(_graph.GetNodeByName(item)).Name}, длина до него составляет {edge.Weight}, это меньше чем длина {weigth} до {minDisNode.Name}. Пока рассмотри ее как возмоожную к добавлению.",
+                                    $"Рассмотрим путь из вершины {item}, до {edge.GetOtherNode(_graph.GetNodeByName(item)).Name}, длина до него составляет {edge.Weight}, это меньше чем длина {weigth} до {minDisNode.Name}. Пока рассмотрим ее как возможную к добавлению.",
                                     2);
                                 weigth = edge.Weight;
                                 minDisNode = edge.GetOtherNode(_graph.GetNodeByName(item));

@@ -49,7 +49,7 @@ namespace Model.Graph
             _logger.AddLog(null, null, $"Начинаем поиск пути из узла {startNode} в {destNode}, пути до всех вершин кроме {startNode} стоят бесконечность. Путь до узла {startNode} 0",
                 0, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
             DijkstraAlgorithmStart();
-            _logger.AddLog(null, null, $"Обошли все вершины, путь из вершины {startNode} в {destNode} состовялет {_distance[destNode]} ", 0, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
+            _logger.AddLog(null, null, $"Обошли все вершины, путь из вершины {startNode} в {destNode} составляет {_distance[destNode]} ", 0, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
             return _logger;
         }
 
@@ -96,7 +96,7 @@ namespace Model.Graph
                     }
                 }
 
-                _logger.AddLog(_graph.GetNodeByName(currentNodeName), null, $"Обошли всех сосодей из вершины {currentNodeName}, помечаем ее как пройденную.", 2, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
+                _logger.AddLog(_graph.GetNodeByName(currentNodeName), null, $"Обошли всех соседей из вершины {currentNodeName}, помечаем ее как пройденную.", 2, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
                 _visited[currentNodeName] = true;
             }
         }       

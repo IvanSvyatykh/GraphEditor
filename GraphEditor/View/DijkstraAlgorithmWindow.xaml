@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphEditor.View"
         mc:Ignorable="d"
-        Title="Dijkstra algorithm" MinHeight="800" MinWidth="800" Height="800" Width="900">
+        Title="Dijkstra algorithm" MinHeight="800" MinWidth="900" Height="800" Width="900" MaxHeight="800" MaxWidth="900">
     <Grid Background="#FFEFFCFF">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>

@@ -298,26 +298,39 @@ namespace GraphEditor.ViewModel
         }
         private void StartProgramm()
         {
-            if (graphView.ValidateState())
+            try
             {
-                SetZeroMode();
-                IsTaskWorking = true;
-                IsLoadOstTreeEnabled = false;
+                if (graphView.ValidateState())
+                {
+                    if (graphView.IsEdgeExist())
+                    {
+                        SetZeroMode();
+                        IsTaskWorking = true;
+                        IsLoadOstTreeEnabled = false;
 
-                graphView.StartTaskWork();
-                
-                AlgorithmPrima algorithmPrima = new AlgorithmPrima(graphView.GetEdgeMatrixWithWeights(),false);
-                
-                PrimaLogger logger= algorithmPrima.StartAlgorithm();
-                
-                visited = logger.Visited;    
+                        graphView.StartTaskWork();
 
-                IsStepForwardEnabled = true;
-                ShowSteps();         
-            }
-            else
+                        AlgorithmPrima algorithmPrima = new AlgorithmPrima(graphView.GetEdgeMatrixWithWeights(), false);
+
+                        PrimaLogger logger = algorithmPrima.StartAlgorithm();
+
+                        visited = logger.Visited;
+
+                        IsStepForwardEnabled = true;
+                        ShowSteps();
+                    }
+                    else
+                    {
+                        throw new Exception("Ваш граф не содержит связей");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Ваш граф содержит ошибки");
+                }
+            }catch(Exception ex)
             {
-                MessageBox.Show("Ваш граф содержит ошибки");
+                MessageBox.Show("К сожалению, во премя выполнения програмы возникли ошибки:\n"+ex.Message);
             }
         }
 
