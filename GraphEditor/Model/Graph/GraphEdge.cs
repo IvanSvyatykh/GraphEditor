@@ -47,11 +47,11 @@ namespace Model.Graph
 
         public GraphNode GetOtherNode(GraphNode node)
         {
-            if (_isOriented)
+            if (!_isOriented)
             {
                 return GetOtherNodeForNonOriented(node);
             }
-            else if (!_isOriented)
+            else if (_isOriented)
             {
                 return GetOtherNodeForOriented(node);
             }

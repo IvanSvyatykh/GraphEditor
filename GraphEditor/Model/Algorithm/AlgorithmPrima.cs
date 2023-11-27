@@ -30,16 +30,16 @@ namespace Model.Graph
                 ToList().
                 ForEach(name => { _visited.Add(name, false); });
 
-            Helper.CheckGraph(_graph);
+            //Helper.CheckGraph(_graph);
 
 
 
 
             string startNodeName = _graph.Names.ToList()[random.Next(0, _graph.Names.Count - 1)];
-            if (Helper.BFS(_graph, startNodeName).Any(x => !x.Value))
-            {
-                throw new Exception($"Не возможно обойти все узлы в графе, возможно отсутвует связь междунекоторыми узлами");
-            }
+            //if (Helper.BFS(_graph, startNodeName).Any(x => !x.Value))
+            //{
+            //    throw new Exception($"Не возможно обойти все узлы в графе, возможно отсутвует связь междунекоторыми узлами");
+            //}
             _visited[startNodeName] = true;
             _logger.AddLog(_graph.GetNodeByName(startNodeName), null, $"Выберем случайную начальную точку в графе с котрой начнем строить дерево.Случайная точка стала {startNodeName}.", 1);
             MinOstTree(startNodeName);
