@@ -47,7 +47,7 @@ namespace Model.WorkWithFile
             string line = streamReader.ReadLine();
             if (!Equals(line, "Graph"))
             {
-                throw new ArgumentException($"Файл с именем {path}, не может содержать граф или файл был поврежден.");
+                throw new ArgumentException($"Файл с именем {path}, не содержит граф или файл был поврежден.");
             }
             line = streamReader.ReadLine();
             if(Equals(line, "OstTree"))
@@ -56,7 +56,7 @@ namespace Model.WorkWithFile
             }
             else
             {
-                throw new ArgumentException($"Файл с именем {path}, не может содержать остовое дерево или файл был поврежден.");
+                throw new ArgumentException($"Файл с именем {path}, не содержит остовое дерево или файл был поврежден.");
             }
         }
 

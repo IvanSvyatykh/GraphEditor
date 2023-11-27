@@ -278,7 +278,7 @@ namespace GraphEditor.ViewModel
                     window.CanvasForGraph.Children.Clear();
                     graphView = new GraphView(window.CanvasForGraph, false);
 
-                    Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadGraph(fileDialog.FileName);
+                    Tuple<Dictionary<string, List<Tuple<int, string>>>, Dictionary<string, Point>> loadedGraph = Reader.ReadOstTree(fileDialog.FileName);
 
                     graphView.CreateNodes(loadedGraph.Item2);
                     graphView.CreateEdges(loadedGraph.Item1);
