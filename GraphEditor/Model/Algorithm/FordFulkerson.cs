@@ -13,14 +13,20 @@ namespace Model.Graph
         private FordGraph Ford;
         private int _nodesAmount;
         private Dictionary<string, List<Tuple<int, string>>> _matrix;
+        private FordFulkersonLogger _logger;
+        private Graph _graph;
 
 
         public FordFalkerson(Dictionary<string, List<Tuple<int, string>>> matrix)
         {
+            _graph = new Graph(true);
+            Helper.TranslateToGraphWithWeights(_matrix, _graph);
+            _logger = new FordFulkersonLogger();
             _matrix = matrix;
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
             Ford = new FordGraph(matrix.Keys.ToList(), Helper.TranslatoToMatrix(matrix), true);
             _nodesAmount = matrix.Count;
+
         }
 
         public (List<List<string>>, List<string>) GetSteps(string startNode, string endNode)
@@ -44,7 +50,7 @@ namespace Model.Graph
                     tempGraph[i][v] = Ford.Matrix[i][v];
                 }
             }
-            _steps.Add($"Копируем исходный граф во временную матрицу смежности. Она будет служить сетью для изменений. ");
+            //_steps.Add($"Копируем исходный граф во временную матрицу смежности. Она будет служить сетью для изменений. ");
             int[] parents = new int[_nodesAmount];
             int maxFlow = 0;
 
@@ -87,10 +93,11 @@ namespace Model.Graph
 
         private bool WaySearche(int[][] matrix, int vertices, int startNode, int endNode, int[] parents)
         {
-            _steps.Add($"Начинаем обход графа в ширину, чтобы найти путь от истока до стока. ");
+            _logger.AddLog(_graph.GetNodeByName(_matrix.Keys.ToList()[startNode]), null,
+                $"Начинаем обход графа в ширину из узла {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode])} в {_graph.GetNodeByName(_matrix.Keys.ToList()[endNode])}", 1);
             bool[] visited = new bool[vertices];
             Queue<int> queue = new Queue<int>();
-            _steps.Add($"Добавили в очередь вершину по номеру {startNode}, пометили ее как пройденную. ");
+            _logger.AddLog(null, null, $"Добавили в очередь вершину по номеру {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode])}, пометили ее как пройденную.", 0);
             queue.Enqueue(startNode);
             visited[startNode] = true;
             parents[startNode] = -1;
