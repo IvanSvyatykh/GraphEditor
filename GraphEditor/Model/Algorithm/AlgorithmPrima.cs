@@ -30,7 +30,7 @@ namespace Model.Graph
                 ToList().
                 ForEach(name => { _visited.Add(name, false); });
 
-            Helper.CheckGraph(_graph);
+            //Helper.CheckGraph(_graph);
 
 
 

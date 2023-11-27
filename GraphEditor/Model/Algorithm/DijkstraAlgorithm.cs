@@ -44,7 +44,7 @@ namespace Model.Graph
                 throw new ArgumentException($"Узла с именем {startNode} не существует.");
             }
 
-            //Helper.CheckGraph(_graph);
+            Helper.CheckGraph(_graph);
 
             _logger.AddLog(null, null, $"Начинаем поиск пути из узла {startNode} в {destNode}, пути до всех вершин кроме {startNode} стоят бесконечность. Путь до узла {startNode} 0",
                 0, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
