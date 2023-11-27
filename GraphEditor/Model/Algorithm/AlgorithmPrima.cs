@@ -44,6 +44,7 @@ namespace Model.Graph
             _logger.AddLog(_graph.GetNodeByName(startNodeName), null, $"Выберем случайную начальную точку в графе с котрой начнем строить дерево.Случайная точка стала {startNodeName}.", 1);
             MinOstTree(startNodeName);
 
+            _logger.AddLog(null, null, $"Вот так выглядит итоговое остовное дерево для данного графа", 0);
             return _logger;
         }
 
