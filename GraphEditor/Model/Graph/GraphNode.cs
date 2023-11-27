@@ -60,7 +60,8 @@ namespace Model.Graph
 
         private bool IsBetween(GraphNode first, GraphNode second, GraphEdge el)
         {
-            return (el.FirstNode == first && el.SecondNode == second) || (el.SecondNode == first && el.FirstNode == second);
+            return (Equals(el.FirstNode.Name, first.Name) && Equals(el.SecondNode.Name, second.Name))
+                || (Equals(el.FirstNode.Name, second.Name) && Equals(el.SecondNode.Name, first.Name));
         }
     }
 }

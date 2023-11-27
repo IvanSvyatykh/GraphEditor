@@ -29,13 +29,13 @@ namespace Model.Graph
 
         }
 
-        public (List<List<string>>, List<string>) GetSteps(string startNode, string endNode)
+        public FordFulkersonLogger GetSteps(string startNode, string endNode)
         {
             _steps.Clear();
 
             var result = FordFulkerson(_matrix.Keys.ToList().IndexOf(startNode), _matrix.Keys.ToList().IndexOf(endNode));
-            _steps.Add($"Максимальный поток найден: {result.Item2}. ");
-            return (result.Item1, _steps);
+            _logger.AddLog(null, null, $"Максимальный поток найден: {result.Item2}. ", 0, null);
+            return _logger;
         }
         private (List<List<string>>, int) FordFulkerson(int startNode, int endNode)
         {
@@ -50,13 +50,19 @@ namespace Model.Graph
                     tempGraph[i][v] = Ford.Matrix[i][v];
                 }
             }
-            //_steps.Add($"Копируем исходный граф во временную матрицу смежности. Она будет служить сетью для изменений. ");
+
             int[] parents = new int[_nodesAmount];
             int maxFlow = 0;
 
             while (WaySearche(tempGraph, _nodesAmount, startNode, endNode, parents))
             {
-                _steps.Add($"Путь был найден, продолжаем алгоритм. ");
+
+
+                HashSet<GraphNode> graphNodes = new HashSet<GraphNode>();
+
+                parents.ToList().ForEach(x => graphNodes.Add(_graph.GetNodeByName(_matrix.Keys.ToList()[x])));
+                graphNodes.Add(_graph.GetNodeByName(_matrix.Keys.ToList()[endNode]));
+                _logger.AddLog(null, null, $"Путь найден.", 2, graphNodes.ToList());
 
                 int pathFlow = int.MaxValue;
                 List<string> currentPath = new List<string>();
@@ -69,22 +75,21 @@ namespace Model.Graph
                 }
 
                 allPaths.Add(currentPath);
-                _steps.Add($"Минимальный поток в найденном пути: {pathFlow}");
+
+                _logger.AddLog(null, null, $"Минимальный поток в найденном пути: {pathFlow}", 0, null);
 
                 for (int i = endNode; i != startNode; i = parents[i])
                 {
                     int currentNodeParent = parents[i];
-                    _steps.Add($"Устанавливаем следующее: во временном графе по индексу {currentNodeParent},{i} к этому элементу и " +
-                               $" {tempGraph[currentNodeParent][i]} - {pathFlow}. Уменьшаем на мин.поток текущий поток по пути " +
-                               $"найденному. ");
+                    _logger.AddLog(null, _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[i]), _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent])), $"Во временном графе по меняем вес ребра:" +
+                               $" {tempGraph[currentNodeParent][i]} - {pathFlow}. Уменьшаем на мин.поток текущий поток по найденному пути.", 0, null);
                     tempGraph[currentNodeParent][i] -= pathFlow;
-                    _steps.Add($"Устанавливаем следующее: во временном графе по индексу {i},{currentNodeParent} к этому элементу и " +
-                               $" {tempGraph[i][currentNodeParent]} + {pathFlow}. Увеличиваем на мин.поток текущий поток по пути " +
-                               $"найденному. ");
+                    _logger.AddLog(null, _graph.GetNodeByName(_matrix.Keys.ToList()[i]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]), _graph.GetNodeByName(_matrix.Keys.ToList()[i])), $"Во временном графе по меняем вес ребра:" +
+                               $" {tempGraph[i][currentNodeParent]} + {pathFlow}. Уменьшаем на мин.поток текущий поток по найденному пути.", 0, null);
                     tempGraph[i][currentNodeParent] += pathFlow;
                 }
 
-                _steps.Add($"Прибавляем к счетчику максимального потока наш минимальный поток: {maxFlow} += {pathFlow}");
+                _logger.AddLog(null, null, $"Прибавляем к счетчику максимального потока наш минимальный поток: {maxFlow} += {pathFlow}", 0, null);
                 maxFlow += pathFlow;
             }
 
@@ -110,11 +115,10 @@ namespace Model.Graph
                 {
                     if (!visited[v] && matrix[u][v] > 0)
                     {
-                        _logger.AddLog(_graph.GetNodeByName(_matrix.Keys.ToList()[v]), 
+                        _logger.AddLog(_graph.GetNodeByName(_matrix.Keys.ToList()[v]),
                             _graph.GetNodeByName(_matrix.Keys.ToList()[u]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[u]), _graph.GetNodeByName(_matrix.Keys.ToList()[v])),
                $"Обошли узел {_graph.GetNodeByName(_matrix.Keys.ToList()[v])}", 1);
 
-                        //_steps.Add($"Добавили в очередь вершину по номеру {v}, пометили ее как пройденную. ");
 
                         queue.Enqueue(v);
                         parents[v] = u;
