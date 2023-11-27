@@ -300,29 +300,35 @@ namespace GraphEditor.ViewModel.WindowViewModels
         }
         private void StartProgramm()
         {
-            if (graphView.ValidateState())
+            try
             {
-                if (graphView.IsThisNodeExistInGraph(startNodeName) && graphView.IsThisNodeExistInGraph(endNodeName))
+                if (graphView.ValidateState())
                 {
-                    SetZeroMode();
-                    IsTaskWorking = true;
+                    if (graphView.IsThisNodeExistInGraph(startNodeName) && graphView.IsThisNodeExistInGraph(endNodeName))
+                    {
+                        SetZeroMode();
                     
-                    graphView.StartTaskWork();
-                    DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(),isGraphOriented);
-                    DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
-                    visited = logger.Visited;
-                   
-                    IsStepForwardEnabled = true;
-                    ShowSteps();
+                        graphView.StartTaskWork();
+                        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(),isGraphOriented);
+                        DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
+                        visited = logger.Visited;
+
+                        IsTaskWorking = true;
+                        IsStepForwardEnabled = true;
+                        ShowSteps();
+                    }
+                    else
+                    {
+                        throw new Exception("В графе нет одного из этих узлов");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("В графе нет одного из этих узлов");
+                    throw new Exception("Ваш граф содержит ошибки");
                 }
-            }
-            else
+            }catch(Exception ex)
             {
-                MessageBox.Show("Ваш граф содержит ошибки");
+                MessageBox.Show("К сожалению, во премя выполнения програмы возникли ошибки:\n"+ex.Message);
             }
         }
 
@@ -387,6 +393,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
+                Explanation = "Тут пока ничего нет";
                 visited = new List<Tuple<GraphNode, GraphEdge, string, byte, Dictionary<string, string>>>();
 
                 graphView.EndTaskWork();

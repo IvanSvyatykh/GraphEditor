@@ -424,7 +424,8 @@ namespace GraphEditor.ViewModel
             {
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
-                
+
+                Explanation = "Тут пока ничего нет";
                 visited = new List<Tuple<GraphNode, GraphEdge, string>>();
 
                 graphView.EndTaskWork();

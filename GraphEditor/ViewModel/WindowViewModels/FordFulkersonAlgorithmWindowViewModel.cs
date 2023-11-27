@@ -259,13 +259,13 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 if (graphView.IsThisNodeExistInGraph(startNodeName) && graphView.IsThisNodeExistInGraph(endNodeName))
                 {
                     SetZeroMode();
-                    IsTaskWorking = true;
 
                     graphView.StartTaskWork();
                     DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(), isGraphOriented);
                     DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
                     visited = logger.Visited;
 
+                    IsTaskWorking = true;
                     IsStepForwardEnabled = true;
                     ShowSteps();
                 }
@@ -341,6 +341,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
+                Explanation = "Тут пока ничего нет";
                 visited = new List<Tuple<GraphNode, GraphEdge, string, byte, Dictionary<string, string>>>();
 
                 graphView.EndTaskWork();

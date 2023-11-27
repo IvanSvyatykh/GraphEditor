@@ -305,17 +305,14 @@ namespace GraphEditor.ViewModel
                     if (graphView.IsEdgeExist())
                     {
                         SetZeroMode();
-                        IsTaskWorking = true;
-                        IsLoadOstTreeEnabled = false;
 
                         graphView.StartTaskWork();
-
                         AlgorithmPrima algorithmPrima = new AlgorithmPrima(graphView.GetEdgeMatrixWithWeights(), false);
-
                         PrimaLogger logger = algorithmPrima.StartAlgorithm();
-
                         visited = logger.Visited;
 
+                        IsTaskWorking = true;
+                        IsLoadOstTreeEnabled = false;
                         IsStepForwardEnabled = true;
                         ShowSteps();
                     }
@@ -396,6 +393,7 @@ namespace GraphEditor.ViewModel
                 stepsButtons = new ObservableCollection<Button>();
                 OnPropertyChanged(nameof(StepsButtons));
 
+                Explanation = "Тут пока ничего нет";
                 visited = new List<Tuple<GraphNode, GraphEdge, string, byte>>();
 
                 graphView.EndTaskWork();
