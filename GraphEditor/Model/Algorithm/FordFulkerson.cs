@@ -110,7 +110,12 @@ namespace Model.Graph
                 {
                     if (!visited[v] && matrix[u][v] > 0)
                     {
-                        _steps.Add($"Добавили в очередь вершину по номеру {v}, пометили ее как пройденную. ");
+                        _logger.AddLog(_graph.GetNodeByName(_matrix.Keys.ToList()[v]), 
+                            _graph.GetNodeByName(_matrix.Keys.ToList()[u]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[u]), _graph.GetNodeByName(_matrix.Keys.ToList()[v])),
+               $"Обошли узел {_graph.GetNodeByName(_matrix.Keys.ToList()[v])}", 1);
+
+                        //_steps.Add($"Добавили в очередь вершину по номеру {v}, пометили ее как пройденную. ");
+
                         queue.Enqueue(v);
                         parents[v] = u;
                         visited[v] = true;

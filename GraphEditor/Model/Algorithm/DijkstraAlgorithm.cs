@@ -73,9 +73,19 @@ namespace Model.Graph
                     }
                     else if (_distance[edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name] > _distance[currentNodeName] + edge.Weight)
                     {
-                        _logger.AddLog(edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)), edge,
+                        if(_distance[edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name] == int.MaxValue)
+                        {
+                            _logger.AddLog(edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)), edge,
+                            $"Путь до вершины {edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name} через {currentNodeName} стоит {_distance[currentNodeName] + edge.Weight}, это меньше чем текущеe значение ∞",
+                            1, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
+                        }
+                        else
+                        {
+                            _logger.AddLog(edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)), edge,
                             $"Путь до вершины {edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name} через {currentNodeName} стоит {_distance[currentNodeName] + edge.Weight}, это меньше чем текущеe значение {_distance[edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name]}",
                             1, Helper.CloneDictionaryCloningValues<string, string>(Helper.IntToString(_distance)));
+                        }
+                        
                         _distance[edge.GetOtherNode(_graph.GetNodeByName(currentNodeName)).Name] = _distance[currentNodeName] + edge.Weight;
                     }
                     else
