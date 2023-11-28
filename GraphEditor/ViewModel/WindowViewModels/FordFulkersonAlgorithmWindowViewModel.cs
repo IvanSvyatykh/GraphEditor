@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows;
 using Microsoft.Win32;
 using System.Windows.Controls;
+using Model.Loggers;
 
 namespace GraphEditor.ViewModel.WindowViewModels
 {
@@ -90,7 +91,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private byte currentMode = 0;
 
-        private List<Tuple<GraphNode, GraphEdge, string, byte, Dictionary<string, string>>> visited;
+        private List<Tuple<GraphNode, GraphEdge, string, byte, List<GraphNode>>> visited;
 
         private string startNodeName = "A";
         private string endNodeName = "B";
@@ -261,10 +262,18 @@ namespace GraphEditor.ViewModel.WindowViewModels
                     SetZeroMode();
 
                     graphView.StartTaskWork();
-                    DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(graphView.GetEdgeMatrixWithWeights(), isGraphOriented);
-                    DijkstraLogger logger = dijkstraAlgorithm.StartAlgorithm(startNodeName, endNodeName);
-                    visited = logger.Visited;
+                    try
+                    {
+                        FordFalkerson fordFulkerson = new FordFalkerson(graphView.GetEdgeMatrixWithWeights());
+                        MessageBox.Show("aaa");
 
+                        FordFulkersonLogger logger = fordFulkerson.GetSteps(startNodeName, endNodeName);
+                        visited = logger.Visited;
+                        MessageBox.Show("aaa");
+                    }catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                     IsTaskWorking = true;
                     IsStepForwardEnabled = true;
                     ShowSteps();
@@ -284,7 +293,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
         {
             stepsButtons = new ObservableCollection<Button>();
             stepIndex = 0;
-
+            MessageBox.Show("aaa");
             for (int i = 0; i < visited.Count; i++)
             {
                 Button step = new Button();
@@ -342,7 +351,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 OnPropertyChanged(nameof(StepsButtons));
 
                 Explanation = "Тут пока ничего нет";
-                visited = new List<Tuple<GraphNode, GraphEdge, string, byte, Dictionary<string, string>>>();
+                visited = new List<Tuple<GraphNode, GraphEdge, string, byte, List<GraphNode>>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
@@ -395,7 +404,7 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Red);
                 }
-                graphView.RenameNodes(visited[i].Item5);
+                
             }
         }
 

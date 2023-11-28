@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Model.Graph
 {
@@ -19,14 +20,18 @@ namespace Model.Graph
 
         public FordFalkerson(Dictionary<string, List<Tuple<int, string>>> matrix)
         {
-            _graph = new Graph(true);
-            Helper.TranslateToGraphWithWeights(_matrix, _graph);
-            _logger = new FordFulkersonLogger();
             _matrix = matrix;
+            _graph = new Graph(true);
+            
+            Helper.TranslateToGraphWithWeights(_matrix, _graph);
+            
+            _logger = new FordFulkersonLogger();
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
+            
+            //Вот в этой строчке ошибка
             Ford = new FordGraph(matrix.Keys.ToList(), Helper.TranslatoToMatrix(matrix), true);
+            
             _nodesAmount = matrix.Count;
-
         }
 
         public FordFulkersonLogger GetSteps(string startNode, string endNode)
