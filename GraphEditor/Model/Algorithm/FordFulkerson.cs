@@ -61,13 +61,9 @@ namespace Model.Graph
 
             while (WaySearche(tempGraph, _nodesAmount, startNode, endNode, parents))
             {
-
-
                 HashSet<GraphNode> graphNodes = new HashSet<GraphNode>();
 
-                parents.ToList().ForEach(x => graphNodes.Add(_graph.GetNodeByName(_matrix.Keys.ToList()[x])));
-                graphNodes.Add(_graph.GetNodeByName(_matrix.Keys.ToList()[endNode]));
-                _logger.AddLog(null, null, $"Путь найден.", 2, graphNodes.ToList());
+
 
                 int pathFlow = int.MaxValue;
                 List<string> currentPath = new List<string>();
@@ -78,6 +74,12 @@ namespace Model.Graph
                     currentPath.Add(Ford.NodesNames[iVertexParent]);
                     pathFlow = Math.Min(pathFlow, tempGraph[iVertexParent][i]);
                 }
+                currentPath.Add(Ford.NodesNames[endNode]);
+                currentPath.Sort();
+
+                currentPath.ForEach(x => graphNodes.Add(_graph.GetNodeByName(x)));
+
+                _logger.AddLog(null, null, $"Путь найден.", 2, graphNodes.ToList());
 
                 allPaths.Add(currentPath);
 
