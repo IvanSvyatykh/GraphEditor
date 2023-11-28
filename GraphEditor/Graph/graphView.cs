@@ -457,7 +457,6 @@ namespace Graph
                     }
                 }
             }
-
         }
         public void ChangeNodesColorToBlue()
         {

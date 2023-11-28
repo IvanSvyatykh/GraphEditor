@@ -212,19 +212,22 @@ namespace Graph
         {
             try
             {
-                edge_weight = int.Parse(textBox.Text);
-                
-                if (edge_weight >= 1000)
+                if (!graph.IsTaskWork)
                 {
-                    throw new Exception();
-                }
-                if (edge_weight < 0)
-                {
-                    throw new Exception();
-                }
+                    edge_weight = int.Parse(textBox.Text);
 
-                textBox.Foreground = Brushes.ForestGreen;
-                isValid = true;
+                    if (edge_weight >= 1000)
+                    {
+                        throw new Exception();
+                    }
+                    if (edge_weight < 0)
+                    {
+                        throw new Exception();
+                    }
+
+                    textBox.Foreground = Brushes.ForestGreen;
+                    isValid = true;
+                }
             }
             catch (Exception ex)
             {
