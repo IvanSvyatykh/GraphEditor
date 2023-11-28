@@ -389,22 +389,19 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
             for (int i = 0; i <= stepIndex; i++)
             {
-                if (visited[i].Item4 == 1)
+                if (visited[i].Item5 is not null)
+                {
+                    graphView.ChangeNodesColorFromTo(Brushes.YellowGreen, Brushes.Red);
+                    graphView.ChangeEdgesColorFromTo(Brushes.Green, Brushes.Red);
+                }
+                if (visited[i].Item1 is not null)
                 {
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
-                    if (visited[i].Item2 is not null)
-                    {
-                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
-                    }
                 }
-                else if (visited[i].Item4 == 2)
+                if (visited[i].Item2 is not null)
                 {
-                    graphView.ChangeNodesColorFromTo(Brushes.YellowGreen, Brushes.Blue);
-                    graphView.ChangeEdgesColorFromTo(Brushes.Green, Brushes.Black);
-
-                    graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.Red);
+                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
                 }
-                
             }
         }
 
