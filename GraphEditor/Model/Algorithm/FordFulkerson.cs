@@ -22,15 +22,15 @@ namespace Model.Graph
         {
             _matrix = matrix;
             _graph = new Graph(true);
-            
+
             Helper.TranslateToGraphWithWeights(_matrix, _graph);
-            
+
             _logger = new FordFulkersonLogger();
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
-            
+
             //Вот в этой строчке ошибка
             Ford = new FordGraph(matrix.Keys.ToList(), Helper.TranslatoToMatrix(matrix), true);
-            
+
             _nodesAmount = matrix.Count;
         }
 
@@ -58,6 +58,7 @@ namespace Model.Graph
 
             int[] parents = new int[_nodesAmount];
             int maxFlow = 0;
+            bool flag = false;
 
             while (WaySearche(tempGraph, _nodesAmount, startNode, endNode, parents))
             {
@@ -98,6 +99,10 @@ namespace Model.Graph
                 maxFlow += pathFlow;
             }
 
+
+            _logger.AddLog(null, null, $"Путь не найден.", 0, null);
+
+
             return (allPaths, maxFlow);
         }
 
@@ -110,7 +115,7 @@ namespace Model.Graph
             _logger.AddLog(null, null, $"Добавили в очередь вершину по номеру {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode])}, пометили ее как пройденную.", 0);
             queue.Enqueue(startNode);
             visited[startNode] = true;
-            parents[startNode] = -1;
+            parents[startNode] = startNode;
 
             while (queue.Count > 0)
             {

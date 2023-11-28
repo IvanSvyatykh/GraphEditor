@@ -164,7 +164,7 @@ namespace Model.Graph
                     bool flag = true;
                     foreach (var value in matrix[key])
                     {
-                        if (Equals(value.Item2, e))
+                        if (value != null && Equals(value.Item2, e))
                         {
                             flag = false;
                             break;
@@ -174,6 +174,18 @@ namespace Model.Graph
                     if (flag)
                     {
                         matrix[key].Add(Tuple.Create(-1, e));
+                    }
+                }
+            }
+
+            foreach (string key in matrix.Keys)
+            {
+                for (int i = 0; i < matrix[key].Count; i++)
+                {
+                    if (matrix[key][i] == null)
+                    {
+                        matrix[key].RemoveAt(i);
+                        i--;
                     }
                 }
             }
