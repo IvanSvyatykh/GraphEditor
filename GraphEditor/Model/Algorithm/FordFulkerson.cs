@@ -28,7 +28,6 @@ namespace Model.Graph
             _logger = new FordFulkersonLogger();
             matrix = new Dictionary<string, List<Tuple<int, string>>>(new SortedDictionary<string, List<Tuple<int, string>>>(matrix));
 
-            //Вот в этой строчке ошибка
             Ford = new FordGraph(matrix.Keys.ToList(), Helper.TranslatoToMatrix(matrix), true);
 
             _nodesAmount = matrix.Count;
