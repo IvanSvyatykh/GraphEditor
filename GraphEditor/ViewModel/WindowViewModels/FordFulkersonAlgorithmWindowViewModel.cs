@@ -265,11 +265,10 @@ namespace GraphEditor.ViewModel.WindowViewModels
                     try
                     {
                         FordFalkerson fordFulkerson = new FordFalkerson(graphView.GetEdgeMatrixWithWeights());
-                        MessageBox.Show("aaa");
 
                         FordFulkersonLogger logger = fordFulkerson.GetSteps(startNodeName, endNodeName);
                         visited = logger.Visited;
-                        MessageBox.Show("aaa");
+                        
                     }catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message);
@@ -293,7 +292,6 @@ namespace GraphEditor.ViewModel.WindowViewModels
         {
             stepsButtons = new ObservableCollection<Button>();
             stepIndex = 0;
-            MessageBox.Show("aaa");
             for (int i = 0; i < visited.Count; i++)
             {
                 Button step = new Button();
@@ -391,8 +389,9 @@ namespace GraphEditor.ViewModel.WindowViewModels
             {
                 if (visited[i].Item5 is not null)
                 {
-                    graphView.ChangeNodesColorFromTo(Brushes.YellowGreen, Brushes.Red);
-                    graphView.ChangeEdgesColorFromTo(Brushes.Green, Brushes.Red);
+                    graphView.ChangeNodesColorToBlue();
+                    graphView.ChangeEdgesColorToBlack();
+                    graphView.DrawTheWay(visited[i].Item5,Brushes.Red);
                 }
                 if (visited[i].Item1 is not null)
                 {

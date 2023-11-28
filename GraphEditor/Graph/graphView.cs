@@ -442,6 +442,23 @@ namespace Graph
                 }
             }
         }
+        public void DrawTheWay(List<GraphNode> nodes,Brush color)
+        {
+            for (int i =0; i<nodes.Count-1; i++)
+            {
+                MessageBox.Show(nodes[i+1].Name);
+                foreach(EdgeView edge in edgeList)
+                {
+                    if (edge.StartNode.NodeName == nodes[i].Name && edge.EndNode.NodeName == nodes[i + 1].Name)
+                    {
+                        edge.Color = color;
+                        edge.StartNode.Color = color;
+                        edge.EndNode.Color = color;
+                    }
+                }
+            }
+
+        }
         public void ChangeNodesColorToBlue()
         {
             foreach (NodeView node in nodeList)
