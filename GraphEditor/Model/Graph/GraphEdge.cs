@@ -17,7 +17,6 @@ namespace Model.Graph
         public int Weight { get; private set; }
 
         private bool _isOriented;
-
         public GraphEdge(GraphNode firstNode, GraphNode secondNode, bool isOriented, int weight = 0)
         {
             FirstNode = firstNode;
