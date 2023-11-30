@@ -38,7 +38,7 @@ namespace Model.Graph
             _steps.Clear();
 
             var result = FordFulkerson(_matrix.Keys.ToList().IndexOf(startNode), _matrix.Keys.ToList().IndexOf(endNode));
-            _logger.AddLog(null, null, $"Максимальный поток найден: {result.Item2}. ", 0, null);
+            _logger.AddLog(null, null, $"Максимальный поток найден: {result.Item2}. ", 4, null);
             return _logger;
         }
         private (List<List<string>>, int) FordFulkerson(int startNode, int endNode)
@@ -90,7 +90,7 @@ namespace Model.Graph
                     int currentNodeParent = parents[i];
 
                     _logger.AddLog(null, _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[i]), _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent])), $"Во временном графе по меняем вес ребра:" +
-                           $" {tempGraph[currentNodeParent][i]} - {pathFlow}. Уменьшаем на мин.поток текущий поток по найденному пути.", 0, null, $"{pathFlow}/{tempGraph[currentNodeParent][i]}");
+                           $" {tempGraph[currentNodeParent][i]} - {pathFlow}. Уменьшаем на мин.поток текущий поток по найденному пути.", 3, null, $"{pathFlow}/{tempGraph[currentNodeParent][i]}");
                     tempGraph[currentNodeParent][i] -= pathFlow;
                     //_logger.AddLog(null, _graph.GetNodeByName(_matrix.Keys.ToList()[i]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]), _graph.GetNodeByName(_matrix.Keys.ToList()[i])), $"Во временном графе по меняем вес ребра:" +
                     //           $" {tempGraph[i][currentNodeParent]} + {pathFlow}. Увеличиваем на мин.поток текущий поток по найденному пути.", 0, null, $"{pathFlow}/{tempGraph[i][currentNodeParent]}");
@@ -113,10 +113,10 @@ namespace Model.Graph
         private bool WaySearche(int[][] matrix, int vertices, int startNode, int endNode, int[] parents)
         {
             _logger.AddLog(_graph.GetNodeByName(_matrix.Keys.ToList()[startNode]), null,
-                $"Начинаем обход графа в ширину из узла {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode])} в {_graph.GetNodeByName(_matrix.Keys.ToList()[endNode])}", 1);
+                $"Начинаем обход графа в ширину из узла {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode]).Name} в {_graph.GetNodeByName(_matrix.Keys.ToList()[endNode]).Name}", 1);
             bool[] visited = new bool[vertices];
             Queue<int> queue = new Queue<int>();
-            _logger.AddLog(null, null, $"Добавили в очередь вершину по номеру {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode])}, пометили ее как пройденную.", 0);
+            _logger.AddLog(null, null, $"Добавили в очередь вершину {_graph.GetNodeByName(_matrix.Keys.ToList()[startNode]).Name}, пометили ее как пройденную.", 0);
             queue.Enqueue(startNode);
             visited[startNode] = true;
             parents[startNode] = startNode;
@@ -131,7 +131,7 @@ namespace Model.Graph
                     {
                         _logger.AddLog(_graph.GetNodeByName(_matrix.Keys.ToList()[v]),
                             _graph.GetNodeByName(_matrix.Keys.ToList()[u]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[u]), _graph.GetNodeByName(_matrix.Keys.ToList()[v])),
-               $"Обошли узел {_graph.GetNodeByName(_matrix.Keys.ToList()[v])}", 1);
+               $"Обошли узел {_graph.GetNodeByName(_matrix.Keys.ToList()[v]).Name}", 1);
 
 
                         queue.Enqueue(v);

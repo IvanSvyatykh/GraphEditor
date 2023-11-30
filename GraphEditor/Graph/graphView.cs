@@ -446,7 +446,6 @@ namespace Graph
         {
             for (int i =0; i<nodes.Count-1; i++)
             {
-                MessageBox.Show(nodes[i+1].Name);
                 foreach(EdgeView edge in edgeList)
                 {
                     if (edge.StartNode.NodeName == nodes[i].Name && edge.EndNode.NodeName == nodes[i + 1].Name)
@@ -455,6 +454,16 @@ namespace Graph
                         edge.StartNode.Color = color;
                         edge.EndNode.Color = color;
                     }
+                }
+            }
+        }
+        public void ChangeEdgeWeight(string startNodeName, string endNodeName, string newWeight)
+        {
+            foreach (EdgeView edge in edgeList)
+            {
+                if (edge.StartNode.NodeName == startNodeName && edge.EndNode.NodeName == endNodeName)
+                {
+                    edge.TxtBox.Text = newWeight; 
                 }
             }
         }
@@ -591,6 +600,13 @@ namespace Graph
             for (int i = 0; i < nodeList.Count; i++)
             {             
                 nodeList[i].ViewPartNode.TextBoxForNodeLabel.Text = nodeList[i].NodeName;
+            }
+        }
+        public void BackEdgeWeightsToBase()
+        {
+            for (int i = 0; i < edgeList.Count; i++)
+            {
+                edgeList[i].TxtBox.Text = edgeList[i].Weight.ToString();
             }
         }
         public void CreateNodes(Dictionary<string, Point> nodeNamesAndCoordinats)

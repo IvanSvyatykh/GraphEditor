@@ -91,11 +91,11 @@ namespace GraphEditor.ViewModel.WindowViewModels
 
         private byte currentMode = 0;
 
-        private List<Tuple<GraphNode, GraphEdge, string, byte, List<GraphNode>>> visited;
+        private List<Tuple<GraphNode, GraphEdge, string, byte, List<GraphNode>,string>> visited;
 
         private string startNodeName = "A";
         private string endNodeName = "B";
-
+        
         private string explanation = "Тут пока ничего нет";
 
         private int stepIndex = 0;
@@ -349,12 +349,12 @@ namespace GraphEditor.ViewModel.WindowViewModels
                 OnPropertyChanged(nameof(StepsButtons));
 
                 Explanation = "Тут пока ничего нет";
-                visited = new List<Tuple<GraphNode, GraphEdge, string, byte, List<GraphNode>>>();
+                visited = new List<Tuple<GraphNode, GraphEdge, string, byte, List<GraphNode>,string>>();
 
                 graphView.EndTaskWork();
                 graphView.ChangeNodesColorToBlue();
                 graphView.ChangeEdgesColorToBlack();
-                graphView.BackNodeNamesToBase();
+                graphView.BackEdgeWeightsToBase();
 
                 IsStepBackwardEnabled = false;
                 IsStepForwardEnabled = false;
@@ -385,21 +385,49 @@ namespace GraphEditor.ViewModel.WindowViewModels
             graphView.ChangeNodesColorToBlue();
             graphView.ChangeEdgesColorToBlack();
 
+            string activeEdgeFirstNodeName = null;
+            string activeEdgeEndNodeName = null;
             for (int i = 0; i <= stepIndex; i++)
-            {
+            {   
+                
                 if (visited[i].Item5 is not null)
                 {
                     graphView.ChangeNodesColorToBlue();
                     graphView.ChangeEdgesColorToBlack();
-                    graphView.DrawTheWay(visited[i].Item5,Brushes.Red);
+                    graphView.DrawTheWay(visited[i].Item5, Brushes.Red);
                 }
                 if (visited[i].Item1 is not null)
                 {
                     graphView.ChangeNodeColor(visited[i].Item1.Name, Brushes.YellowGreen);
                 }
+                if (activeEdgeEndNodeName is not null && activeEdgeFirstNodeName is not null)
+                {
+                    graphView.ChangeEdgeColor(activeEdgeFirstNodeName, activeEdgeEndNodeName, Brushes.Black);
+                    activeEdgeEndNodeName = null;
+                    activeEdgeFirstNodeName = null;
+                }
                 if (visited[i].Item2 is not null)
                 {
-                    graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
+                    if (visited[i].Item4 == 3)
+                    {
+                        graphView.ChangeNodesColorToBlue();
+                        graphView.ChangeEdgesColorToBlack();
+
+                        activeEdgeFirstNodeName = visited[i].Item2.FirstNode.Name;
+                        activeEdgeEndNodeName = visited[i].Item2.SecondNode.Name;
+                        
+                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
+                        graphView.ChangeEdgeWeight(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, visited[i].Item6);
+                    }
+                    else
+                    {   
+                        graphView.ChangeEdgeColor(visited[i].Item2.FirstNode.Name, visited[i].Item2.SecondNode.Name, Brushes.Green);
+                    }
+                }
+                if (visited[i].Item4 == 4)
+                {
+                    graphView.ChangeNodesColorToBlue();
+                    graphView.ChangeEdgesColorToBlack();
                 }
             }
         }
