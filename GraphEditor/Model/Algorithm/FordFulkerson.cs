@@ -90,13 +90,13 @@ namespace Model.Graph
                     int currentNodeParent = parents[i];
 
                     _logger.AddLog(null, _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[i]), _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent])), $"Во временном графе по меняем вес ребра:" +
-                           $" {tempGraph[currentNodeParent][i]} - {pathFlow}. Уменьшаем на мин.поток текущий поток по найденному пути.", 3, null, $"{pathFlow}/{tempGraph[currentNodeParent][i]}");
+                           $" {tempGraph[currentNodeParent][i]} - {pathFlow}. Уменьшаем на мин.поток текущий поток по найденному пути.", 3, null, $"{_graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[i]), _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent])).Weight - tempGraph[currentNodeParent][i] + pathFlow}/{_graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[i]), _graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent])).Weight}");
                     tempGraph[currentNodeParent][i] -= pathFlow;
                     //_logger.AddLog(null, _graph.GetNodeByName(_matrix.Keys.ToList()[i]).GetEdgeBetween(_graph.GetNodeByName(_matrix.Keys.ToList()[currentNodeParent]), _graph.GetNodeByName(_matrix.Keys.ToList()[i])), $"Во временном графе по меняем вес ребра:" +
                     //           $" {tempGraph[i][currentNodeParent]} + {pathFlow}. Увеличиваем на мин.поток текущий поток по найденному пути.", 0, null, $"{pathFlow}/{tempGraph[i][currentNodeParent]}");
                     tempGraph[i][currentNodeParent] += pathFlow;
 
-
+                    
                 }
 
                 _logger.AddLog(null, null, $"Прибавляем к счетчику максимального потока наш минимальный поток: {maxFlow} += {pathFlow}", 0, null);
