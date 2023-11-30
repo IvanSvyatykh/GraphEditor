@@ -360,7 +360,8 @@ namespace GraphEditor.ViewModel
             ChooseStep(b);
         }
         public void ChooseStep(Button step)
-        {
+        {   
+
             try
             {
                 stepsButtons[stepIndex].Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
@@ -368,6 +369,14 @@ namespace GraphEditor.ViewModel
                 stepIndex = newStepIndex;
                 stepsButtons[newStepIndex].Background = new SolidColorBrush(Color.FromRgb(140, 200, 255));
 
+                if (stepIndex == stepsButtons.Count - 1)
+                {
+                    IsSaveOstTreeEnabled = true;
+                }
+                else
+                {
+                    IsSaveOstTreeEnabled = false;
+                }
                 ShowCurrentSituationOfGraph();
 
                 if (stepIndex == 0)
@@ -408,14 +417,7 @@ namespace GraphEditor.ViewModel
             }
             else
             {
-                if (stepIndex == stepsButtons.Count - 2)
-                {
-                    IsSaveOstTreeEnabled = true;
-                }
-                else
-                {
-                    IsSaveOstTreeEnabled = false;
-                }
+               
 
                 IsStepBackwardEnabled = true;
 
